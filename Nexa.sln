@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Domain", "src\Modules\Accoounting\Nexa.Accounting.Domain\Nexa.Accounting.Domain.csproj", "{AD7FC163-CD66-49CB-A56B-D211B64B7572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Domain", "src\Modules\Accoounting\Nexa.Accounting.Domain\Nexa.Accounting.Domain.csproj", "{AD7FC163-CD66-49CB-A56B-D211B64B7572}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.BuildingBlocks.Domain", "src\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj", "{251A4DAA-22F0-44D4-8B9B-445A9EB97110}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{DEBF4F5C-BB40-4703-9A35-A86BAB318F48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{4EEF29AB-B9FB-4595-9D0E-473265C15F51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounting", "Accounting", "{D36F3B52-E4B5-485F-90CC-2CA29A128FEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,18 @@ Global
 		{AD7FC163-CD66-49CB-A56B-D211B64B7572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD7FC163-CD66-49CB-A56B-D211B64B7572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7FC163-CD66-49CB-A56B-D211B64B7572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{251A4DAA-22F0-44D4-8B9B-445A9EB97110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{251A4DAA-22F0-44D4-8B9B-445A9EB97110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{251A4DAA-22F0-44D4-8B9B-445A9EB97110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{251A4DAA-22F0-44D4-8B9B-445A9EB97110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD7FC163-CD66-49CB-A56B-D211B64B7572} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
+		{251A4DAA-22F0-44D4-8B9B-445A9EB97110} = {DEBF4F5C-BB40-4703-9A35-A86BAB318F48}
+		{D36F3B52-E4B5-485F-90CC-2CA29A128FEC} = {4EEF29AB-B9FB-4595-9D0E-473265C15F51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
