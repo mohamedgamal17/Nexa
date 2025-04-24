@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Domain", "src\Modules\Accoounting\Nexa.Accounting.Domain\Nexa.Accounting.Domain.csproj", "{AD7FC163-CD66-49CB-A56B-D211B64B7572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.BuildingBlocks.Domain", "src\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj", "{251A4DAA-22F0-44D4-8B9B-445A9EB97110}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.BuildingBlocks.Domain", "src\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj", "{251A4DAA-22F0-44D4-8B9B-445A9EB97110}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{DEBF4F5C-BB40-4703-9A35-A86BAB318F48}"
 EndProject
