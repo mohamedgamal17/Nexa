@@ -1,6 +1,6 @@
 ﻿namespace Nexa.Accounting.Domain.Enums
 {
-    public enum LedgerEntryType
+    public enum TransactionType
     {
         Internal,
         External
