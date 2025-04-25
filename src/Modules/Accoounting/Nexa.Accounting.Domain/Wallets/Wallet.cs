@@ -1,14 +1,14 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 
-namespace Nexa.Accounting.Domain.NewFolder
+namespace Nexa.Accounting.Domain.Wallets
 {
     public class Wallet : BaseEntity
     {
         public string Number { get; private set; }
-        public string UserId { get;private set; }
+        public string UserId { get; private set; }
         public decimal Balance { get; private set; }
 
-        public Wallet(string number , string userId)
+        public Wallet(string number, string userId)
         {
             Number = number;
             UserId = userId;
