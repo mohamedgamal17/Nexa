@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vogel.BuildingBlocks.Entity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Infrastructure", "src\Modules\Accoounting\Nexa.Accounting.Infrastructure\Nexa.Accounting.Infrastructure.csproj", "{C18AFD2A-72B1-452E-9168-D916BFCEA345}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Application", "src\Modules\Accoounting\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj", "{BA63A9E6-1998-4538-9009-40F9D2459098}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C18AFD2A-72B1-452E-9168-D916BFCEA345}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C18AFD2A-72B1-452E-9168-D916BFCEA345}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C18AFD2A-72B1-452E-9168-D916BFCEA345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA63A9E6-1998-4538-9009-40F9D2459098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA63A9E6-1998-4538-9009-40F9D2459098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA63A9E6-1998-4538-9009-40F9D2459098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA63A9E6-1998-4538-9009-40F9D2459098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{035C3783-D86A-4F4F-A4B4-AFB3AE211867} = {DEBF4F5C-BB40-4703-9A35-A86BAB318F48}
 		{0E9AC33E-C046-49F0-A97C-F88CD55E64C8} = {DEBF4F5C-BB40-4703-9A35-A86BAB318F48}
 		{C18AFD2A-72B1-452E-9168-D916BFCEA345} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
+		{BA63A9E6-1998-4538-9009-40F9D2459098} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}

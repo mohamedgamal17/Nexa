@@ -1,4 +1,5 @@
-﻿using Nexa.BuildingBlocks.Domain;
+﻿using Ardalis.GuardClauses;
+using Nexa.BuildingBlocks.Domain;
 
 namespace Nexa.Accounting.Domain.Wallets
 {
@@ -13,9 +14,26 @@ namespace Nexa.Accounting.Domain.Wallets
             Number = number;
             UserId = userId;
         }
-        public void UpdateBalance(decimal newBalance)
+
+
+        public void Depit(decimal amount)
         {
-            Balance = newBalance;
+            Guard.Against.NegativeOrZero(amount);
+
+            if(Balance < amount)
+            {
+                throw new InvalidOperationException("Insufficient balance to complete the depit operation.");
+            }
+
+            Balance -= amount;
+        }
+
+
+        public void Credit(decimal amount)
+        {
+            Guard.Against.NegativeOrZero(amount);
+
+            Balance += amount;
         }
     }
 
