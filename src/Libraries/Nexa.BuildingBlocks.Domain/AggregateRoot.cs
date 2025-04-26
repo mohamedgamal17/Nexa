@@ -19,4 +19,18 @@ namespace Nexa.BuildingBlocks.Domain
         }
 
     }
+
+    public class AggregateRoot : AggregateRoot<string>
+    {
+        public AggregateRoot(string id) : base(id)
+        {
+
+        }
+
+        public AggregateRoot() 
+            : base(Guid.NewGuid().ToString())
+        {
+            
+        }
+    }
 }
