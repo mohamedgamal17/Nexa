@@ -12,10 +12,5 @@
             ReciverId = reciverId;
 
         }
-    }
-
-
-    
-
-   
+    }  
 }
