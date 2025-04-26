@@ -9,12 +9,15 @@ namespace Nexa.Accounting.Domain.Transactions.Events
         public string Number { get; }
         public Type Type { get; }
 
-        public TransactionCompletedEvent(string id, string walletId, string number, Type type)
+        public DateTime CompletedAt { get;  }
+
+        public TransactionCompletedEvent(string id, string walletId, string number, Type type, DateTime completedAt)
         {
             Id = id;
             WalletId = walletId;
             Number = number;
             Type = type;
+            CompletedAt = completedAt;
         }
     }
 }

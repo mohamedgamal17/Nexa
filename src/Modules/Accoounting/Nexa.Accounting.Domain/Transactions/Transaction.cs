@@ -10,7 +10,7 @@ namespace Nexa.Accounting.Domain.Transactions
         public string Number { get;protected set;}
         public decimal Amount { get;protected set; }
         public TransactionStatus Status { get; protected set; }
-
+        public DateTime? CompletedAt { get;protected set; }
         protected Transaction(string walletId,
             string number,
             decimal amount) 
@@ -48,7 +48,9 @@ namespace Nexa.Accounting.Domain.Transactions
 
             Status = TransactionStatus.Completed;
 
-            var @event = new TransactionCompletedEvent(Id, WalletId, Number, this.GetType());
+            CompletedAt = DateTime.UtcNow;
+
+            var @event = new TransactionCompletedEvent(Id, WalletId, Number, this.GetType(), CompletedAt.Value);
 
             AppendEvent(@event);
         }
