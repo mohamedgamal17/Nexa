@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Nexa.Accounting.Domain.Wallets;
-using Nexa.BuildingBlocks.Application.Security;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
 
 namespace Nexa.Accounting.Application.Wallets.Policies
 {

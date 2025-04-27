@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Nexa.BuildingBlocks.Application.Modularity;
+using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using System.Reflection;
-namespace Microsoft.Extensions.DependencyInjection
+namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 {
     public static class ModularityServiceCollectionExtensions
     {
@@ -47,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new InvalidOperationException($"[{serviceType.AssemblyQualifiedName}] must have parameterless constructor to be able to install module");
             }
 
-            var obj = (IServiceInstaller)(Activator.CreateInstance(serviceType, new object[] { })!);
+            var obj = (IServiceInstaller)Activator.CreateInstance(serviceType, new object[] { })!;
 
             obj.Install(services, configuration, hostEnvironment);
 
@@ -95,7 +96,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new InvalidOperationException($"[{moduleType.AssemblyQualifiedName}] must have parameterless constructor to be able to install module");
             }
 
-            var obj = (IModuleInstaller)(Activator.CreateInstance(moduleType, new object[] { })!);
+            var obj = (IModuleInstaller)Activator.CreateInstance(moduleType, new object[] { })!;
 
             obj.Install(services, configuration, hostEnvironment);
 
@@ -106,7 +107,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             foreach (var type in types)
             {
-                var obj = (IServiceInstaller)(Activator.CreateInstance(type, new object[] { })!);
+                var obj = (IServiceInstaller)Activator.CreateInstance(type, new object[] { })!;
 
                 obj.Install(services, configuration, hostEnvironment);
             }

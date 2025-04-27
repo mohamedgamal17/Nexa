@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Domain.Results;
-namespace Nexa.BuildingBlocks.Application.Security
+namespace Nexa.BuildingBlocks.Application.Abstractions.Security
 {
     public interface IApplicationAuthorizationService
     {

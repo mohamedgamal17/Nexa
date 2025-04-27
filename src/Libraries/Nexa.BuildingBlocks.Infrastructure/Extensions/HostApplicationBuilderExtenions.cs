@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Nexa.BuildingBlocks.Application.Modularity;
-namespace Nexa.BuildingBlocks.Application.Extensions
+using Nexa.BuildingBlocks.Infrastructure.Modularity;
+namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 {
     public static class HostApplicationBuilderExtenions
     {

@@ -5,8 +5,8 @@ using Nexa.Accounting.Application.Wallets.Policies;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.BuildingBlocks.Application.Security;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 

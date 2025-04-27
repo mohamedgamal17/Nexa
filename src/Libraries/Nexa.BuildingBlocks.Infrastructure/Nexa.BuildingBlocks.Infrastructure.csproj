@@ -7,7 +7,14 @@
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="12.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.4" />
+
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj" />
+	</ItemGroup>
+
 </Project>

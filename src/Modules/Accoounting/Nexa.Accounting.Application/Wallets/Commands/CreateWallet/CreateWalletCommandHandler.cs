@@ -3,8 +3,8 @@ using Nexa.Accounting.Application.Wallets.Dtos;
 using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.BuildingBlocks.Application.Security;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 namespace Nexa.Accounting.Application.Wallets.Commands.CreateWallet

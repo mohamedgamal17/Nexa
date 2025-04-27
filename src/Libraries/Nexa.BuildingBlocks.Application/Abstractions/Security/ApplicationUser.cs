@@ -1,4 +1,4 @@
-﻿namespace Nexa.BuildingBlocks.Application.Security
+﻿namespace Nexa.BuildingBlocks.Application.Abstractions.Security
 {
     public class ApplicationUser
     {
