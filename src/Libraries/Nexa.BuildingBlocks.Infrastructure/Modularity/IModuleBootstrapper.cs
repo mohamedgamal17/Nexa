@@ -1,4 +1,4 @@
-﻿namespace Nexa.BuildingBlocks.Application.Modularity
+﻿namespace Nexa.BuildingBlocks.Infrastructure.Modularity
 {
     public interface IModuleBootstrapper
     {

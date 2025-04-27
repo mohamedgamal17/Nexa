@@ -2,10 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Nexa.BuildingBlocks.Application.Modularity
+namespace Nexa.BuildingBlocks.Infrastructure.Modularity
 {
-    public interface IServiceInstaller
+    public interface IModuleInstaller
     {
         void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment);
+
     }
 }

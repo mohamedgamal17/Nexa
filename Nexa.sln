@@ -15,11 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounting", "Accounting", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.BuildingBlocks.Application", "src\Libraries\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj", "{035C3783-D86A-4F4F-A4B4-AFB3AE211867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vogel.BuildingBlocks.EntityFramework", "src\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj", "{0E9AC33E-C046-49F0-A97C-F88CD55E64C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vogel.BuildingBlocks.EntityFramework", "src\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj", "{0E9AC33E-C046-49F0-A97C-F88CD55E64C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Infrastructure", "src\Modules\Accoounting\Nexa.Accounting.Infrastructure\Nexa.Accounting.Infrastructure.csproj", "{C18AFD2A-72B1-452E-9168-D916BFCEA345}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Infrastructure", "src\Modules\Accoounting\Nexa.Accounting.Infrastructure\Nexa.Accounting.Infrastructure.csproj", "{C18AFD2A-72B1-452E-9168-D916BFCEA345}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Application", "src\Modules\Accoounting\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj", "{BA63A9E6-1998-4538-9009-40F9D2459098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Application", "src\Modules\Accoounting\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj", "{BA63A9E6-1998-4538-9009-40F9D2459098}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.BuildingBlocks.Infrastructure", "src\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj", "{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{BA63A9E6-1998-4538-9009-40F9D2459098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA63A9E6-1998-4538-9009-40F9D2459098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA63A9E6-1998-4538-9009-40F9D2459098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{0E9AC33E-C046-49F0-A97C-F88CD55E64C8} = {DEBF4F5C-BB40-4703-9A35-A86BAB318F48}
 		{C18AFD2A-72B1-452E-9168-D916BFCEA345} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
 		{BA63A9E6-1998-4538-9009-40F9D2459098} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
+		{E0A87C0F-CB5B-4B04-93BA-EC82CE87EBBC} = {DEBF4F5C-BB40-4703-9A35-A86BAB318F48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
