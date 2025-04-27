@@ -3,8 +3,8 @@
     public class TransactionVerifiedIntegrationEvent 
     {
         public string TransactionId { get; }
-        public string TransactionType { get; }
-        public TransactionVerifiedIntegrationEvent(string transactionId, string transactionType)
+        public Type TransactionType { get; }
+        public TransactionVerifiedIntegrationEvent(string transactionId, Type transactionType)
         {
             TransactionId = transactionId;
             TransactionType = transactionType;
