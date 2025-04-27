@@ -1,9 +1,25 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace Nexa.BuildingBlocks.Application.Extensions
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection RegisterPoliciesHandlerFromAssembly(this IServiceCollection services, Assembly assembly)
+        {
+            var types = assembly.GetTypes()
+               .Where(x => x.IsClass)
+               .Where(x => x.GetInterfaces().Any(i => i == typeof(IAuthorizationHandler)))
+               .ToList();
+
+            foreach (var type in types)
+            {
+                services.AddTransient(type.GetInterfaces().First(), type);
+            }
+
+            return services;
+        }
         public static IServiceCollection Replace<TService, TImplementaion>(this IServiceCollection services)
         {
             return services.Replace(typeof(TService), typeof(TImplementaion));
@@ -33,6 +49,8 @@ namespace Nexa.BuildingBlocks.Application.Extensions
 
             return descriptor?.ImplementationInstance;
         }
+
+      
 
     }
 }
