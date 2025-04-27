@@ -6,7 +6,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 
 namespace Nexa.BuildingBlocks.Infrastructure.Security
 {
-    internal class ApplicationAuthorizationService
+    internal class ApplicationAuthorizationService : IApplicationAuthorizationService
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly ISecurityContext _securityContext;
