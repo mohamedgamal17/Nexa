@@ -13,10 +13,10 @@ namespace Nexa.Application.Tests
 {
     public class ApplicationTestModuleInstaller : IModuleInstaller
     {
-        public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public void Install(IServiceCollection services, IConfiguration configuration)
         {
             services.
-                InstallModule<InfrastructureModuleInstaller>(configuration, environment)
+                InstallModule<InfrastructureModuleInstaller>(configuration)
                 .Replace<ISecurityContext, FakeSecurityContext>()
                 .AddScoped<FakeAuthenticationService>();
 

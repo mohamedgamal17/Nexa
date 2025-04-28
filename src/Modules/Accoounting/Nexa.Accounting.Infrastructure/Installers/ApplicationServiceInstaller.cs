@@ -9,7 +9,7 @@ namespace Nexa.Accounting.Infrastructure.Installers
 {
     public class ApplicationServiceInstaller : IServiceInstaller
     {
-        public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public void Install(IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Application.AssemblyReference.Assembly))

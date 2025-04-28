@@ -7,7 +7,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 {
     public static class ModularityServiceCollectionExtensions
     {
-        public static IServiceCollection InstallServiceFromAssembly(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment, params Assembly[] assemblies)
+        public static IServiceCollection InstallServiceFromAssembly(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
         {
             if (assemblies == null || assemblies.Count() < 1)
             {
@@ -20,18 +20,18 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
                      .Where(x => x.IsClass && x.IsAssignableTo(typeof(IServiceInstaller)))
                      .ToList();
 
-                types.ForEach((t) => services.InstallService(t, configuration, hostEnvironment));
+                types.ForEach((t) => services.InstallService(t, configuration));
             }
 
             return services;
         }
 
-        public static IServiceCollection InstallService<TService>(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
+        public static IServiceCollection InstallService<TService>(this IServiceCollection services, IConfiguration configuration)
         {
-            return services.InstallService(typeof(TService), configuration, hostEnvironment);
+            return services.InstallService(typeof(TService), configuration);
         }
 
-        public static IServiceCollection InstallService(this IServiceCollection services, Type serviceType, IConfiguration configuration, IHostEnvironment hostEnvironment)
+        public static IServiceCollection InstallService(this IServiceCollection services, Type serviceType, IConfiguration configuration)
         {
             if (serviceType.IsAssignableFrom(typeof(IServiceInstaller)))
             {
@@ -50,12 +50,12 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 
             var obj = (IServiceInstaller)Activator.CreateInstance(serviceType, new object[] { })!;
 
-            obj.Install(services, configuration, hostEnvironment);
+            obj.Install(services, configuration);
 
             return services;
         }
 
-        public static IServiceCollection InstallModulesFromAssembly(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment, params Assembly[] assemblies)
+        public static IServiceCollection InstallModulesFromAssembly(this IServiceCollection services, IConfiguration configuration,  params Assembly[] assemblies)
         {
             if (assemblies == null || assemblies.Count() < 1)
             {
@@ -68,19 +68,19 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
                      .Where(x => x.IsClass && x.IsAssignableTo(typeof(IModuleInstaller)))
                      .ToList();
 
-                types.ForEach((t) => services.InstallModule(t, configuration, hostEnvironment));
+                types.ForEach((t) => services.InstallModule(t, configuration));
             }
 
             return services;
         }
 
-        public static IServiceCollection InstallModule<TModule>(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
+        public static IServiceCollection InstallModule<TModule>(this IServiceCollection services, IConfiguration configuration)
             where TModule : IModuleInstaller
         {
-            return services.InstallModule(typeof(TModule), configuration, hostEnvironment);
+            return services.InstallModule(typeof(TModule), configuration);
         }
 
-        public static IServiceCollection InstallModule(this IServiceCollection services, Type moduleType, IConfiguration configuration, IHostEnvironment hostEnvironment)
+        public static IServiceCollection InstallModule(this IServiceCollection services, Type moduleType, IConfiguration configuration)
         {
             if (moduleType.IsAssignableFrom(typeof(IModuleInstaller)))
             {
@@ -98,7 +98,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 
             var obj = (IModuleInstaller)Activator.CreateInstance(moduleType, new object[] { })!;
 
-            obj.Install(services, configuration, hostEnvironment);
+            obj.Install(services, configuration);
 
             return services;
         }
@@ -109,7 +109,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
             {
                 var obj = (IServiceInstaller)Activator.CreateInstance(type, new object[] { })!;
 
-                obj.Install(services, configuration, hostEnvironment);
+                obj.Install(services, configuration);
             }
         }
     }

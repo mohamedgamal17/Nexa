@@ -8,9 +8,9 @@ namespace Nexa.Accounting.Infrastructure
 {
     public class AccountingModuleInstaller : IModuleInstaller
     {
-        public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public void Install(IServiceCollection services, IConfiguration configuration)
         {
-            services.InstallServiceFromAssembly(configuration, environment,
+            services.InstallServiceFromAssembly(configuration,
              Assembly.GetExecutingAssembly()
            );
 

@@ -8,7 +8,7 @@ namespace Nexa.BuildingBlocks.Infrastructure
 {
     public class InfrastructureModuleInstaller : IModuleInstaller
     {
-        public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public void Install(IServiceCollection services, IConfiguration configuration)
         {
             ConfigureSecurity(services);
         }

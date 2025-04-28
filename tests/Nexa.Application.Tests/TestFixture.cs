@@ -2,8 +2,7 @@
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Extensions.Hosting;
+
 using Nexa.Application.Tests.Services;
 using System.Reflection;
 using MediatR;
@@ -15,10 +14,9 @@ namespace Nexa.Application.Tests
     {
         protected IServiceProvider ServiceProvider { get; private set; }
         protected IConfiguration Configuration { get; private set; }
-        protected IHostEnvironment HostEnvironment { get; private set; }
         protected IMediator Mediator { get; private set; }
         protected FakeAuthenticationService AuthenticationService { get; private set; }
-        protected abstract Task SetupAsync(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment);
+        protected abstract Task SetupAsync(IServiceCollection services, IConfiguration configuration);
         protected abstract Task InitializeAsync(IServiceProvider services);
         protected abstract Task ShutdownAsync(IServiceProvider services);
 
@@ -26,15 +24,8 @@ namespace Nexa.Application.Tests
         {
             var services = new ServiceCollection();
             Configuration = BuildConfiguration();
-            HostEnvironment = new HostingEnvironment()
-            {
-                EnvironmentName = Environments.Development,
-                ApplicationName = Assembly.GetExecutingAssembly().FullName!
-            };
-
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton(HostEnvironment);
-            SetupAsync(services, Configuration, HostEnvironment).Wait();
+            SetupAsync(services, Configuration).Wait();
             ServiceProvider = BuildServiceProvider(services);
         }
 

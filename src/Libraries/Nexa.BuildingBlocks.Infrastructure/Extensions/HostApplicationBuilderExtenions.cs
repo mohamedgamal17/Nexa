@@ -11,7 +11,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 
             var module = ((IModuleInstaller)Activator.CreateInstance(moduleType)!)!;
 
-            module.Install(host.Services, host.Configuration, host.Environment);
+            module.Install(host.Services, host.Configuration);
 
             return host;
         }

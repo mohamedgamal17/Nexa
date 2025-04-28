@@ -8,9 +8,9 @@ using Vogel.BuildingBlocks.EntityFramework.Interceptors;
 using Microsoft.EntityFrameworkCore;
 namespace Nexa.Accounting.Infrastructure.Installers
 {
-    internal class EntityFrameworkServiceInstaller : IServiceInstaller
+    public class EntityFrameworkServiceInstaller : IServiceInstaller
     {
-        public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public void Install(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AccountingDbContext>((sp, opt) =>
             {

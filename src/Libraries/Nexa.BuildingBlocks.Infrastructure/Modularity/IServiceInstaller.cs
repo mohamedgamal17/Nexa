@@ -6,6 +6,6 @@ namespace Nexa.BuildingBlocks.Infrastructure.Modularity
 {
     public interface IServiceInstaller
     {
-        void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment);
+        void Install(IServiceCollection services, IConfiguration configuration);
     }
 }

@@ -8,7 +8,7 @@ namespace Nexa.BuildingBlocks.Application.Extensions
     {
         public static IServiceCollection RegisterMediatRCommonPibelineBehaviors(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IRequestPostProcessor<,>), typeof(LoggingBehaviour<>));
+            services.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggingBehaviour<>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
             return services;
