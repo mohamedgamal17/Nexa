@@ -6,7 +6,7 @@ using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.BuildingBlocks.Infrastructure.Security;
 namespace Nexa.BuildingBlocks.Infrastructure
 {
-    internal class InfrastructureModuleInstaller : IModuleInstaller
+    public class InfrastructureModuleInstaller : IModuleInstaller
     {
         public void Install(IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
