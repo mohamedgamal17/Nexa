@@ -1,11 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+using Nexa.BuildingBlocks.Application.Factories;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection RegisterFactoriesFromAssembly(this IServiceCollection services, Assembly assembly)
+        {
+            var types = assembly.GetTypes()
+            .Where(x => x.IsClass)
+            .Where(x => x.GetInterfaces().Any(c => c == typeof(IResponseFactory)))
+            .ToList();
+
+            foreach (var type in types)
+            {
+                services.AddTransient(type.GetInterfaces().First(), type);
+            }
+
+            return services;
+        }
+
         public static IServiceCollection RegisterPoliciesHandlerFromAssembly(this IServiceCollection services, Assembly assembly)
         {
             var types = assembly.GetTypes()
@@ -49,8 +64,5 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return descriptor?.ImplementationInstance;
         }
-
-      
-
     }
 }
