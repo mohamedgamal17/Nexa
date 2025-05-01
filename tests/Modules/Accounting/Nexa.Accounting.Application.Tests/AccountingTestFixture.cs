@@ -10,7 +10,6 @@ using Nexa.Application.Tests;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Respawn.Graph;
-using Bogus;
 using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Application.Tests.Fakers;
 namespace Nexa.Accounting.Application.Tests
@@ -19,13 +18,6 @@ namespace Nexa.Accounting.Application.Tests
     public class AccountingTestFixture : TestFixture
     {
 
-        [Test]
-        public void Test()
-        {
-            var db = ServiceProvider.GetRequiredService<AccountingDbContext>();
-
-            Console.WriteLine();
-        }
         protected override Task SetupAsync(IServiceCollection services, IConfiguration configuration)
         {
             services.InstallModule<AccountingApplicationTestModuleInstaller>(configuration);
