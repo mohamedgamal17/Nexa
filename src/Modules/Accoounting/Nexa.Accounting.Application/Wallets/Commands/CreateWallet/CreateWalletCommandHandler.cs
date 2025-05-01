@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Nexa.Accounting.Application.Wallets.Dtos;
+using Nexa.Accounting.Application.Wallets.Factories;
 using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
@@ -12,15 +13,16 @@ namespace Nexa.Accounting.Application.Wallets.Commands.CreateWallet
     public class CreateWalletCommandHandler : IApplicationRequestHandler<CreateWalletCommand, WalletDto>
     {
         private readonly ISecurityContext _securityContext;
-        private readonly IAccountingRepository<Wallet> _walletRepository;
+        private readonly IWalletRepository _walletRepository;
         private readonly IWalletNumberGeneratorService _walletNumberGeneratorService;
-        private readonly IMapper _mapper;
-        public CreateWalletCommandHandler(ISecurityContext securityContext, IAccountingRepository<Wallet> walletRepository, IWalletNumberGeneratorService walletNumberGeneratorService, IMapper mapper)
+        private readonly IWalletResponseFactory _walletResponseFactory;
+
+        public CreateWalletCommandHandler(ISecurityContext securityContext, IWalletRepository walletRepository, IWalletNumberGeneratorService walletNumberGeneratorService, IWalletResponseFactory walletResponseFactory)
         {
             _securityContext = securityContext;
             _walletRepository = walletRepository;
             _walletNumberGeneratorService = walletNumberGeneratorService;
-            _mapper = mapper;
+            _walletResponseFactory = walletResponseFactory;
         }
 
         public async Task<Result<WalletDto>> Handle(CreateWalletCommand request, CancellationToken cancellationToken)
@@ -40,7 +42,9 @@ namespace Nexa.Accounting.Application.Wallets.Commands.CreateWallet
 
             await _walletRepository.InsertAsync(wallet);
 
-            return _mapper.Map<Wallet, WalletDto>(wallet);
+            var view = await _walletRepository.SinglVieweAsync(x => x.Id == wallet.Id);
+
+            return await _walletResponseFactory.PrepareDto(view);
         }
     }
 }
