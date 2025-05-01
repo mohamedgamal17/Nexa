@@ -19,23 +19,19 @@ namespace Nexa.Accounting.Application.Wallets.Services
 
         private static string GenerateSecureRandomNumber(int digits)
         {
-            int bytesNeeded = (int)Math.Ceiling(digits / 2.0);
-
-            byte[] randomBytes = new byte[bytesNeeded];
+            var stringBuilder = new StringBuilder(digits);
 
             using (var rng = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(randomBytes);
+                while (stringBuilder.Length < digits)
+                {
+                    int value = RandomNumberGenerator.GetInt32(0, 10);
+
+                    stringBuilder.Append(value);
+                }
             }
 
-            var stringBuilder = new StringBuilder();
-
-            foreach (byte b in randomBytes)
-            {
-                stringBuilder.Append((b % 10).ToString()); 
-            }
-
-            return stringBuilder.ToString().Substring(0, digits);
+            return stringBuilder.ToString();
         }
     }
 }
