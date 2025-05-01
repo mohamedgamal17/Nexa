@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var types = assembly.GetTypes()
             .Where(x => x.IsClass)
-            .Where(x => x.GetInterfaces().Any(c => c == typeof(IResponseFactory)))
+            .Where(x => x.GetInterfaces().Any(c => c.GetGenericTypeDefinition() == typeof(IResponseFactory<,>)))
             .ToList();
 
             foreach (var type in types)

@@ -3,6 +3,6 @@
     public class Paging<T>
     {
         public IEnumerable<T> Data { get; set; }
-        public PagingInfo Info { get; }      
+        public PagingInfo Info { get; set; }      
     }
 }
