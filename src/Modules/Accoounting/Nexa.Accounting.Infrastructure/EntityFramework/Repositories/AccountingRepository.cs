@@ -2,10 +2,10 @@
 using Nexa.BuildingBlocks.Domain;
 using Vogel.BuildingBlocks.EntityFramework.Repositories;
 
-namespace Nexa.Accounting.Infrastructure.EntityFramework
+namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
 {
     public class AccountingRepository<TEntity> : EFCoreRepository<TEntity, AccountingDbContext>, IAccountingRepository<TEntity>
-        where TEntity : class ,IEntity
+        where TEntity : class, IEntity
     {
         public AccountingRepository(AccountingDbContext dbContext) : base(dbContext)
         {

@@ -6,6 +6,8 @@ using Nexa.Accounting.Infrastructure.EntityFramework;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Vogel.BuildingBlocks.EntityFramework.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Nexa.Accounting.Infrastructure.EntityFramework.Repositories;
+using Nexa.Accounting.Domain.Wallets;
 namespace Nexa.Accounting.Infrastructure.Installers
 {
     public class EntityFrameworkServiceInstaller : IServiceInstaller
@@ -22,7 +24,8 @@ namespace Nexa.Accounting.Infrastructure.Installers
                    );
             });
 
-            services.AddTransient(typeof(IAccountingRepository<>), typeof(AccountingRepository<>));
+            services.AddTransient(typeof(IAccountingRepository<>), typeof(AccountingRepository<>))
+                .AddTransient<IWalletRepository, WalletRepository>();
         }
     }
 }
