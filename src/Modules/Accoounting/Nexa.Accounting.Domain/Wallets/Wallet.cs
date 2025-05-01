@@ -9,10 +9,20 @@ namespace Nexa.Accounting.Domain.Wallets
         public string UserId { get; private set; }
         public decimal Balance { get; private set; }
 
+        //Constructor for efcore
+        private Wallet() { }
         public Wallet(string number, string userId)
         {
             Number = number;
             UserId = userId;
+        }
+
+        //internal constructor for testing purpose only
+        internal Wallet(string number , string userId, decimal balance) 
+        {
+            Number = number;
+            UserId = userId;
+            Balance = balance;
         }
 
 

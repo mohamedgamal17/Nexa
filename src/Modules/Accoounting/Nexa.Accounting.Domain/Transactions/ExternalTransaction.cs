@@ -5,6 +5,20 @@ namespace Nexa.Accounting.Domain.Transactions
     {
         public string PaymentId { get; private set; }
         public TransactionDirection Direction { get; private set; }
+
+
+        //Constructor for efcore
+        private ExternalTransaction()
+        {
+
+        }
+        // Internal constructor for testing purpose only
+        internal ExternalTransaction(string walletId, string paymentId, string number, decimal amount, TransactionStatus status)
+           : base(walletId, number, amount, status)
+        {
+            PaymentId = paymentId;
+        }
+
         public ExternalTransaction(string walletId, 
             string number, 
             decimal amount , 
@@ -13,6 +27,8 @@ namespace Nexa.Accounting.Domain.Transactions
         {
             PaymentId = paymentId;
             Direction = direction;
-        }  
+        }
+
+     
     }
 }

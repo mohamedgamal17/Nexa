@@ -10,6 +10,10 @@ namespace Nexa.Accounting.Domain.Wallets
         public TransactionType Type { get; private set; }
         public TransactionDirection Direction { get; private set; }
         public DateTime Timestamp { get; private set; }
+
+
+        //Constructor for efcore
+        private LedgerEntry() { }
         public LedgerEntry(string walletId,
             decimal amount,
             TransactionType type,

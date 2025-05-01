@@ -6,11 +6,12 @@ namespace Nexa.Accounting.Domain.Transactions
 {
     public abstract class Transaction : AggregateRoot
     {
-        public string WalletId { get; set; }
+        public string WalletId { get;protected set; }
         public string Number { get;protected set;}
         public decimal Amount { get;protected set; }
         public TransactionStatus Status { get; protected set; }
         public DateTime? CompletedAt { get;protected set; }
+        protected Transaction() { }
         protected Transaction(string walletId,
             string number,
             decimal amount) 
@@ -22,6 +23,15 @@ namespace Nexa.Accounting.Domain.Transactions
             var @event = new TransactionPendingEvent(Id, walletId, number, this.GetType());
             AppendEvent(@event);
         }
+
+        // Internal constructor for testing purpose only
+        internal Transaction(string walletId, string number, decimal amount, TransactionStatus status)
+        {
+            WalletId = walletId;
+            Number = number;
+            Amount = amount;
+            Status = status;
+        } 
 
         public void Process()
         {
