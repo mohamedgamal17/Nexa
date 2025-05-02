@@ -13,6 +13,7 @@ namespace Nexa.Accounting.Domain.Transactions
         public string? ReciverId { get; set; }
         public WalletView? Reciver { get; set; }
         public string? PaymentId { get; set; }
+        public TransactionDirection Direction { get;  set; }
         public TransactionStatus Status { get; set; }
         public DateTime? CompletedAt { get; set; }
         public TransactionType Type { get; set; }

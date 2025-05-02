@@ -65,6 +65,7 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
                             WalletId = transaction.WalletId,
                             Wallet = wallet,
                             PaymentId=  transaction.PaymentId,
+                            Direction = transaction.Direction,
                             Status = transaction.Status,
                             CompletedAt = transaction.CompletedAt,
                             Type = Domain.Enums.TransactionType.Internal

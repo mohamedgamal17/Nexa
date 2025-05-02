@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Nexa.Accounting.Application.Transactions.Dtos;
+using Nexa.Accounting.Application.Transactions.Factories;
 using Nexa.Accounting.Application.Transactions.Services;
 using Nexa.Accounting.Application.Wallets.Policies;
 using Nexa.Accounting.Domain;
@@ -14,19 +15,19 @@ namespace Nexa.Accounting.Application.Wallets.Commands.Transfer
 {
     public class TransferCommandHandler : IApplicationRequestHandler<TransferCommand, TransactionDto>
     {
-        private readonly IAccountingRepository<Wallet> _walletRepository;
+        private readonly IWalletRepository _walletRepository;
         private readonly IApplicationAuthorizationService _applicationAuthorizationService;
-        private readonly IAccountingRepository<Transaction> _transctionRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly ITransactionNumberGeneratorService _trasnctionNumberGeneratorService;
-        private readonly IMapper _mapper;
+        private readonly ITransactionResponseFactory _transactionResponseFactory;
 
-        public TransferCommandHandler(IAccountingRepository<Wallet> walletRepository, IApplicationAuthorizationService applicationAuthorizationService, IAccountingRepository<Transaction> transctionRepository, ITransactionNumberGeneratorService trasnctionNumberGeneratorService, IMapper mapper)
+        public TransferCommandHandler(IWalletRepository walletRepository, IApplicationAuthorizationService applicationAuthorizationService, ITransactionRepository transctionRepository, ITransactionNumberGeneratorService trasnctionNumberGeneratorService, IMapper mapper, ITransactionResponseFactory transactionResponseFactory)
         {
             _walletRepository = walletRepository;
             _applicationAuthorizationService = applicationAuthorizationService;
-            _transctionRepository = transctionRepository;
+            _transactionRepository = transctionRepository;
             _trasnctionNumberGeneratorService = trasnctionNumberGeneratorService;
-            _mapper = mapper;
+            _transactionResponseFactory = transactionResponseFactory;
         }
 
         public async Task<Result<TransactionDto>> Handle(TransferCommand request, CancellationToken cancellationToken)
@@ -55,9 +56,11 @@ namespace Nexa.Accounting.Application.Wallets.Commands.Transfer
 
             await _walletRepository.UpdateAsync(senderWallet);
 
-            await _transctionRepository.InsertAsync(transaction);
+            await _transactionRepository.InsertAsync(transaction);
 
-            return _mapper.Map<Transaction, TransactionDto>(transaction);
+            var view = await _transactionRepository.SinglVieweAsync(x => x.Id == transaction.Id);
+
+            return await _transactionResponseFactory.PrepareDto(view);
         }
     }
 }
