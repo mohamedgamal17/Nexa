@@ -13,11 +13,7 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
 
         public override IQueryable<TransactionView> QueryView()
         {
-            var internalTransactionQuery = PrepareInternalTransactionQueryView();
-
-            var externalTransactionQuery = PrepareExternalTransactionQueryView();
-
-            return internalTransactionQuery.Concat(externalTransactionQuery);
+            return PrepareTransactionViewQuery();
         }
         public async Task<TransactionView?> FindByNumberAsync(string walletId, string transactionNumber)
         {
@@ -28,50 +24,37 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
         {
             return await SinglVieweAsync(x => x.WalletId == walletId && x.Number == transactionNumber);
         }
-     
-        private IQueryable<TransactionView> PrepareInternalTransactionQueryView()
+
+        private IQueryable<TransactionView> PrepareTransactionViewQuery()
         {
             var walletQuery = _walletRepository.QueryView();
-            var query = from transaction in AsQuerable().OfType<InternalTransaction>()
-                        join wallet in walletQuery on transaction.WalletId equals wallet.Id
-                        join reciverWallet in walletQuery on transaction.ReciverId equals reciverWallet.Id
-                        select new TransactionView
-                        {
-                            Id = transaction.Id,
-                            Number = transaction.Number,
-                            Amount = transaction.Amount,
-                            WalletId = transaction.WalletId,
-                            Wallet = wallet,
-                            ReciverId = transaction.ReciverId,
-                            Reciver = reciverWallet,
-                            Status = transaction.Status,
-                            CompletedAt = transaction.CompletedAt,
-                            Type = Domain.Enums.TransactionType.Internal
-                        };
+
+            var query =
+                from transaction in AsQuerable()
+                join wallet in walletQuery on transaction.WalletId equals wallet.Id
+                join reciverWallet in walletQuery on
+                    (transaction is InternalTransaction ? ((InternalTransaction)transaction).ReciverId : null)
+                    equals reciverWallet.Id into reciverJoin
+                from reciverWallet in reciverJoin.DefaultIfEmpty()
+                select new TransactionView
+                {
+                    Id = transaction.Id,
+                    Number = transaction.Number,
+                    Amount = transaction.Amount,
+                    WalletId = transaction.WalletId,
+                    Wallet = wallet,
+                    ReciverId = transaction.Type == Domain.Enums.TransactionType.Internal ? ((InternalTransaction)transaction).ReciverId : null,
+                    Reciver = transaction.Type == Domain.Enums.TransactionType.Internal ? reciverWallet : null,
+                       
+                    PaymentId = transaction.Type == Domain.Enums.TransactionType.External ? ((ExternalTransaction) transaction).PaymentId : null,
+                    Direction = transaction.Type == Domain.Enums.TransactionType.External ? ((ExternalTransaction)transaction).Direction : null,
+                    Status = transaction.Status,
+                    CompletedAt = transaction.CompletedAt,
+                    Type = transaction.Type
+                };
 
             return query;
         }
 
-        private IQueryable<TransactionView> PrepareExternalTransactionQueryView()
-        {
-            var walletQuery = _walletRepository.QueryView();
-            var query = from transaction in AsQuerable().OfType<ExternalTransaction>()
-                        join wallet in walletQuery on transaction.WalletId equals wallet.Id
-                        select new TransactionView
-                        {
-                            Id = transaction.Id,
-                            Number = transaction.Number,
-                            Amount = transaction.Amount,
-                            WalletId = transaction.WalletId,
-                            Wallet = wallet,
-                            PaymentId=  transaction.PaymentId,
-                            Direction = transaction.Direction,
-                            Status = transaction.Status,
-                            CompletedAt = transaction.CompletedAt,
-                            Type = Domain.Enums.TransactionType.Internal
-                        };
-
-            return query;
-        }
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Nexa.Accounting.Infrastructure.EntityFramework;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Nexa.Accounting.Application.Tests.EntityFramework
 {
@@ -18,8 +20,11 @@ namespace Nexa.Accounting.Application.Tests.EntityFramework
                     opt.MigrationsAssembly(typeof(AccountingDbContext).Assembly.FullName);
                 });
 
+            var services = new ServiceCollection();
 
-            return new AccountingDbContext(builder.Options);
+            var servicesProvider = services.BuildServiceProvider();
+
+            return new AccountingDbContext(builder.Options, new Mediator(servicesProvider));
         }
 
         private IConfigurationRoot BuildConfiguration()

@@ -17,13 +17,15 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 
             builder.Property(x => x.WalletId).HasMaxLength(TransactionTableConsts.WalletIdLength);
 
-            builder.HasDiscriminator<TransactionType>(TransactionTableConsts.Type)
+            builder.HasDiscriminator(x=> x.Type)              
                 .HasValue<InternalTransaction>(TransactionType.Internal)
                 .HasValue<ExternalTransaction>(TransactionType.External);
 
             builder.HasOne<Wallet>().WithMany().HasForeignKey(x => x.WalletId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasIndex(x => x.Number).IsUnique();   
+            builder.HasIndex(x => x.Number).IsUnique();
+
+            builder.Ignore(x => x.Events);
         }
     }
 
