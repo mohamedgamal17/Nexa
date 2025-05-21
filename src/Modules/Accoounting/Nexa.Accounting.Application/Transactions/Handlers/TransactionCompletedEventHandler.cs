@@ -23,7 +23,7 @@ namespace Nexa.Accounting.Application.Transactions.Handlers
         {
             var transaction = await _transactionRepository.SingleAsync(x => x.Id == notification.Id);
 
-            if(notification.Type == typeof(ExternalTransaction))
+            if(notification.Type == TransactionType.External)
             {
                 await HandlerExtertnalTransaction((ExternalTransaction)transaction, notification);
             }

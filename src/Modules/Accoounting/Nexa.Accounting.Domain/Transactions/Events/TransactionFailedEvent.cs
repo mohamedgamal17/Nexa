@@ -1,4 +1,5 @@
-﻿using Nexa.BuildingBlocks.Domain.Events;
+﻿using Nexa.Accounting.Domain.Enums;
+using Nexa.BuildingBlocks.Domain.Events;
 
 namespace Nexa.Accounting.Domain.Transactions.Events
 {
@@ -7,11 +8,11 @@ namespace Nexa.Accounting.Domain.Transactions.Events
         public string Id { get; }
         public string WalletId { get; }
         public string Number { get; }
-        public Type Type { get; }
+        public TransactionType Type { get; }
         public TransactionFailedEvent(string id,
             string walletId,
             string transactionNumber,
-            Type type)
+            TransactionType type)
         {
             Id = id;
             WalletId = walletId;

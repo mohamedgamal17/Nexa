@@ -11,6 +11,7 @@ namespace Nexa.Accounting.Domain.Transactions
         public decimal Amount { get;protected set; }
         public TransactionStatus Status { get; protected set; }
         public DateTime? CompletedAt { get;protected set; }
+        public TransactionType Type { get; private set; }
         protected Transaction() { }
         protected Transaction(string walletId,
             string number,
@@ -20,7 +21,7 @@ namespace Nexa.Accounting.Domain.Transactions
             Number = number;
             Amount = amount;
             Status = TransactionStatus.Pending;
-            var @event = new TransactionPendingEvent(Id, walletId, number, this.GetType());
+            var @event = new TransactionPendingEvent(Id, walletId, number, Type);
             AppendEvent(@event);
         }
 
@@ -43,7 +44,7 @@ namespace Nexa.Accounting.Domain.Transactions
 
             Status = TransactionStatus.Processing;
 
-            var @event = new TransactionProcessingEvent(Id, WalletId, Number, this.GetType());
+            var @event = new TransactionProcessingEvent(Id, WalletId, Number, Type);
 
             AppendEvent(@event);
         }
@@ -60,7 +61,7 @@ namespace Nexa.Accounting.Domain.Transactions
 
             CompletedAt = DateTime.UtcNow;
 
-            var @event = new TransactionCompletedEvent(Id, WalletId, Number, this.GetType(), CompletedAt.Value);
+            var @event = new TransactionCompletedEvent(Id, WalletId, Number, Type, CompletedAt.Value);
 
             AppendEvent(@event);
         }
