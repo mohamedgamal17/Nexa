@@ -13,10 +13,12 @@ namespace Nexa.Accounting.Domain.Transactions
 
         }
         // Internal constructor for testing purpose only
-        internal ExternalTransaction(string walletId, string paymentId, string number, decimal amount, TransactionStatus status)
+        internal ExternalTransaction(string walletId, string paymentId, string number, decimal amount,TransactionDirection direction ,TransactionStatus status)
            : base(walletId, number, amount, status)
         {
             PaymentId = paymentId;
+            Direction = direction;
+
         }
 
         public ExternalTransaction(string walletId, 
