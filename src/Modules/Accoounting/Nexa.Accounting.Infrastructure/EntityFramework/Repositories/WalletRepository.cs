@@ -10,8 +10,7 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
         }
         public override IQueryable<WalletView> QueryView()
         {
-            var query = DbContext.Set<Wallet>()
-                .AsQueryable()
+            var query = AsQuerable()
                 .Select(x => new WalletView
                 {
                     Id = x.Id,

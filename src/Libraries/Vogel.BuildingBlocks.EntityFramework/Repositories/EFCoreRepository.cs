@@ -17,7 +17,7 @@ namespace Vogel.BuildingBlocks.EntityFramework.Repositories
 
         public IQueryable<TEntity> AsQuerable()
         {
-            return DbContext.Set<TEntity>().AsQueryable();
+            return DbContext.Set<TEntity>().AsNoTracking().AsQueryable();
         }
 
         public async Task DeleteAsync(TEntity entity)
@@ -51,17 +51,21 @@ namespace Vogel.BuildingBlocks.EntityFramework.Repositories
 
         public async Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return await DbContext.Set<TEntity>().SingleAsync(expression);
+            return await AsQuerable().SingleAsync(expression);
         }
 
         public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return await DbContext.Set<TEntity>().SingleOrDefaultAsync(expression);
+            return await AsQuerable().SingleOrDefaultAsync(expression);
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            DbContext.Set<TEntity>().Update(entity);
+            if (DbContext.Set<TEntity>().Local.All(x => x != entity))
+            {
+                DbContext.Attach(entity);
+                DbContext.Update(entity);
+            }
 
             await DbContext.SaveChangesAsync();
 
