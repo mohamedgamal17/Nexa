@@ -1,9 +1,12 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Accounting.Application.Wallets.Commands.Transfer;
 using Nexa.Accounting.Application.Wallets.Services;
+using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Infrastructure.EntityFramework;
 using Nexa.Application.Tests.Extensions;
 
 namespace Nexa.Accounting.Application.Tests.Wallets.Commands
@@ -52,11 +55,16 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Commands
 
         private async Task<Wallet> CreateFakeWallet(string? userId = null , decimal balance = 0)
         {
-            var walletNumber =  WalletNumberGeneratorService.Generate();
+            return await WithScopeAsync(async (sp) =>
+            {
+                var repository = sp.GetRequiredService<IAccountingRepository<Wallet>>();
 
-            var wallet = new Wallet(walletNumber, userId ?? Guid.NewGuid().ToString(), balance);
+                var walletNumber = WalletNumberGeneratorService.Generate();
 
-            return await WalletRepository.InsertAsync(wallet);
+                var wallet = new Wallet(walletNumber, userId ?? Guid.NewGuid().ToString(), balance);
+
+                return await repository.InsertAsync(wallet);
+            });
         }
     }
 }

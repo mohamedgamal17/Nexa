@@ -2,11 +2,8 @@
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Nexa.Application.Tests.Services;
-using System.Reflection;
 using MediatR;
-
 namespace Nexa.Application.Tests
 {
     [SetUpFixture]
@@ -63,6 +60,11 @@ namespace Nexa.Application.Tests
             return serviceProvider;
         }
 
+        protected async Task<TResult> WithScopeAsync<TResult>(Func<IServiceProvider , Task<TResult>> func)
+        {
+            using var scope = ServiceProvider.CreateScope();
 
+            return await func(scope.ServiceProvider);
+        }
     }
 }
