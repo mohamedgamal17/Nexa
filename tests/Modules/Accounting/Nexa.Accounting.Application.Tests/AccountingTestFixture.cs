@@ -5,19 +5,19 @@ using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
-using Nexa.Accounting.Infrastructure.EntityFramework;
 using Nexa.Application.Tests;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Respawn.Graph;
 using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Application.Tests.Fakers;
+using MassTransit.Testing;
 namespace Nexa.Accounting.Application.Tests
 {
-    [TestFixture]
-    public class AccountingTestFixture : TestFixture
-    {
 
+    public  class AccountingTestFixture : TestFixture
+    {
+        protected ITestHarness TestHarness { get; private set; } = null!;
         protected override Task SetupAsync(IServiceCollection services, IConfiguration configuration)
         {
             services.InstallModule<AccountingApplicationTestModuleInstaller>(configuration);
@@ -25,10 +25,13 @@ namespace Nexa.Accounting.Application.Tests
         }
         protected override async Task InitializeAsync(IServiceProvider services)
         {
+            TestHarness = services.GetTestHarness();
             await ResetSqlDb(services);
             await services.RunModulesBootstrapperAsync();
             await SeedData(services);
         }
+
+      
         public async Task SeedData(IServiceProvider services)
         {
             var wallets =  await SeedWallets(services);
@@ -111,7 +114,7 @@ namespace Nexa.Accounting.Application.Tests
         }
         protected override async Task ShutdownAsync(IServiceProvider services)
         {
-           // await ResetSqlDb(services);
+            await ResetSqlDb(services);
         }
 
         protected async Task ResetSqlDb(IServiceProvider services)
