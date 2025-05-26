@@ -2,6 +2,8 @@
 {
     public static class CustomerTableConstants
     {
+        public const string TableName = "Customers";
+
         public const int IdLength = 256;
 
         public const int FirstNameLength = 256;
