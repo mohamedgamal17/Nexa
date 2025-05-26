@@ -21,7 +21,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 Gender = view.Gender,
                 Address = new AddressDto
                 {
-                    Id = view.Address.Id,
                     Country = view.Address.Country,
                     City = view.Address.City,
                     State = view.Address.State,

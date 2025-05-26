@@ -39,11 +39,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.OwnsOne(x => x.Address, navigationBuilder =>
             {
-                navigationBuilder.ToTable(AddressTableConstants.TableName);
-
-                navigationBuilder.HasKey(x => x.Id);
-               
-                navigationBuilder.Property(x => x.Id).HasMaxLength(AddressTableConstants.IdLength);
 
                 navigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
 
@@ -62,7 +57,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.HasIndex(x => x.UserId);
 
-            builder.Navigation(x => x.Address).AutoInclude();
         }
     }
 }

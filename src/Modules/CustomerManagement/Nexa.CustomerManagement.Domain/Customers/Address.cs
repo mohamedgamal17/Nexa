@@ -1,8 +1,6 @@
-﻿using Nexa.BuildingBlocks.Domain;
-
-namespace Nexa.CustomerManagement.Domain.Customers
+﻿namespace Nexa.CustomerManagement.Domain.Customers
 {
-    public class Address : BaseEntity
+    public class Address 
     {
         public string Country { get; set; }
         public string City { get; set; }

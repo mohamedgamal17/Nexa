@@ -29,6 +29,13 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
+                    Address_Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Address_City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address_State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address_StreetLine1 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Address_StreetLine2 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Address_PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Address_ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     SocialSecurityNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     SocialInsuranceNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     NationalIdentityNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -37,32 +44,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                schema: "CustomerManagement",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    StreetLine1 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    StreetLine2 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Customers_Id",
-                        column: x => x.Id,
-                        principalSchema: "CustomerManagement",
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -75,10 +56,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses",
-                schema: "CustomerManagement");
-
             migrationBuilder.DropTable(
                 name: "Customers",
                 schema: "CustomerManagement");

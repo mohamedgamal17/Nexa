@@ -4,6 +4,7 @@ using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Microsoft.EntityFrameworkCore;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Infrastructure.EntityFramework;
+using Nexa.CustomerManagement.Infrastructure.EntityFramework.Repositories;
 namespace Nexa.CustomerManagement.Infrastructure.Installers
 {
     public class EntityFrameworkServiceInstaller : IServiceInstaller
@@ -18,7 +19,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Installers
 
             });
 
-            services.AddTransient(typeof(ICustomerManagementRepository<>), typeof(ICustomerManagementRepository<>));
+            services.AddTransient(typeof(ICustomerManagementRepository<>), typeof(CustomerManagementRepository<>));
         }
     }
 }

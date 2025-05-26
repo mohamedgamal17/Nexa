@@ -2,7 +2,7 @@
 
 namespace Nexa.CustomerManagement.Application.Customers.Dtos
 {
-    public class AddressDto : EntityDto
+    public class AddressDto 
     {
         public string Country { get; set; }
         public string City { get; set; }

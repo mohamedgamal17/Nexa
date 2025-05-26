@@ -12,7 +12,7 @@ using Nexa.CustomerManagement.Infrastructure.EntityFramework;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(CustomerManagementDbContext))]
-    [Migration("20250526161714_InitialMigration")]
+    [Migration("20250526182133_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -99,8 +99,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 {
                     b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.Address", "Address", b1 =>
                         {
-                            b1.Property<string>("Id")
-                                .HasMaxLength(256)
+                            b1.Property<string>("CustomerId")
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<string>("City")
@@ -135,12 +134,12 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)");
 
-                            b1.HasKey("Id");
+                            b1.HasKey("CustomerId");
 
-                            b1.ToTable("Addresses", "CustomerManagement");
+                            b1.ToTable("Customers", "CustomerManagement");
 
                             b1.WithOwner()
-                                .HasForeignKey("Id");
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.Navigation("Address")
