@@ -39,9 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement", "Custo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Domain", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj", "{B1D3E642-C93B-49C3-810B-4C381900FDCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Application", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Application\Nexa.CustomerManagement.Application.csproj", "{CE0A1677-BAA3-4643-90B5-722ABC7A6732}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Application", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Application\Nexa.CustomerManagement.Application.csproj", "{CE0A1677-BAA3-4643-90B5-722ABC7A6732}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Infrastructure", "src\Modules\CustomerManagement\Nex.CustomerManagement.Infrastructure\Nexa.CustomerManagement.Infrastructure.csproj", "{B681361A-F83F-4169-9503-4954601DB076}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Infrastructure", "src\Modules\CustomerManagement\Nex.CustomerManagement.Infrastructure\Nexa.CustomerManagement.Infrastructure.csproj", "{B681361A-F83F-4169-9503-4954601DB076}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement", "CustomerManagement", "{E563F3D0-46D5-4119-AEB9-F2C720567835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Application.Tests", "tests\Modules\CustomerManagement\Nexa.CustomerManagement.Application.Tests\Nexa.CustomerManagement.Application.Tests.csproj", "{146AEF7F-5E75-400B-BD35-B149D32A84D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,10 @@ Global
 		{B681361A-F83F-4169-9503-4954601DB076}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B681361A-F83F-4169-9503-4954601DB076}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B681361A-F83F-4169-9503-4954601DB076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +128,8 @@ Global
 		{B1D3E642-C93B-49C3-810B-4C381900FDCD} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 		{CE0A1677-BAA3-4643-90B5-722ABC7A6732} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 		{B681361A-F83F-4169-9503-4954601DB076} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
+		{E563F3D0-46D5-4119-AEB9-F2C720567835} = {238191CF-DF41-44D5-A824-70EF58D03A27}
+		{146AEF7F-5E75-400B-BD35-B149D32A84D7} = {E563F3D0-46D5-4119-AEB9-F2C720567835}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
