@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace Nex.CustomerManagement.Infrastructure
+namespace Nexa.CustomerManagement.Infrastructure
 {
     public class CustomerManagementDbConstants
     {
