@@ -17,7 +17,7 @@ namespace Vogel.BuildingBlocks.EntityFramework.Repositories
 
         public IQueryable<TEntity> AsQuerable()
         {
-            return DbContext.Set<TEntity>().AsNoTracking().AsQueryable();
+            return DbContext.Set<TEntity>().AsQueryable();
         }
 
         public async Task DeleteAsync(TEntity entity)
