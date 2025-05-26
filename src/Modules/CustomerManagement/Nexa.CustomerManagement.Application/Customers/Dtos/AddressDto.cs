@@ -1,6 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Domain.Dtos;
 
-namespace Nexa.CustomerManagement.Applicaiton.Customers.Dtos
+namespace Nexa.CustomerManagement.Application.Customers.Dtos
 {
     public class AddressDto : EntityDto
     {

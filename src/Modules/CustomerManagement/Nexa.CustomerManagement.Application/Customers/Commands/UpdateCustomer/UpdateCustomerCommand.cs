@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.CustomerManagement.Applicaiton.Customers.Commands.CreateCustomer;
-using Nexa.CustomerManagement.Applicaiton.Customers.Dtos;
-using Nexa.CustomerManagement.Applicaiton.Customers.Models;
+using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
+using Nexa.CustomerManagement.Application.Customers.Dtos;
+using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Domain.Customers;
 
-namespace Nexa.CustomerManagement.Applicaiton.Customers.Commands.UpdateCustomer
+namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 {
     [Authorize]
     public class UpdateCustomerCommand : ICommand<CustomerDto>

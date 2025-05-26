@@ -39,9 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement", "Custo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Domain", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj", "{B1D3E642-C93B-49C3-810B-4C381900FDCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Applicaiton", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Applicaiton\Nexa.CustomerManagement.Applicaiton.csproj", "{CE0A1677-BAA3-4643-90B5-722ABC7A6732}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Application", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Application\Nexa.CustomerManagement.Application.csproj", "{CE0A1677-BAA3-4643-90B5-722ABC7A6732}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nex.CustomerManagement.Infrastructure", "src\Modules\CustomerManagement\Nex.CustomerManagement.Infrastructure\Nex.CustomerManagement.Infrastructure.csproj", "{B681361A-F83F-4169-9503-4954601DB076}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Infrastructure", "src\Modules\CustomerManagement\Nex.CustomerManagement.Infrastructure\Nexa.CustomerManagement.Infrastructure.csproj", "{B681361A-F83F-4169-9503-4954601DB076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

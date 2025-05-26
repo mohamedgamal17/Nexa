@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.CustomerManagement.Applicaiton.Customers.Dtos;
-using Nexa.CustomerManagement.Applicaiton.Customers.Models;
+using Nexa.CustomerManagement.Application.Customers.Dtos;
+using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Domain.Customers;
-namespace Nexa.CustomerManagement.Applicaiton.Customers.Commands.CreateCustomer
+namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
     [Authorize]
     public class CreateCustomerCommand : ICommand<CustomerDto>

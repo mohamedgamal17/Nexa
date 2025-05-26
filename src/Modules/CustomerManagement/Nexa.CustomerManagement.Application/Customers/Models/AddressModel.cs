@@ -1,4 +1,4 @@
-﻿namespace Nexa.CustomerManagement.Applicaiton.Customers.Models
+﻿namespace Nexa.CustomerManagement.Application.Customers.Models
 {
     public class AddressModel
     {

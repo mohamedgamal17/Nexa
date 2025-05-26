@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-namespace Nexa.CustomerManagement.Applicaiton
+namespace Nexa.CustomerManagement.Application
 {
     public class AssemblyReference
     {
