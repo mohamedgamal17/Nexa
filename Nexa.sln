@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement", "CustomerManagement", "{8D348BF8-0764-4194-A3A5-335FE82C62DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Domain", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj", "{B1D3E642-C93B-49C3-810B-4C381900FDCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Domain", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj", "{B1D3E642-C93B-49C3-810B-4C381900FDCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Applicaiton", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Applicaiton\Nexa.CustomerManagement.Applicaiton.csproj", "{CE0A1677-BAA3-4643-90B5-722ABC7A6732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{B1D3E642-C93B-49C3-810B-4C381900FDCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1D3E642-C93B-49C3-810B-4C381900FDCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1D3E642-C93B-49C3-810B-4C381900FDCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0A1677-BAA3-4643-90B5-722ABC7A6732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0A1677-BAA3-4643-90B5-722ABC7A6732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0A1677-BAA3-4643-90B5-722ABC7A6732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0A1677-BAA3-4643-90B5-722ABC7A6732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{0D895251-67BA-42EE-830C-BEA9A1071A4F} = {10976AF3-C84D-44CB-A980-E74E3EEA9420}
 		{8D348BF8-0764-4194-A3A5-335FE82C62DF} = {4EEF29AB-B9FB-4595-9D0E-473265C15F51}
 		{B1D3E642-C93B-49C3-810B-4C381900FDCD} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
+		{CE0A1677-BAA3-4643-90B5-722ABC7A6732} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
