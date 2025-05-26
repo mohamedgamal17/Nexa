@@ -7,6 +7,8 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
+            builder.ToTable(CustomerTableConstants.TableName);
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasMaxLength(CustomerTableConstants.IdLength);
@@ -35,7 +37,28 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
             builder.Property(x => x.NationalIdentityNumber).IsRequired(false)
               .HasMaxLength(CustomerTableConstants.NationalIdentityNumberLength);
 
-            builder.HasOne(x => x.Address).WithOne();
+            builder.OwnsOne(x => x.Address, navigationBuilder =>
+            {
+                navigationBuilder.ToTable(AddressTableConstants.TableName);
+
+                navigationBuilder.HasKey(x => x.Id);
+               
+                navigationBuilder.Property(x => x.Id).HasMaxLength(AddressTableConstants.IdLength);
+
+                navigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
+
+                navigationBuilder.Property(x => x.City).HasMaxLength(AddressTableConstants.CityLength);
+
+                navigationBuilder.Property(x => x.State).HasMaxLength(AddressTableConstants.StateLength);
+
+                navigationBuilder.Property(x => x.StreetLine1).HasMaxLength(AddressTableConstants.StreetLineLength);
+
+                navigationBuilder.Property(x => x.StreetLine2).IsRequired(false).HasMaxLength(AddressTableConstants.StreetLineLength);
+
+                navigationBuilder.Property(x => x.PostalCode).IsRequired(false).HasMaxLength(AddressTableConstants.PostalCodeLength);
+
+                navigationBuilder.Property(x => x.ZipCode).IsRequired(false).HasMaxLength(AddressTableConstants.ZipCodeLength);
+            });
 
             builder.HasIndex(x => x.UserId);
 
