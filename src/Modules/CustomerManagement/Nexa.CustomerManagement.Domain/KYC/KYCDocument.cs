@@ -62,6 +62,8 @@ namespace Nexa.CustomerManagement.Domain.KYC
 
             VerifiedAt = verifiedAt;
 
+            IsActive = false;
+
             Status = KYCStatus.Approved;
         }
 
@@ -76,6 +78,8 @@ namespace Nexa.CustomerManagement.Domain.KYC
             RejectedAt = rejectedAt;
 
             Status = KYCStatus.Rejected;
+
+            IsActive = false;
         }
 
     }
