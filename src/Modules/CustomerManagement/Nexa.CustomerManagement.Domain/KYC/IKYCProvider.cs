@@ -1,0 +1,15 @@
+﻿namespace Nexa.CustomerManagement.Domain.KYC
+{
+    public interface IKYCProvider
+    {
+        Task<KYCClient> CreateClientAsync(KYCClientRequest request , CancellationToken cancellationToken = default);
+        Task<KYCClient> UpdateClientAsync(string clientId, CancellationToken cancellationToken = default);
+        Task<KYCDocument> CreateDocumentAsync(string clientId, KYCDocumentRequest request, CancellationToken cancellationToken = default);
+        Task<KYCDocument> GetDocumentAsync(string documentId, CancellationToken cancellationToken = default);
+        Task DeleteDocumentAsync(string documentId, CancellationToken cancellationToken = default);
+        Task<KYCDocumentAttachement> UploadDocumentAttachementAsync(string clientId, string documentId, KYCDocumentAttachmentRequest request, CancellationToken cancellationToken = default);
+        Task<KYCDocumentAttachement> DownloadDocumentAttachementAsync(string clientId, string documentId, string attachmentId);
+        Task<KYCCheck> CreateCheckAsync(KYCCheckRequest request, CancellationToken cancellationToken = default);
+        Task<KYCCheck> GetCheckAsync(string checkId, CancellationToken cancellationToken = default);
+    }
+}
