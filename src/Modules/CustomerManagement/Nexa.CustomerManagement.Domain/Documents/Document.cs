@@ -1,20 +1,20 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 
-namespace Nexa.CustomerManagement.Domain.KYC
+namespace Nexa.CustomerManagement.Domain.Documents
 {
-    public class KYCDocument : AggregateRoot
-    { 
+    public class Document : AggregateRoot
+    {
         public string CustomerId { get; set; }
         public string UserId { get; set; }
         public string KYCExternalId { get; set; }
         public string IssuingCountry { get; set; }
-        public KYCDocumentType Type { get; set; }
+        public DocumentType Type { get; set; }
         public bool IsActive { get; set; }
-        public KYCStatus Status { get; private set; }
+        public Status Status { get; private set; }
         public DateTime? VerifiedAt { get; private set; }
         public DateTime? RejectedAt { get; private set; }
-        public List<KYCDocumentAttachment> Attachments { get; private set; } = new List<KYCDocumentAttachment>();
-        public KYCDocument(string customerId, string userId,string issuingCountry ,string kYCExternalId, KYCDocumentType type)
+        public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
+        public Document(string customerId, string userId, string issuingCountry, string kYCExternalId, DocumentType type)
         {
             CustomerId = customerId;
             UserId = userId;
@@ -22,11 +22,11 @@ namespace Nexa.CustomerManagement.Domain.KYC
             KYCExternalId = kYCExternalId;
             Type = type;
         }
-        public void AddAttachment(KYCDocumentAttachment attachment)
+        public void AddAttachment(DocumentAttachment attachment)
         {
             var oldAttach = Attachments.SingleOrDefault(x => x.Side == attachment.Side);
 
-            if(oldAttach != null)
+            if (oldAttach != null)
             {
                 Attachments.Remove(oldAttach);
             }
@@ -36,7 +36,7 @@ namespace Nexa.CustomerManagement.Domain.KYC
 
         public void Process()
         {
-            if(Status != KYCStatus.Pending || Status != KYCStatus.Rejected)
+            if (Status != Status.Pending || Status != Status.Rejected)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot start processing.");
             }
@@ -52,12 +52,12 @@ namespace Nexa.CustomerManagement.Domain.KYC
 
             IsActive = true;
 
-            Status = KYCStatus.Processing;
+            Status = Status.Processing;
         }
 
         public void Approve(DateTime verifiedAt)
         {
-            if(Status != KYCStatus.Pending)
+            if (Status != Status.Pending)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot Approve.");
             }
@@ -66,20 +66,20 @@ namespace Nexa.CustomerManagement.Domain.KYC
 
             IsActive = false;
 
-            Status = KYCStatus.Approved;
+            Status = Status.Approved;
         }
 
 
         public void Reject(DateTime rejectedAt)
         {
-            if (Status != KYCStatus.Rejected)
+            if (Status != Status.Rejected)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot Approve.");
             }
 
             RejectedAt = rejectedAt;
 
-            Status = KYCStatus.Rejected;
+            Status = Status.Rejected;
 
             IsActive = false;
         }

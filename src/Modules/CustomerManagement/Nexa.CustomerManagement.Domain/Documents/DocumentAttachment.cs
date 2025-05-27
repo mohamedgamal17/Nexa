@@ -1,8 +1,8 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 
-namespace Nexa.CustomerManagement.Domain.KYC
+namespace Nexa.CustomerManagement.Domain.Documents
 {
-    public class KYCDocumentAttachment : BaseEntity
+    public class DocumentAttachment : BaseEntity
     {
         public string FileName { get; set; }
         public long Size { get; set; }
@@ -10,7 +10,7 @@ namespace Nexa.CustomerManagement.Domain.KYC
         public DocumentSide Side { get; set; }
         public string ExternalId { get; set; }
 
-        public KYCDocumentAttachment(string fileName, long size, string contentType, string externalId)
+        public DocumentAttachment(string fileName, long size, string contentType, string externalId)
         {
             FileName = fileName;
             Size = size;

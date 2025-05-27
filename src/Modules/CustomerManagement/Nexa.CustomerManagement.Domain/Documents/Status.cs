@@ -1,6 +1,6 @@
-﻿namespace Nexa.CustomerManagement.Domain.KYC
+﻿namespace Nexa.CustomerManagement.Domain.Documents
 {
-    public enum KYCStatus
+    public enum Status
     {
         Pending,
         Processing,

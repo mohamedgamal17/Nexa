@@ -1,9 +1,9 @@
 ﻿using Nexa.BuildingBlocks.Domain.Dtos;
-using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Domain.Documents;
 
-namespace Nexa.CustomerManagement.Application.KYC.Dtos
+namespace Nexa.CustomerManagement.Application.Documents.Dtos
 {
-    public class KYCDocumentAttachementDto : EntityDto
+    public class DocumentAttachementDto : EntityDto
     {
         public string FileName { get; set; }
         public long Size { get; set; }
