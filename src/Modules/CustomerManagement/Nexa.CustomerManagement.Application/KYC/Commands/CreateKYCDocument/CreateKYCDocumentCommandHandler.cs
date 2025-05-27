@@ -51,7 +51,7 @@ namespace Nexa.CustomerManagement.Application.KYC.Commands.CreateKYCDocument
 
             string externalId = Guid.NewGuid().ToString(); // will be replaced with real exterenal id for 3rd party provider
 
-            var kycDocument = new KYCDocument(currentCustomer.Id, userId, externalId, request.Type);
+            var kycDocument = new KYCDocument(currentCustomer.Id, userId, request.IssuingCountry,externalId ,request.Type);
 
             await _kYCDocumentRepository.InsertAsync(kycDocument);
 

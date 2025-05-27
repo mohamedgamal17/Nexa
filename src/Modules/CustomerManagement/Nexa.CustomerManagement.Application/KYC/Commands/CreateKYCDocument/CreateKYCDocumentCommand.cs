@@ -8,5 +8,7 @@ namespace Nexa.CustomerManagement.Application.KYC.Commands.CreateKYCDocument
     public class CreateKYCDocumentCommand  : ICommand<KYCDocumentDto>
     {
         public KYCDocumentType Type { get; set; }
+
+        public string IssuingCountry { get; set; }
     }
 }

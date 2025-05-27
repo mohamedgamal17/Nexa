@@ -6,17 +6,19 @@ namespace Nexa.CustomerManagement.Domain.KYC
     { 
         public string CustomerId { get; set; }
         public string UserId { get; set; }
-        public string? KYCExternalId { get; set; }
+        public string KYCExternalId { get; set; }
+        public string IssuingCountry { get; set; }
         public KYCDocumentType Type { get; set; }
         public bool IsActive { get; set; }
         public KYCStatus Status { get; private set; }
         public DateTime? VerifiedAt { get; private set; }
         public DateTime? RejectedAt { get; private set; }
         public List<KYCDocumentAttachment> Attachments { get; private set; } = new List<KYCDocumentAttachment>();
-        public KYCDocument(string customerId, string userId, string? kYCExternalId, KYCDocumentType type)
+        public KYCDocument(string customerId, string userId,string issuingCountry ,string kYCExternalId, KYCDocumentType type)
         {
             CustomerId = customerId;
             UserId = userId;
+            IssuingCountry = issuingCountry;
             KYCExternalId = kYCExternalId;
             Type = type;
         }
