@@ -6,7 +6,6 @@ namespace Nexa.CustomerManagement.Domain.KYC
     {
         public string Id { get; set; }
         public string FileName { get; set; }
-        public string Data { get; set; }
         public DocumentSide Side { get; set; }
         public string DownloadLink { get; set; }
         public string ContentType { get; set; }

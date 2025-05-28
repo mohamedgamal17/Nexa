@@ -3,7 +3,8 @@
     public enum KYCCheckStatus
     {
         Pending,
-        Processing,
-        Completed
+    
+        Completed,
+        Faild,
     }
 }
