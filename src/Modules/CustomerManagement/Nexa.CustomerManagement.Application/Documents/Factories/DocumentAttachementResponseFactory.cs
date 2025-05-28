@@ -11,7 +11,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Factories
             var dto = new DocumentAttachementDto
             {
                 FileName = view.FileName,
-                ExternalId = view.ExternalId,
+                ExternalId = view.KYCExternalId,
                 Side = view.Side,
                 Size = view.Size,
                 ContentType = view.ContentType,

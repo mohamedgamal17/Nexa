@@ -6,6 +6,10 @@
 
         public const int IdLength = 256;
 
+        public const int UserIdLength = 256;
+
+        public const int KYCExternalIdLength = 256;
+
         public const int FirstNameLength = 256;
 
         public const int MiddleNameLength = 256;

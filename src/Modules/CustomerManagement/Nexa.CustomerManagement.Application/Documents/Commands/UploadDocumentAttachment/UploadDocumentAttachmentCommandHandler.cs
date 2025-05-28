@@ -60,7 +60,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
             var kycRequest = PrepareKYCDocumentAttachement(fileName,request);
 
-            var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.ExternalId, kycRequest);
+            var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.KYCExternalId, kycRequest);
 
             var attachment = new DocumentAttachment(kycResponse.Id,fileName, kycResponse.Size, kycResponse.ContentType);
 

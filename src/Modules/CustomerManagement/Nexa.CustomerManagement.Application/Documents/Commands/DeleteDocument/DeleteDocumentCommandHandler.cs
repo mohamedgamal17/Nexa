@@ -48,7 +48,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
                 return new Result<Unit>(new BusinessLogicException("Cannot delete approved kyc document."));
             }
 
-            await _kycProvider.DeleteDocumentAsync(document.ExternalId);
+            await _kycProvider.DeleteDocumentAsync(document.KYCExternalId);
 
             await _documentRepository.DeleteAsync(document);
 

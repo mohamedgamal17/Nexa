@@ -54,7 +54,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 
         private void PrepareCustomerEntity(Customer customer, string userId,string externalId  ,CreateCustomerCommand command)
         {
-            customer.ExternalId = externalId;
+            customer.KYCExternalId = externalId;
             customer.UserId = userId;
             customer.FirstName = command.FirstName;
             customer.LastName = command.LastName;
@@ -64,10 +64,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
             customer.PhoneNumber = command.PhoneNumber;
             customer.EmailAddress = command.EmailAddress;
             customer.Gender = command.Gender;
-            customer.SocialSecurityNumber = command.SocialSecurityNumber;
-            customer.SocialInsuranceNumber = command.SocialInsuranceNumber;
-            customer.TaxIdentificationNumber = command.TaxIdentificationNumber;
-            customer.NationalIdentityNumber = command.NationalIdentityNumber;
 
             if (command.Address != null)
             {

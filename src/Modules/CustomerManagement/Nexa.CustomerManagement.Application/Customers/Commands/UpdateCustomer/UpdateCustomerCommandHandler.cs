@@ -37,7 +37,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 
             var kycRequest = PrepareKYCClientRequest(request);
 
-            var kycResponse = await _kycProvider.UpdateClientAsync(customer.ExternalId, kycRequest);
+            var kycResponse = await _kycProvider.UpdateClientAsync(customer.KYCExternalId, kycRequest);
 
             PrepareCustomerEntity(customer, request);
 
@@ -58,10 +58,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
             customer.PhoneNumber = command.PhoneNumber;
             customer.EmailAddress = command.EmailAddress;
             customer.Gender = command.Gender;
-            customer.SocialSecurityNumber = command.SocialSecurityNumber;
-            customer.SocialInsuranceNumber = command.SocialInsuranceNumber;
-            customer.TaxIdentificationNumber = command.TaxIdentificationNumber;
-            customer.NationalIdentityNumber = command.NationalIdentityNumber;
+
 
             if (command.Address != null)
             {

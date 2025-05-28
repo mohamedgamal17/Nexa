@@ -52,7 +52,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
                 return new Result<DocumentDto>(new BusinessLogicException("Current user has already approved kyc document."));
             }
 
-            var kycReqeust = PrepareKYCDocumentRequest(currentCustomer.ExternalId, request);
+            var kycReqeust = PrepareKYCDocumentRequest(currentCustomer.KYCExternalId, request);
 
             var kycResponse = await _kycProvider.CreateDocumentAsync(kycReqeust);
 
