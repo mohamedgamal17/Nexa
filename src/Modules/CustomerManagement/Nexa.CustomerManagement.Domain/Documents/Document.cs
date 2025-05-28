@@ -6,7 +6,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
     {
         public string CustomerId { get; set; }
         public string UserId { get; set; }
-        public string KYCExternalId { get; set; }
+        public string ExternalId { get; set; }
         public string IssuingCountry { get; set; }
         public DocumentType Type { get; set; }
         public bool IsActive { get; set; }
@@ -14,12 +14,12 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public DateTime? VerifiedAt { get; private set; }
         public DateTime? RejectedAt { get; private set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
-        public Document(string customerId, string userId, string issuingCountry, string kYCExternalId, DocumentType type)
+        public Document(string customerId, string userId, string issuingCountry, string externalId, DocumentType type)
         {
             CustomerId = customerId;
             UserId = userId;
             IssuingCountry = issuingCountry;
-            KYCExternalId = kYCExternalId;
+            this.ExternalId = externalId;
             Type = type;
         }
         public void AddAttachment(DocumentAttachment attachment)
