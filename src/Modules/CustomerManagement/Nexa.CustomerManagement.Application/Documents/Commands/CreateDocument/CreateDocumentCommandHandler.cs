@@ -7,7 +7,7 @@ using Nexa.CustomerManagement.Application.Documents.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
-
+using Nexa.CustomerManagement.Domain.KYC;
 namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
 {
     public class CreateDocumentCommandHandler : IApplicationRequestHandler<CreateDocumentCommand, DocumentDto>
@@ -16,13 +16,15 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
         private readonly ICustomerManagementRepository<Document> _documentRepository;
         private readonly ISecurityContext _securityContext;
         private readonly IDocumentResponseFactory _documentResponseFactory;
+        private readonly IKYCProvider _kycProvider;
 
-        public CreateDocumentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext, IDocumentResponseFactory documentResponseFactory)
+        public CreateDocumentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext, IDocumentResponseFactory documentResponseFactory, IKYCProvider kycProvider)
         {
             _customerRepository = customerRepository;
             _documentRepository = documentRepository;
             _securityContext = securityContext;
             _documentResponseFactory = documentResponseFactory;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<DocumentDto>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
@@ -50,15 +52,30 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
                 return new Result<DocumentDto>(new BusinessLogicException("Current user has already approved kyc document."));
             }
 
-            string externalId = Guid.NewGuid().ToString(); // will be replaced with real exterenal id for 3rd party provider
+            var kycReqeust = PrepareKYCDocumentRequest(currentCustomer.ExternalId, request);
 
-            var kycDocument = new Document(currentCustomer.Id, userId, request.IssuingCountry, externalId, request.Type);
+            var kycResponse = await _kycProvider.CreateDocumentAsync(kycReqeust);
+
+            var kycDocument = new Document(currentCustomer.Id, userId, request.IssuingCountry, kycResponse.Id, request.Type);
 
             await _documentRepository.InsertAsync(kycDocument);
 
             var response = await _documentRepository.SingleAsync(x => x.Id == kycDocument.Id);
 
             return await _documentResponseFactory.PrepareDto(response);
+        }
+
+        private KYCDocumentRequest PrepareKYCDocumentRequest(string clientId,CreateDocumentCommand command)
+        {
+            var request = new KYCDocumentRequest
+            {
+                ClientId = clientId,
+                IssuingCountry = command.IssuingCountry,
+                Type = command.Type
+
+            };
+
+            return request;
         }
     }
 }

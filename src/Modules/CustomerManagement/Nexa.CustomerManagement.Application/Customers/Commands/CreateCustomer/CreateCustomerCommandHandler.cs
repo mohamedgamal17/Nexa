@@ -7,6 +7,7 @@ using Nexa.CustomerManagement.Application.Customers.Dtos;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.KYC;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommandHandler : IApplicationRequestHandler<CreateCustomerCommand, CustomerDto>
@@ -14,12 +15,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerResponseFactory _customerResponseFactory;
+        private readonly IKYCProvider _kycProvider;
 
-        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory)
+        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
         {
             _customerRepository = customerRepository;
             _securityContext = securityContext;
             _customerResponseFactory = customerResponseFactory;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -33,10 +36,13 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 return new Result<CustomerDto>(new BusinessLogicException("User customer application already created."));
             }
 
+            var kycRequest = PrepareKYCClientRequest(request);
+
+            var kycClient = await _kycProvider.CreateClientAsync(kycRequest); 
+
             var customer = new Customer();
 
-            PrepareCustomerEntity(customer, userId, request);
-
+            PrepareCustomerEntity(customer, userId, kycClient.Id ,request);
 
             await _customerRepository.InsertAsync(customer);
 
@@ -46,8 +52,9 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         }
 
 
-        private void PrepareCustomerEntity(Customer customer, string userId, CreateCustomerCommand command)
+        private void PrepareCustomerEntity(Customer customer, string userId,string externalId  ,CreateCustomerCommand command)
         {
+            customer.ExternalId = externalId;
             customer.UserId = userId;
             customer.FirstName = command.FirstName;
             customer.LastName = command.LastName;
@@ -75,6 +82,23 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                     ZipCode = command.Address.ZipCode
                 };
             }
+        }
+
+        private KYCClientRequest PrepareKYCClientRequest(CreateCustomerCommand command)
+        {
+            var request = new KYCClientRequest
+            {
+                FirstName = command.FirstName,
+                MiddleName = command.MiddleName,
+                LastName = command.LastName,
+                PhoneNumber = command.PhoneNumber,
+                EmailAddress = command.EmailAddress,
+                BirthDate = command.BirthDate,
+                Gender = command.Gender,
+                Nationality = command.Nationality
+            };
+
+            return request;
         }
 
 

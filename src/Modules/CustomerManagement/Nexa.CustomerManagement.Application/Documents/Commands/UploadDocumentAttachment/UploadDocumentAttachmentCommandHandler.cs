@@ -7,6 +7,7 @@ using Nexa.CustomerManagement.Application.Documents.Factories;
 using Nexa.CustomerManagement.Application.Helpers;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.KYC;
 
 namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
 {
@@ -16,13 +17,14 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
         private readonly ICustomerManagementRepository<DocumentAttachment> _documentAttachmentRepository;
         private readonly IDocumentAttachementResponseFactory _documentAttachementResponseFactory;
         private readonly ISecurityContext _securityContext;
-
-        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Document> documentRepository, ICustomerManagementRepository<DocumentAttachment> documentAttachmentRepository, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext)
+        private readonly IKYCProvider _kycProvider;
+        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Document> documentRepository, ICustomerManagementRepository<DocumentAttachment> documentAttachmentRepository, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
         {
             _documentRepository = documentRepository;
             _documentAttachmentRepository = documentAttachmentRepository;
             _documentAttachementResponseFactory = documentAttachementResponseFactory;
             _securityContext = securityContext;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<DocumentAttachementDto>> Handle(UploadDocumentAttachmentCommand request, CancellationToken cancellationToken)
@@ -52,23 +54,21 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
             {
                 return new Result<DocumentAttachementDto>(new BusinessLogicException("Cannot delete approved kyc document."));
             }
-
             string extensions = Base64ImageHelper.GetImageExtension(request.Data)!;
 
             string fileName = $"{DateTime.Now.Ticks}.{extensions}";
 
-            var size = request.Data.Length;
+            var kycRequest = PrepareKYCDocumentAttachement(fileName,request);
 
-            var contentType = $"image/${extensions.Replace(".", "")}";
+            var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.ExternalId, kycRequest);
 
-            var attachment = new DocumentAttachment(fileName, size, contentType, Guid.NewGuid().ToString());
+            var attachment = new DocumentAttachment(kycResponse.Id,fileName, kycResponse.Size, kycResponse.ContentType);
 
             document.AddAttachment(attachment);
 
             await _documentRepository.UpdateAsync(document);
 
             var response = await _documentAttachmentRepository.SingleAsync(x => x.Id == document.Id);
-
 
             return await _documentAttachementResponseFactory.PrepareDto(response);
 
@@ -77,6 +77,18 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
         private bool IsDocumentOwner(string userId, Document document)
         {
             return userId == document.Id;
+        }
+
+        private KYCDocumentAttachmentRequest PrepareKYCDocumentAttachement(string fileName,UploadDocumentAttachmentCommand command) 
+        {
+            var request = new KYCDocumentAttachmentRequest
+            {
+                FileName = fileName,
+                Data = command.Data,
+                Side = command.Side
+            };
+
+            return request;
         }
     }
 }

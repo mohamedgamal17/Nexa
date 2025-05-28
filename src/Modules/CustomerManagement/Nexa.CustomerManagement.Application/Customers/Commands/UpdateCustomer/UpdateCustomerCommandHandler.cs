@@ -6,7 +6,7 @@ using Nexa.CustomerManagement.Application.Customers.Dtos;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
-
+using Nexa.CustomerManagement.Domain.KYC;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 {
     public class UpdateCustomerCommandHandler : IApplicationRequestHandler<UpdateCustomerCommand, CustomerDto>
@@ -14,12 +14,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ICustomerResponseFactory _customerResponseFactory;
+        private readonly IKYCProvider _kycProvider;
 
-        public UpdateCustomerCommandHandler(ISecurityContext securityContext, ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory)
+        public UpdateCustomerCommandHandler(ISecurityContext securityContext, ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
         {
             _securityContext = securityContext;
             _customerRepository = customerRepository;
             _customerResponseFactory = customerResponseFactory;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
@@ -33,6 +35,9 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
                 return new Result<CustomerDto>(new EntityNotFoundException("Current user dosen't have customer application"));
             }
 
+            var kycRequest = PrepareKYCClientRequest(request);
+
+            var kycResponse = await _kycProvider.UpdateClientAsync(customer.ExternalId, kycRequest);
 
             PrepareCustomerEntity(customer, request);
 
@@ -71,6 +76,23 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
                     ZipCode = command.Address.ZipCode
                 };
             }
+        }
+
+        private KYCClientRequest PrepareKYCClientRequest(UpdateCustomerCommand command)
+        {
+            var request = new KYCClientRequest
+            {
+                FirstName = command.FirstName,
+                MiddleName = command.MiddleName,
+                LastName = command.LastName,
+                PhoneNumber = command.PhoneNumber,
+                EmailAddress = command.EmailAddress,
+                BirthDate = command.BirthDate,
+                Gender = command.Gender,
+                Nationality = command.Nationality
+            };
+
+            return request;
         }
     }
 }

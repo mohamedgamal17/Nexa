@@ -5,17 +5,19 @@ using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
-
+using Nexa.CustomerManagement.Domain.KYC;
 namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
 {
     public class DeleteDocumentCommandHandler : IApplicationRequestHandler<DeleteDocumentCommand, Unit>
     {
         private readonly ICustomerManagementRepository<Document> _documentRepository;
         private readonly ISecurityContext _securityContext;
-        public DeleteDocumentCommandHandler(ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext)
+        private readonly IKYCProvider _kycProvider;
+        public DeleteDocumentCommandHandler(ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext, IKYCProvider kycProvider)
         {
             _documentRepository = documentRepository;
             _securityContext = securityContext;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<Unit>> Handle(DeleteDocumentCommand request, CancellationToken cancellationToken)
@@ -45,6 +47,8 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
             {
                 return new Result<Unit>(new BusinessLogicException("Cannot delete approved kyc document."));
             }
+
+            await _kycProvider.DeleteDocumentAsync(document.ExternalId);
 
             await _documentRepository.DeleteAsync(document);
 
