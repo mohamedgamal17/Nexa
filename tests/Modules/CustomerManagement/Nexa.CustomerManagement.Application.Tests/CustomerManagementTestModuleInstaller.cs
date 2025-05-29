@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.CustomerManagement.Application.Tests.Fakers;
+using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Infrastructure;
 namespace Nexa.CustomerManagement.Application.Tests
 {
@@ -24,6 +26,8 @@ namespace Nexa.CustomerManagement.Application.Tests
                     inMemoryBusConfig.ConfigureEndpoints(context);
                 });
             });
+
+            services.Replace<IKYCProvider, FakeKYCServiceProvider>();
         }
     }
 }
