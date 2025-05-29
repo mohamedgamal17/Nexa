@@ -9,6 +9,8 @@ namespace Nexa.CustomerManagement.Application.Documents.Dtos
         public string UserId { get; set; }
         public string? KYCExternalId { get; set; }
         public DocumentType Type { get; set; }
+
+        public string IssuingCountry { get; set; }
         public bool IsActive { get; set; }
         public DocumentStatus Status { get; set; }
         public DateTime? VerifiedAt { get; set; }

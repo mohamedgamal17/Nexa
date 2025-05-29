@@ -9,6 +9,6 @@ namespace Nexa.CustomerManagement.Application.Documents.Dtos
         public long Size { get; set; }
         public string ContentType { get; set; }
         public DocumentSide Side { get; set; }
-        public string ExternalId { get; set; }
+        public string KYCExternalId { get; set; }
     }
 }

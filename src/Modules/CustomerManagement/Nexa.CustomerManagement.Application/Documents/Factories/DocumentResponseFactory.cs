@@ -22,6 +22,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Factories
                 UserId = view.UserId,
                 KYCExternalId = view.KYCExternalId,
                 Type = view.Type,
+                IssuingCountry = view.IssuingCountry,
                 Status = view.Status,
                 IsActive = view.IsActive,
                 RejectedAt = view.RejectedAt,
