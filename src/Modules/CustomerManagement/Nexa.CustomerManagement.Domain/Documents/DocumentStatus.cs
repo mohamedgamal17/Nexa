@@ -1,6 +1,6 @@
 ﻿namespace Nexa.CustomerManagement.Domain.Documents
 {
-    public enum Status
+    public enum DocumentStatus
     {
         Pending,
         Processing,

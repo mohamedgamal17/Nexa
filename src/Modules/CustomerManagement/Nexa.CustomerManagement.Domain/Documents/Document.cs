@@ -10,19 +10,33 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public string IssuingCountry { get; set; }
         public DocumentType Type { get; set; }
         public bool IsActive { get; set; }
-        public Status Status { get; private set; }
+        public DocumentStatus Status { get; private set; }
         public DateTime? VerifiedAt { get; private set; }
         public DateTime? RejectedAt { get; private set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
 
         private Document() { }
-        public Document(string customerId, string userId, string issuingCountry, string externalId, DocumentType type)
+        public Document(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type)
         {
             CustomerId = customerId;
             UserId = userId;
             IssuingCountry = issuingCountry;
-            this.KYCExternalId = externalId;
+            KYCExternalId = kycExternalId;
             Type = type;
+        }
+
+        internal Document(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type , bool isActive,DocumentStatus status, DateTime? verifiedAt, DateTime? rejctedAt)
+        {
+            CustomerId = customerId;
+            UserId = userId;
+            IssuingCountry = issuingCountry;
+            KYCExternalId = kycExternalId;
+            Type = type;
+            IsActive = isActive;
+            Status = status;
+            VerifiedAt = verifiedAt;
+            RejectedAt = rejctedAt;
+
         }
         public void AddAttachment(DocumentAttachment attachment)
         {
@@ -38,7 +52,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
         public void Process()
         {
-            if (Status != Status.Pending || Status != Status.Rejected)
+            if (Status != DocumentStatus.Pending || Status != DocumentStatus.Rejected)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot start processing.");
             }
@@ -54,12 +68,12 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
             IsActive = true;
 
-            Status = Status.Processing;
+            Status = DocumentStatus.Processing;
         }
 
         public void Approve(DateTime verifiedAt)
         {
-            if (Status != Status.Pending)
+            if (Status != DocumentStatus.Pending)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot Approve.");
             }
@@ -68,20 +82,20 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
             IsActive = false;
 
-            Status = Status.Approved;
+            Status = DocumentStatus.Approved;
         }
 
 
         public void Reject(DateTime rejectedAt)
         {
-            if (Status != Status.Rejected)
+            if (Status != DocumentStatus.Rejected)
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot Approve.");
             }
 
             RejectedAt = rejectedAt;
 
-            Status = Status.Rejected;
+            Status = DocumentStatus.Rejected;
 
             IsActive = false;
         }

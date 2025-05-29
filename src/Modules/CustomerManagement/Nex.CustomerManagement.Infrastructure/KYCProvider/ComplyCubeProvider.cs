@@ -107,7 +107,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
             var apiRequest = new ImageRequest
             {
-                data = request.Data,
+                data = await ConvertStreamToBase64(request.Data),
                 fileName = request.FileName
             };
 
@@ -234,6 +234,16 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             };
 
             return response;
+        }
+
+        private async Task<string> ConvertStreamToBase64(Stream stream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream);
+                byte[] imageBytes = memoryStream.ToArray();
+                return Convert.ToBase64String(imageBytes);
+            }
         }
     }
 }

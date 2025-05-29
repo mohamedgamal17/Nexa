@@ -43,7 +43,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
                 return new Result<Unit>(new BusinessLogicException("Cannot delete active processing kyc document."));
             }
 
-            if (document.Status == Status.Approved)
+            if (document.Status == DocumentStatus.Approved)
             {
                 return new Result<Unit>(new BusinessLogicException("Cannot delete approved kyc document."));
             }
@@ -57,7 +57,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
 
         private bool IsDocumentOwner(string userId, Document kYCDocument)
         {
-            return userId == kYCDocument.Id;
+            return userId == kYCDocument.UserId;
         }
     }
 }

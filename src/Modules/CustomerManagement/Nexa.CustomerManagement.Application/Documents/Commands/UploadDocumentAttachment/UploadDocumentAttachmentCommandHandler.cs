@@ -50,11 +50,11 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
                 return new Result<DocumentAttachementDto>(new BusinessLogicException("Cannot delete active processing kyc document."));
             }
 
-            if (document.Status == Status.Approved)
+            if (document.Status == DocumentStatus.Approved)
             {
                 return new Result<DocumentAttachementDto>(new BusinessLogicException("Cannot delete approved kyc document."));
             }
-            string extensions = Base64ImageHelper.GetImageExtension(request.Data)!;
+            string extensions = request.Data.FileName.Split(".")[1];
 
             string fileName = $"{DateTime.Now.Ticks}.{extensions}";
 
@@ -68,7 +68,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
             await _documentRepository.UpdateAsync(document);
 
-            var response = await _documentAttachmentRepository.SingleAsync(x => x.Id == document.Id);
+            var response = await _documentAttachmentRepository.SingleAsync(x => x.Id == attachment.Id);
 
             return await _documentAttachementResponseFactory.PrepareDto(response);
 
@@ -76,15 +76,19 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
         private bool IsDocumentOwner(string userId, Document document)
         {
-            return userId == document.Id;
+            return userId == document.UserId;
         }
 
         private KYCDocumentAttachmentRequest PrepareKYCDocumentAttachement(string fileName,UploadDocumentAttachmentCommand command) 
         {
+            var imageStream = new MemoryStream();
+
+            command.Data.CopyTo(imageStream);
+
             var request = new KYCDocumentAttachmentRequest
             {
                 FileName = fileName,
-                Data = command.Data,
+                Data = imageStream,
                 Side = command.Side
             };
 

@@ -45,7 +45,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
                 return new Result<DocumentDto>(new BusinessLogicException("Current user has already active kyc document verification , please wait unitl verification process complete."));
             }
 
-            var isUserHasApprovedKYC = await _documentRepository.AnyAsync(x => x.Status == Status.Approved);
+            var isUserHasApprovedKYC = await _documentRepository.AnyAsync(x => x.Status == DocumentStatus.Approved);
 
             if (isUserHasApprovedKYC)
             {
