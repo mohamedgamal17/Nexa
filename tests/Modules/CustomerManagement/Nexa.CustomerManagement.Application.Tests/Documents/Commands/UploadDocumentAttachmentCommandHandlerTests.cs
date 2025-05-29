@@ -48,6 +48,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
             var documentAttachment = await DocumentAttachmentRepository.SingleOrDefaultAsync(x => x.Id == result.Value!.Id);
 
             documentAttachment.Should().NotBeNull();
+
+            documentAttachment!.Side.Should().Be(command.Side);
+
+
         }
 
         [Test]

@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument;
+using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
@@ -37,6 +39,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
             var response = await Mediator.Send(command);
 
             response.ShouldBeSuccess();
+
+            var document = await DocumentRepositorty.SingleOrDefaultAsync(x => x.Id == response.Value.Id);
+
+            document.Should().NotBeNull();
+
+            document!.AssertDocument(command, userId, fakeCustomer.Id, false, DocumentStatus.Pending);
+
+            response.Value!.AssertDocumentDto(document!);
         }
 
         [Test]
