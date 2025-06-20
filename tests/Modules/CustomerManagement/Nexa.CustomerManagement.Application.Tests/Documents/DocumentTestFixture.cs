@@ -84,5 +84,23 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
         {
             return await CreateDocumentAsync(customerId, userId, issuingCountry, kycExternalId, type, false, DocumentStatus.Rejected,null ,DateTime.UtcNow);
         }
+
+        protected async Task<DocumentAttachment> CreateDocumentAttachmentAsync(string documentId,  string userId, DocumentSide documentSide)
+        {
+            return await WithScopeAsync(async (sp) =>
+            {
+                var documentRepository = sp.GetRequiredService<ICustomerManagementRepository<Document>>();
+
+                var document = await documentRepository.SingleAsync(x => x.Id == documentId);
+
+                var attachment = new DocumentAttachment(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 6555, "img/png", documentSide);
+
+                document.AddAttachment(attachment);
+
+                await documentRepository.UpdateAsync(document);
+
+                return attachment;
+            });
+        }
     }
 }
