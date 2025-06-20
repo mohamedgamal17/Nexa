@@ -1,4 +1,5 @@
 ﻿using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Fakers
 {
@@ -73,7 +74,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 Id = documentId,
                 ClientId = Guid.NewGuid().ToString(),
                 IssuingCountry = "US",
-                Type = Domain.Documents.DocumentType.Passport
+                Type = DocumentType.Passport
             };
 
             return Task.FromResult(response);
@@ -108,7 +109,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
             {
                 Id = attachmentId,
                 FileName = Guid.NewGuid().ToString(),
-                Side = Domain.Documents.DocumentSide.Front,
+                Side = DocumentSide.Front,
                 Size = 655445,
                 ContentType = "imag/jpg",
                 DownloadLink = Guid.NewGuid().ToString()

@@ -1,7 +1,7 @@
 ﻿using Nexa.BuildingBlocks.Domain.Dtos;
-using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Application.Documents.Dtos
+namespace Nexa.CustomerManagement.Shared.Dtos
 {
     public class DocumentDto : EntityDto
     {

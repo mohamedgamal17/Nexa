@@ -1,8 +1,8 @@
 ﻿using Nexa.BuildingBlocks.Domain.Dtos;
 
-namespace Nexa.CustomerManagement.Application.Customers.Dtos
+namespace Nexa.CustomerManagement.Shared.Dtos
 {
-    public class AddressDto 
+    public class AddressDto
     {
         public string Country { get; set; }
         public string City { get; set; }

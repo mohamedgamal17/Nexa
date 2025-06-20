@@ -6,6 +6,7 @@ using Nexa.Application.Tests.Extensions;
 using FluentAssertions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using System.Runtime.CompilerServices;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 {

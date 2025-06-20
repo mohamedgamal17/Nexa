@@ -2,12 +2,13 @@
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
-using Nexa.CustomerManagement.Application.Documents.Dtos;
 using Nexa.CustomerManagement.Application.Documents.Factories;
 using Nexa.CustomerManagement.Application.Helpers;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
 {

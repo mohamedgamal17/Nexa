@@ -1,6 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Factories;
-using Nexa.CustomerManagement.Application.Customers.Dtos;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Dtos;
 
 namespace Nexa.CustomerManagement.Application.Customers.Factories
 {

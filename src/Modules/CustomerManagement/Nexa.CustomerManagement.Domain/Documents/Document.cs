@@ -1,5 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Documents
 {
     public class Document : AggregateRoot

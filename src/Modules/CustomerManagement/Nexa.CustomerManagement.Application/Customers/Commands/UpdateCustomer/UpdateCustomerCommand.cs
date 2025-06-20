@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
-using Nexa.CustomerManagement.Application.Customers.Dtos;
 using Nexa.CustomerManagement.Application.Customers.Models;
-using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 {

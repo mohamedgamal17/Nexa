@@ -4,9 +4,8 @@ using ComplyCube.Net.Resources.Checks;
 using ComplyCube.Net.Resources.Clients;
 using ComplyCube.Net.Resources.Documents;
 using ComplyCube.Net.Resources.Images;
-using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 {

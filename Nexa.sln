@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement", "CustomerManagement", "{E563F3D0-46D5-4119-AEB9-F2C720567835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Application.Tests", "tests\Modules\CustomerManagement\Nexa.CustomerManagement.Application.Tests\Nexa.CustomerManagement.Application.Tests.csproj", "{146AEF7F-5E75-400B-BD35-B149D32A84D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Application.Tests", "tests\Modules\CustomerManagement\Nexa.CustomerManagement.Application.Tests\Nexa.CustomerManagement.Application.Tests.csproj", "{146AEF7F-5E75-400B-BD35-B149D32A84D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Shared", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Shared\Nexa.CustomerManagement.Shared.csproj", "{E680ADEF-037C-4769-B181-0DD6FEC0006B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146AEF7F-5E75-400B-BD35-B149D32A84D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E680ADEF-037C-4769-B181-0DD6FEC0006B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E680ADEF-037C-4769-B181-0DD6FEC0006B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E680ADEF-037C-4769-B181-0DD6FEC0006B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E680ADEF-037C-4769-B181-0DD6FEC0006B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{B681361A-F83F-4169-9503-4954601DB076} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 		{E563F3D0-46D5-4119-AEB9-F2C720567835} = {238191CF-DF41-44D5-A824-70EF58D03A27}
 		{146AEF7F-5E75-400B-BD35-B149D32A84D7} = {E563F3D0-46D5-4119-AEB9-F2C720567835}
+		{E680ADEF-037C-4769-B181-0DD6FEC0006B} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}

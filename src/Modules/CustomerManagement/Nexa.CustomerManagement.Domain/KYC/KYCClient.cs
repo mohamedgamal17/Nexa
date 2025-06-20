@@ -1,4 +1,4 @@
-﻿using Nexa.CustomerManagement.Domain.Customers;
+﻿using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Domain.KYC
 {

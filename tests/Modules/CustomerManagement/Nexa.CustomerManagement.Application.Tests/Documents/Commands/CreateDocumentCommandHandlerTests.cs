@@ -6,6 +6,7 @@ using Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Shared.Enums;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands

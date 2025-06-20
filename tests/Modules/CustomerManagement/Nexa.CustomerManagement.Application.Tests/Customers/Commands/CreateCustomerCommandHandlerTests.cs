@@ -10,6 +10,7 @@ using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]

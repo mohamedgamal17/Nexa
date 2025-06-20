@@ -1,4 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Domain;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Domain.Customers
 {

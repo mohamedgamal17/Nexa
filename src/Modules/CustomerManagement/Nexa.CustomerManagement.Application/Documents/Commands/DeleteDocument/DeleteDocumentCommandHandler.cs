@@ -6,6 +6,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument
 {
     public class DeleteDocumentCommandHandler : IApplicationRequestHandler<DeleteDocumentCommand, Unit>

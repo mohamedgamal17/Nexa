@@ -5,6 +5,7 @@ using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Documents.Commands.DeleteDocument;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 {

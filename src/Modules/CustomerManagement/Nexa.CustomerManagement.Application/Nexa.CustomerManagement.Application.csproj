@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.5" />
   </ItemGroup>
 
@@ -15,6 +16,7 @@
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj" />
+    <ProjectReference Include="..\Nexa.CustomerManagement.Shared\Nexa.CustomerManagement.Shared.csproj" />
   </ItemGroup>
 
 </Project>

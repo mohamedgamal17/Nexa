@@ -5,6 +5,7 @@ using Bogus.Extensions.UnitedStates;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers
 {

@@ -9,6 +9,7 @@ using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]

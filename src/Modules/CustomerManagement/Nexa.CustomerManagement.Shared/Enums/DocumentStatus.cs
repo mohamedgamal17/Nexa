@@ -1,4 +1,4 @@
-﻿namespace Nexa.CustomerManagement.Domain.Documents
+﻿namespace Nexa.CustomerManagement.Shared.Enums
 {
     public enum DocumentStatus
     {

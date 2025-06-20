@@ -1,8 +1,8 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 using Nexa.BuildingBlocks.Domain.Dtos;
-using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Application.Customers.Dtos
+namespace Nexa.CustomerManagement.Shared.Dtos
 {
     public class CustomerDto : EntityDto
     {

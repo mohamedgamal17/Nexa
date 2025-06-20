@@ -2,11 +2,11 @@
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
-using Nexa.CustomerManagement.Application.Customers.Dtos;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 {
     public class UpdateCustomerCommandHandler : IApplicationRequestHandler<UpdateCustomerCommand, CustomerDto>
