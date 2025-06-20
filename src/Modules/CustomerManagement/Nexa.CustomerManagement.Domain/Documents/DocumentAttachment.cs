@@ -18,5 +18,15 @@ namespace Nexa.CustomerManagement.Domain.Documents
             ContentType = contentType;
   
         }
+
+        //for testing purpose
+        internal DocumentAttachment(string kYCExternalId, string fileName, long size, string contentType, DocumentSide side)
+        {
+            KYCExternalId = kYCExternalId;
+            FileName = fileName;
+            Size = size;
+            ContentType = contentType;
+            Side = side;
+        }
     }
 }

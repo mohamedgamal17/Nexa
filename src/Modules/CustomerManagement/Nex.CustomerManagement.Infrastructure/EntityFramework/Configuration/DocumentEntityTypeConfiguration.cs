@@ -27,6 +27,8 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
             builder.HasOne<Customer>().WithMany().HasForeignKey(x => x.CustomerId);
 
             builder.HasMany(x => x.Attachments).WithOne();
+
+            builder.Navigation(x => x.Attachments).AutoInclude();
         }
     }
 }

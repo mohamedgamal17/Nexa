@@ -50,16 +50,20 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Attachments.Add(attachment);
         }
 
+        public bool HasAttachmentsBothSides()
+        {
+            var sides = Attachments.Select(x => x.Side);
+
+            return sides.Contains(DocumentSide.Front) && sides.Contains(DocumentSide.Back);
+        }
         public void Process()
         {
-            if (Status != DocumentStatus.Pending || Status != DocumentStatus.Rejected)
+            if (Status != DocumentStatus.Pending )
             {
                 throw new InvalidOperationException("Invalid KYC document status cannot start processing.");
             }
 
-            var sides = Attachments.Select(x => x.Side);
-
-            var hasBothSides = sides.Contains(DocumentSide.Front) && sides.Contains(DocumentSide.Back);
+            var hasBothSides = HasAttachmentsBothSides();
 
             if (!hasBothSides)
             {
@@ -90,7 +94,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
         {
             if (Status != DocumentStatus.Rejected)
             {
-                throw new InvalidOperationException("Invalid KYC document status cannot Approve.");
+                throw new InvalidOperationException("Invalid KYC document status cannot reject.");
             }
 
             RejectedAt = rejectedAt;
