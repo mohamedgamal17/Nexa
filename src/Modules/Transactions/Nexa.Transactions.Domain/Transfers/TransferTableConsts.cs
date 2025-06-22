@@ -1,0 +1,18 @@
+﻿namespace Nexa.Transactions.Domain.Transfers
+{
+    public class TransferTableConsts
+    {
+        public static int IdLength = 256;
+
+        public static int WalletIdLength = 256;
+
+        public static int NumberLength = 256;
+
+        public static int CounterPartyIdLength = 256;
+
+        public static int ReciverIdLength = 256;
+
+        public static string Type = nameof(Type);
+
+    }
+}
