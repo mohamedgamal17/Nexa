@@ -1,9 +1,9 @@
 ﻿using Nexa.Accounting.Application.Transactions.Dtos;
-using Nexa.Accounting.Application.Wallets.Dtos;
 using Nexa.Accounting.Application.Wallets.Factories;
 using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Application.Factories;
 
 namespace Nexa.Accounting.Application.Transactions.Factories

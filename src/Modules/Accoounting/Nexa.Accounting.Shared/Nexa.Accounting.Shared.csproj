@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
-    <ProjectReference Include="..\Nexa.Transactions.Shared\Nexa.Transactions.Shared.csproj" />
   </ItemGroup>
 
 </Project>

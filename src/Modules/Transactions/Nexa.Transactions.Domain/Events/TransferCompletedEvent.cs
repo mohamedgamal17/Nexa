@@ -1,5 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Domain.Events;
-using Nexa.Transactions.Domain.Enums;
+using Nexa.Transactions.Shared.Enums;
 
 namespace Nexa.Transactions.Domain.Events
 {

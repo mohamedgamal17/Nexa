@@ -1,5 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-using Nexa.Transactions.Domain.Enums;
+using Nexa.Transactions.Domain.Events;
+using Nexa.Transactions.Shared.Enums;
 
 namespace Nexa.Transactions.Domain.Transfers
 {
@@ -17,6 +18,8 @@ namespace Nexa.Transactions.Domain.Transfers
             WalletId = walletId;
             Number = number;
             Amount = amount;
+            var @event = new TransferPendingEvent(Id, WalletId, Number, Amount, Type);
+            AppendEvent(@event);
         }
 
         internal Transfer(string walletId, string number, decimal amount, TransferStatus status)
@@ -25,6 +28,51 @@ namespace Nexa.Transactions.Domain.Transfers
             Number = number;
             Amount = amount;
             Status = status;
+        }
+
+
+        public void Process()
+        {
+            if (Status != TransferStatus.Pending)
+            {
+                throw new InvalidOperationException($"Transaction cannot move to process state beacuse current state ({Status.ToString()}), is invalid state");
+            }
+
+
+            Status = TransferStatus.Processing;
+
+            var @event = new TransferProcessingEvent(Id, WalletId, Number, Type);
+
+            AppendEvent(@event);
+        }
+
+
+        public void Complete()
+        {
+            if (Status != TransferStatus.Processing)
+            {
+                throw new InvalidOperationException($"Transaction cannot move to process state beacuse current state ({Status.ToString()}), is invalid state");
+            }
+
+            Status = TransferStatus.Completed;
+
+            CompletedAt = DateTime.UtcNow;
+
+            var @event = new TransferCompletedEvent(Id, WalletId, Number, Type, CompletedAt.Value);
+
+            AppendEvent(@event);
+        }
+
+        public void Cancel()
+        {
+            if (Status != TransferStatus.Completed)
+            {
+                throw new InvalidOperationException($"Transaction cannot move to process state beacuse current state ({Status.ToString()}), is invalid state");
+            }
+
+            Status = TransferStatus.Faild;
+
+
         }
     }
 }

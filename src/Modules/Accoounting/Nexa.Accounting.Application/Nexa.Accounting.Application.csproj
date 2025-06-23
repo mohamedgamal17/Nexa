@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\Nexa.Accounting.Domain\Nexa.Accounting.Domain.csproj" />
+    <ProjectReference Include="..\Nexa.Accounting.Shared\Nexa.Accounting.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-﻿using Nexa.Accounting.Application.Wallets.Dtos;
-using Nexa.Accounting.Domain.Enums;
+﻿using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Domain.Dtos;
 
 namespace Nexa.Accounting.Application.Transactions.Dtos

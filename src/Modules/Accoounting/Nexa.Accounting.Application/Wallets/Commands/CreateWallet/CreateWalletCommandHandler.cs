@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Nexa.Accounting.Application.Wallets.Dtos;
 using Nexa.Accounting.Application.Wallets.Factories;
 using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;

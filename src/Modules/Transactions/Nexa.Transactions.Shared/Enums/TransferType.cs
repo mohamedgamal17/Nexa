@@ -1,4 +1,4 @@
-﻿namespace Nexa.Transactions.Domain.Enums
+﻿namespace Nexa.Transactions.Shared.Enums
 {
     public enum TransferType
     {

@@ -1,4 +1,5 @@
-﻿using Nexa.Transactions.Domain.Enums;
+﻿using Nexa.Transactions.Domain.Events;
+using Nexa.Transactions.Shared.Enums;
 
 namespace Nexa.Transactions.Domain.Transfers
 {
@@ -12,6 +13,10 @@ namespace Nexa.Transactions.Domain.Transfers
             : base(walletId, number, amount)
         {
             ReciverId = reciverId;
+
+            var @event = new NetworkTransferInitiatedEvent(Id, Number, WalletId, reciverId, Amount);
+
+            AppendEvent(@event);
         }
 
         internal NetworkTransfer(string walletId, string reciverId, string number, decimal amount , TransferStatus status)
