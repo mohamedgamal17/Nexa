@@ -31,7 +31,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
 
         private async Task ProcessNetworkTransfer(Transfer transfer)
         {
-            var message = new FreezeWalletBalanceIntegrationEvent
+            var message = new ReserveWalletBalanceIntegrationEvent
             {
                 TransferId = transfer.Id,
                 WalletId = transfer.WalletId,
@@ -47,7 +47,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
 
             if(achTransfer.Direction == TransferDirection.Depit)
             {
-                var message = new FreezeWalletBalanceIntegrationEvent
+                var message = new ReserveWalletBalanceIntegrationEvent
                 {
                     TransferId = achTransfer.Id,
                     WalletId = achTransfer.WalletId,
@@ -72,7 +72,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
 
             if (wireTransfer.Direction == TransferDirection.Depit)
             {
-                var message = new FreezeWalletBalanceIntegrationEvent
+                var message = new ReserveWalletBalanceIntegrationEvent
                 {
                     TransferId = wireTransfer.Id,
                     WalletId = wireTransfer.WalletId,

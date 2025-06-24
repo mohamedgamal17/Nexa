@@ -1,6 +1,6 @@
 ﻿namespace Nexa.Accounting.Shared.Events
 {
-    public class FreezeWalletBalanceIntegrationEvent
+    public class WalletBalanceReservedIntegrationEvent
     {
         public string TransferId { get; set; }
         public string WalletId { get; set; }

@@ -3,6 +3,9 @@
     public enum TransactionType
     {
         Internal,
-        External
+        External,
+        Network,
+        Ach,
+        Wire
     }
 }
