@@ -29,9 +29,9 @@ namespace Nexa.Accounting.Application.Wallets.Consumers
             senderWallet.Depit(context.Message.Amount);
             reciverWallet.Credit(context.Message.Amount);
 
-            var senderLedegerEntry = new LedgerEntry(senderWallet.Id, context.Message.Amount, TransactionType.Network, TransactionDirection.Depit, context.Message.TransferId, DateTime.UtcNow);
+            var senderLedegerEntry = new LedgerEntry(senderWallet.Id, context.Message.Amount, TransferType.Network, TransferDirection.Depit, context.Message.TransferId, DateTime.UtcNow);
 
-            var reciverLedgerEntry = new LedgerEntry(reciverWallet.Id, context.Message.Amount, TransactionType.Network, TransactionDirection.Credit, context.Message.TransferId, DateTime.UtcNow);
+            var reciverLedgerEntry = new LedgerEntry(reciverWallet.Id, context.Message.Amount, TransferType.Network, TransferDirection.Credit, context.Message.TransferId, DateTime.UtcNow);
 
             await _walletRepository.UpdateAsync(senderWallet);
 

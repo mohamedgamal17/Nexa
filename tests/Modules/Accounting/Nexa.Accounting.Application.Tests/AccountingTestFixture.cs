@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Domain;
-using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
 using Nexa.Application.Tests;
 using Nexa.Application.Tests.Extensions;
@@ -36,9 +35,6 @@ namespace Nexa.Accounting.Application.Tests
         {
             var wallets =  await SeedWallets(services);
 
-            var intenralTransctions = await SeedInternalTransactions(services,wallets);
-
-            var entries = await SeedLedgerEntires(services, intenralTransctions);
         }
      
 
@@ -57,61 +53,7 @@ namespace Nexa.Accounting.Application.Tests
         } 
 
 
-        private async Task<List<InternalTransaction>> SeedInternalTransactions(IServiceProvider services , List<Wallet> wallets)
-        {
-            var faker = new Faker();
-
-            var transactionRepository = services.GetRequiredService<IAccountingRepository<InternalTransaction>>();
-
-            List<InternalTransaction> transactions = new List<InternalTransaction>();
-
-            foreach (var wallet in wallets)
-            {
-                var randomWallets = wallets.PickRandom(10);
-
-                List<InternalTransaction> walletTransactions = new List<InternalTransaction>();
-
-                foreach (var reciverWallet in randomWallets)
-                {
-                    var transction = new InternalTransaction(wallet.Id, reciverWallet.Id, Ulid.NewUlid().ToString(), faker.Random.Decimal(1, 500),faker.PickRandom<TransactionStatus>());
-
-                    walletTransactions.Add(transction);
-                }
-
-
-                transactions.AddRange(walletTransactions);
-            }
-
-
-            await transactionRepository.InsertManyAsync(transactions);
-
-            return transactions;
-        }
-
-        private async Task<List<LedgerEntry>> SeedLedgerEntires(IServiceProvider services, List<InternalTransaction> transactions)
-        {
-            var entryRepository = services.GetRequiredService<IAccountingRepository<LedgerEntry>>();
-
-            List<LedgerEntry> entries = new List<LedgerEntry>();
-
-            var completedTransctions = transactions.Where(x => x.Status == TransactionStatus.Completed);
-
-            foreach (var transaction in completedTransctions)
-            {
-                var senderEntry = new LedgerEntry(transaction.WalletId, transaction.Amount, TransactionType.Internal, TransactionDirection.Depit, transaction.Id, transaction.CompletedAt ?? DateTime.UtcNow);
-
-
-                var reciverEntry = new LedgerEntry(transaction.ReciverId, transaction.Amount, TransactionType.Internal, TransactionDirection.Credit, transaction.Id, transaction.CompletedAt ?? DateTime.UtcNow);
-
-                entries.Add(senderEntry);
-
-                entries.Add(reciverEntry);
-            }
-
-            await entryRepository.InsertManyAsync(entries);
-
-            return entries;
-        }
+     
         protected override async Task ShutdownAsync(IServiceProvider services)
         {
             await ResetSqlDb(services);

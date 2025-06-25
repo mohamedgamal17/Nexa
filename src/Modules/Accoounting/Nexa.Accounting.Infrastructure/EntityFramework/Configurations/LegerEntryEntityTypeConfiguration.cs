@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
 namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 {
@@ -18,7 +17,6 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 
             builder.HasOne<Wallet>().WithMany().HasForeignKey(x => x.WalletId);
 
-            builder.HasOne<Transaction>().WithMany().HasForeignKey(x => x.TransactionId);
         }
     }
 }

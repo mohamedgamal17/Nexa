@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nexa.Accounting.Application.Transactions.Services;
 using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 
@@ -15,8 +14,7 @@ namespace Nexa.Accounting.Infrastructure.Installers
                 .AddAutoMapper(Cfg => Cfg.AddMaps(Application.AssemblyReference.Assembly))
                 .RegisterPoliciesHandlerFromAssembly(Application.AssemblyReference.Assembly)
                 .RegisterFactoriesFromAssembly(Application.AssemblyReference.Assembly)
-                .AddTransient<IWalletNumberGeneratorService, WalletNumberGeneratorService>()
-                .AddTransient<ITransactionNumberGeneratorService, TransactionNumberGeneratorService>();
+                .AddTransient<IWalletNumberGeneratorService, WalletNumberGeneratorService>();
         }
     }
 }

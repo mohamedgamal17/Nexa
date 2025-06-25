@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Nexa.Accounting.Domain.Transactions;
 using Nexa.Accounting.Domain.Wallets;
 namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 {

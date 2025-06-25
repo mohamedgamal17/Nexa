@@ -7,8 +7,8 @@ namespace Nexa.Accounting.Domain.Wallets
         public string WalletId { get; private set; }
         public decimal Amount { get; private set; }
         public string TransactionId { get; private set; }
-        public TransactionType Type { get; private set; }
-        public TransactionDirection Direction { get; private set; }
+        public TransferType Type { get; private set; }
+        public TransferDirection Direction { get; private set; }
         public DateTime Timestamp { get; private set; }
 
 
@@ -16,8 +16,8 @@ namespace Nexa.Accounting.Domain.Wallets
         private LedgerEntry() { }
         public LedgerEntry(string walletId,
             decimal amount,
-            TransactionType type,
-            TransactionDirection direction,
+            TransferType type,
+            TransferDirection direction,
             string transactionId,
             DateTime timestamp)
         {

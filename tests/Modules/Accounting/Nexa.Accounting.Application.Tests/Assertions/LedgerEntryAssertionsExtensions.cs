@@ -7,7 +7,7 @@ namespace Nexa.Accounting.Application.Tests.Assertions
     public static class LedgerEntryAssertionsExtensions
     {
 
-        public static void AssertLedgerEntry(this LedgerEntry ledgerEntry, string walletId , string transactionId , decimal amount , TransactionType transactionType , TransactionDirection direction)
+        public static void AssertLedgerEntry(this LedgerEntry ledgerEntry, string walletId , string transactionId , decimal amount , TransferType transactionType , TransferDirection direction)
         {
             ledgerEntry.WalletId.Should().Be(walletId);
             ledgerEntry.TransactionId.Should().Be(transactionId);

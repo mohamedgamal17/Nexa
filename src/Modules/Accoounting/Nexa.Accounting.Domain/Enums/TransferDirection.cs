@@ -1,6 +1,6 @@
 ﻿namespace Nexa.Accounting.Domain.Enums
 {
-    public enum TransactionDirection
+    public enum TransferDirection
     {
         Credit,
         Depit
