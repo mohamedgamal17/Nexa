@@ -16,9 +16,9 @@ namespace Nexa.Transactions.Application.Tests
         }
         protected override async Task InitializeAsync(IServiceProvider services)
         {
-            TestHarness = services.GetTestHarness();
-            await ResetSqlDb(services);
+            TestHarness = services.GetTestHarness();   
             await services.RunModulesBootstrapperAsync();
+            await ResetSqlDb(services);
         }
 
         protected override async Task ShutdownAsync(IServiceProvider services)
@@ -41,7 +41,7 @@ namespace Nexa.Transactions.Application.Tests
                 },
                 SchemasToInclude = new string[]
                 {
-                    "CustomerManagement"
+                    "Transactions"
                 }
 
             });

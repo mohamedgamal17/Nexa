@@ -17,8 +17,9 @@ namespace Nexa.CustomerManagement.Application.Tests
         protected override async Task InitializeAsync(IServiceProvider services)
         {
             TestHarness = services.GetTestHarness();
-            await ResetSqlDb(services);
             await services.RunModulesBootstrapperAsync();
+            await ResetSqlDb(services);
+
         }
 
         protected override async Task ShutdownAsync(IServiceProvider services)

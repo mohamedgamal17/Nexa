@@ -26,8 +26,8 @@ namespace Nexa.Accounting.Application.Tests
         protected override async Task InitializeAsync(IServiceProvider services)
         {
             TestHarness = services.GetTestHarness();
-            await ResetSqlDb(services);
             await services.RunModulesBootstrapperAsync();
+            await ResetSqlDb(services);
             await SeedData(services);
         }
 
