@@ -66,7 +66,7 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
         public void Configure(EntityTypeBuilder<TransferView> builder)
         {
             builder.HasNoKey();
-            builder.ToTable(TransferTableConsts.TableName);
+            builder.ToView(TransferTableConsts.TableName);
         }
     }
 }
