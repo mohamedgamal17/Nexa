@@ -65,7 +65,7 @@ namespace Nexa.Transactions.Domain.Transfers
 
         public void Cancel()
         {
-            if (Status != TransferStatus.Completed)
+            if (Status == TransferStatus.Completed)
             {
                 throw new InvalidOperationException($"Transaction cannot move to process state beacuse current state ({Status.ToString()}), is invalid state");
             }
