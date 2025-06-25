@@ -5,7 +5,7 @@ using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
 namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
 {
-    public class VerifiyTransferIntegrationEventConsumer : IConsumer<VerifiyTransferIntegerationEvent>
+    public class VerifiyTransferIntegrationEventConsumer : IConsumer<VerifiyTransferIntegrationEvent>
     {
         private readonly ITransferRepository _transferRepository;
         private readonly IPublishEndpoint _publishEndpoint;
@@ -21,7 +21,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
             };
         }
 
-        public async Task Consume(ConsumeContext<VerifiyTransferIntegerationEvent> context)
+        public async Task Consume(ConsumeContext<VerifiyTransferIntegrationEvent> context)
         {
             var transfer = await _transferRepository.SingleAsync(x => x.Id == context.Message.TransferId);
 

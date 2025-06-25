@@ -15,7 +15,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
 
         public async Task Handle(TransferPendingEvent notification, CancellationToken cancellationToken)
         {
-            var @event = new VerifiyTransferIntegerationEvent(notification.Id, notification.Number, notification.WalletId, notification.Amount, notification.Type);
+            var @event = new VerifiyTransferIntegrationEvent(notification.Id, notification.Number, notification.WalletId, notification.Amount, notification.Type);
 
             await _publishEndpoint.Publish(@event);
         }
