@@ -1,9 +1,11 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nexa.Accounting.Shared.Services;
 using Nexa.Application.Tests;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.Transactions.Application.Tests.Fakers;
 using Nexa.Transactions.Infrastructure;
 namespace Nexa.Transactions.Application.Tests
 {
@@ -25,6 +27,10 @@ namespace Nexa.Transactions.Application.Tests
                 });
             });
 
+
+            services.AddTransient<IWalletService, FakeWalletService>();
+
+            services.AddTransient<FakeWalletService>();
         }
     }
 }
