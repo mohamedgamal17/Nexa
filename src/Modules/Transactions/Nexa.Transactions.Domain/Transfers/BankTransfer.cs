@@ -13,13 +13,19 @@ namespace Nexa.Transactions.Domain.Transfers
         protected BankTransfer()
         {
         }
-        public BankTransfer(string counterPartyId, TransferDirection direction, BankTransferType bankTransferType)
+        public BankTransfer(string walletId ,string number, decimal amount ,string counterPartyId, TransferDirection direction, BankTransferType bankTransferType) : base(walletId,number, amount)
         {
             CounterPartyId = counterPartyId;
             Direction = direction;
             BankTransferType = bankTransferType;
         }
 
+        internal BankTransfer(string walletId, string number, decimal amount, string counterPartyId, TransferDirection direction, BankTransferType bankTransferType, TransferStatus status) : base(walletId, number, amount, status)
+        {
+            CounterPartyId = counterPartyId;
+            Direction = direction;
+            BankTransferType = bankTransferType;
+        }
 
     }
 
