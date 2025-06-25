@@ -2,7 +2,7 @@
 using MediatR;
 using Nexa.Transactions.Domain.Events;
 using Nexa.Transactions.Shared.Events;
-namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
+namespace Nexa.Transactions.Application.Transfers.Handlers
 {
     public class TransferPendingEventEventHandler : INotificationHandler<TransferPendingEvent>
     {

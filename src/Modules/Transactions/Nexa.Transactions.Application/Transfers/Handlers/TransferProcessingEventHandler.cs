@@ -4,14 +4,14 @@ using Nexa.Transactions.Domain.Events;
 using Nexa.Transactions.Domain.Transfers;
 using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
-namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
+namespace Nexa.Transactions.Application.Transfers.Handlers
 {
     public class TransferProcessingEventHandler : INotificationHandler<TransferProcessingEvent>
     {
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly ITransferRepository _transferRepository;
 
-        private readonly Dictionary<Type, Func<Transfer, Task >> _transfersHandlers;
+        private readonly Dictionary<Type, Func<Transfer, Task>> _transfersHandlers;
         public TransferProcessingEventHandler(IPublishEndpoint publishEndpoint, ITransferRepository transferRepository)
         {
             _publishEndpoint = publishEndpoint;
@@ -52,6 +52,6 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
         }
 
 
- 
+
     }
 }

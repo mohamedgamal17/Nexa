@@ -3,13 +3,13 @@ using Nexa.Accounting.Shared.Events;
 using Nexa.Transactions.Domain.Transfers;
 using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
-namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
+namespace Nexa.Transactions.Application.Transfers.Consumer
 {
     public class VerifiyTransferIntegrationEventConsumer : IConsumer<VerifiyTransferIntegrationEvent>
     {
         private readonly ITransferRepository _transferRepository;
         private readonly IPublishEndpoint _publishEndpoint;
-        private readonly Dictionary<Type, Func<Transfer,Task>> _transferHandlers;
+        private readonly Dictionary<Type, Func<Transfer, Task>> _transferHandlers;
         public VerifiyTransferIntegrationEventConsumer(ITransferRepository transferRepository, IPublishEndpoint publishEndpoint)
         {
             _transferRepository = transferRepository;
@@ -44,7 +44,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
         {
             var bankTransfer = (BankTransfer)transfer;
 
-            if(bankTransfer.Direction == TransferDirection.Depit)
+            if (bankTransfer.Direction == TransferDirection.Depit)
             {
                 var message = new ReserveWalletBalanceIntegrationEvent
                 {

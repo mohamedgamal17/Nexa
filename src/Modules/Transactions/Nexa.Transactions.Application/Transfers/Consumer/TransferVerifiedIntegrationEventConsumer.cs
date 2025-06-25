@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Nexa.Transactions.Domain.Transfers;
 using Nexa.Transactions.Shared.Events;
-namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
+namespace Nexa.Transactions.Application.Transfers.Consumer
 {
     public class TransferVerifiedIntegrationEventConsumer : IConsumer<TransferVerifiedIntegrationEvent>
     {
