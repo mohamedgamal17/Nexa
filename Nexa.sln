@@ -49,15 +49,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Shared", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Shared\Nexa.CustomerManagement.Shared.csproj", "{E680ADEF-037C-4769-B181-0DD6FEC0006B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Transactions.Domain", "src\Modules\Transactions\Nexa.Transactions.Domain\Nexa.Transactions.Domain.csproj", "{CE54AC7C-BAC2-4EDD-9700-88E083F07E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Domain", "src\Modules\Transactions\Nexa.Transactions.Domain\Nexa.Transactions.Domain.csproj", "{CE54AC7C-BAC2-4EDD-9700-88E083F07E8F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transactions", "Transactions", "{68A3058D-262A-4FE6-9365-0598E9CBB791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Transactions.Application", "src\Modules\Transactions\Nexa.Transactions.Application\Nexa.Transactions.Application.csproj", "{49E50DDB-DFE5-42EF-8D1E-21503EF2EFFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Application", "src\Modules\Transactions\Nexa.Transactions.Application\Nexa.Transactions.Application.csproj", "{49E50DDB-DFE5-42EF-8D1E-21503EF2EFFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Transactions.Shared", "src\Modules\Transactions\Nexa.Transactions.Shared\Nexa.Transactions.Shared.csproj", "{97596BD7-7EDD-465E-9E5F-6640A085E55B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Shared", "src\Modules\Transactions\Nexa.Transactions.Shared\Nexa.Transactions.Shared.csproj", "{97596BD7-7EDD-465E-9E5F-6640A085E55B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Shared", "src\Modules\Accoounting\Nexa.Accounting.Shared\Nexa.Accounting.Shared.csproj", "{503555FE-4B67-4AAC-92C3-48370C5627A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Shared", "src\Modules\Accoounting\Nexa.Accounting.Shared\Nexa.Accounting.Shared.csproj", "{503555FE-4B67-4AAC-92C3-48370C5627A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Transactions.Infrastructure", "src\Modules\Transactions\Nexa.Transactions.Infrastructure\Nexa.Transactions.Infrastructure.csproj", "{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,10 @@ Global
 		{503555FE-4B67-4AAC-92C3-48370C5627A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{503555FE-4B67-4AAC-92C3-48370C5627A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{503555FE-4B67-4AAC-92C3-48370C5627A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,6 +174,7 @@ Global
 		{49E50DDB-DFE5-42EF-8D1E-21503EF2EFFA} = {68A3058D-262A-4FE6-9365-0598E9CBB791}
 		{97596BD7-7EDD-465E-9E5F-6640A085E55B} = {68A3058D-262A-4FE6-9365-0598E9CBB791}
 		{503555FE-4B67-4AAC-92C3-48370C5627A3} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
+		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B} = {68A3058D-262A-4FE6-9365-0598E9CBB791}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}

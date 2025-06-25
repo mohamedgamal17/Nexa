@@ -2,6 +2,8 @@
 {
     public class TransferTableConsts
     {
+        public static string TableName = "Transfers"; 
+
         public static int IdLength = 256;
 
         public static int WalletIdLength = 256;
