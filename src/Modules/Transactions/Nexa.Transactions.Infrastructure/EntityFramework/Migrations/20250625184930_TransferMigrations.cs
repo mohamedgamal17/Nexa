@@ -28,9 +28,8 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
                     Type = table.Column<int>(type: "int", nullable: false),
                     CounterPartyId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Direction = table.Column<int>(type: "int", nullable: true),
-                    ReciverId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    WireTransfer_CounterPartyId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    WireTransfer_Direction = table.Column<int>(type: "int", nullable: true)
+                    BankTransferType = table.Column<int>(type: "int", nullable: true),
+                    ReciverId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,12 +54,6 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
                 schema: "Transactions",
                 table: "Transfers",
                 column: "ReciverId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transfers_WireTransfer_CounterPartyId",
-                schema: "Transactions",
-                table: "Transfers",
-                column: "WireTransfer_CounterPartyId");
         }
 
         /// <inheritdoc />

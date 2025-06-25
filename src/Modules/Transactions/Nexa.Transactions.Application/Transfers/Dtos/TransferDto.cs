@@ -14,6 +14,8 @@ namespace Nexa.Transactions.Application.Transfers.Dtos
         public WalletListDto? Reciver { get; set; }
         public string? CounterPartyId { get; set; }
         public TransferDirection? Direction { get; set; }
+
+        public BankTransferType? BankTransferType { get; set; }
         public TransferStatus Status { get; set; }
         public DateTime? CompletedAt { get; set; }
         public TransferType Type { get; set; }

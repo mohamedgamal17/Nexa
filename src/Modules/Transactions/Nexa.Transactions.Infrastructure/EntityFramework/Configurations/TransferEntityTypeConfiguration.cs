@@ -20,8 +20,7 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
 
             builder.HasDiscriminator(x => x.Type)
                 .HasValue<NetworkTransfer>(TransferType.Network)
-                .HasValue<AchTransfer>(TransferType.Ach)
-                .HasValue<WireTransfer>(TransferType.Wire);
+                .HasValue<BankTransfer>(TransferType.Bank);
 
 
             builder.HasIndex(x => x.Number).IsUnique();
@@ -41,19 +40,9 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
         }
     }
 
-    public class AchTransferEntityTypeConfiguration : IEntityTypeConfiguration<AchTransfer>
+    public class BankTransferEntityTypeConfiguration : IEntityTypeConfiguration<BankTransfer>
     {
-        public void Configure(EntityTypeBuilder<AchTransfer> builder)
-        {
-            builder.Property(x => x.CounterPartyId).HasMaxLength(TransferTableConsts.CounterPartyIdLength);
-
-            builder.HasIndex(x => x.CounterPartyId);
-        }
-    }
-
-    public class WireTransferEntityTypeConfiguration : IEntityTypeConfiguration<WireTransfer>
-    {
-        public void Configure(EntityTypeBuilder<WireTransfer> builder)
+        public void Configure(EntityTypeBuilder<BankTransfer> builder)
         {
             builder.Property(x => x.CounterPartyId).HasMaxLength(TransferTableConsts.CounterPartyIdLength);
 

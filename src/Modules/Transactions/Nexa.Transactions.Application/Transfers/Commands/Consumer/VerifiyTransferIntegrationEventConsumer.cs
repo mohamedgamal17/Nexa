@@ -17,8 +17,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
             _transferHandlers = new Dictionary<Type, Func<Transfer, Task>>
             {
                 { typeof(NetworkTransfer), ProcessNetworkTransfer },
-                { typeof(AchTransfer), ProcessAchTransfer },
-                { typeof(WireTransfer), ProcessWireTransfer },
+                { typeof(BankTransfer), ProcessBankTransfer },
             };
         }
 
@@ -41,50 +40,25 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Consumer
             await _publishEndpoint.Publish(message);
         }
 
-        private async Task ProcessAchTransfer(Transfer transfer)
+        private async Task ProcessBankTransfer(Transfer transfer)
         {
-            var achTransfer = (AchTransfer)transfer;
+            var bankTransfer = (BankTransfer)transfer;
 
-            if(achTransfer.Direction == TransferDirection.Depit)
+            if(bankTransfer.Direction == TransferDirection.Depit)
             {
                 var message = new ReserveWalletBalanceIntegrationEvent
                 {
-                    TransferId = achTransfer.Id,
-                    WalletId = achTransfer.WalletId,
-                    Amount = achTransfer.Amount
+                    TransferId = bankTransfer.Id,
+                    WalletId = bankTransfer.WalletId,
+                    Amount = bankTransfer.Amount
                 };
 
                 await _publishEndpoint.Publish(message);
             }
             else
             {
-                var message = new TransferVerifiedIntegrationEvent(achTransfer.Id, achTransfer.Number,
-                    achTransfer.WalletId, achTransfer.Amount, achTransfer.Type);
-
-                await _publishEndpoint.Publish(message);
-            }
-        }
-
-
-        private async Task ProcessWireTransfer(Transfer transfer)
-        {
-            var wireTransfer = (WireTransfer)transfer;
-
-            if (wireTransfer.Direction == TransferDirection.Depit)
-            {
-                var message = new ReserveWalletBalanceIntegrationEvent
-                {
-                    TransferId = wireTransfer.Id,
-                    WalletId = wireTransfer.WalletId,
-                    Amount = wireTransfer.Amount
-                };
-
-                await _publishEndpoint.Publish(message);
-            }
-            else
-            {
-                var message = new TransferVerifiedIntegrationEvent(wireTransfer.Id, wireTransfer.Number,
-                   wireTransfer.WalletId, wireTransfer.Amount, wireTransfer.Type);
+                var message = new TransferVerifiedIntegrationEvent(bankTransfer.Id, bankTransfer.Number,
+                    bankTransfer.WalletId, bankTransfer.Amount, bankTransfer.Type);
 
                 await _publishEndpoint.Publish(message);
             }

@@ -2,6 +2,7 @@
 using MediatR;
 using Nexa.Transactions.Domain.Events;
 using Nexa.Transactions.Domain.Transfers;
+using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
 namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
 {
@@ -18,8 +19,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
             _transfersHandlers = new Dictionary<Type, Func<Transfer, Task>>()
             {
                 {typeof(NetworkTransfer), HandleNetworkTransfer },
-                {typeof(AchTransfer), HandleAchTransfer },
-                {typeof(WireTransfer), HandleWireTransfer }
+                {typeof(BankTransfer), HandleBankTransfer }
             };
 
         }
@@ -41,24 +41,17 @@ namespace Nexa.Transactions.Application.Transfers.Commands.Handlers
             await _publishEndpoint.Publish(message);
         }
 
-        private async Task HandleAchTransfer(Transfer transfer)
+        private async Task HandleBankTransfer(Transfer transfer)
         {
-            var achTransfer = (AchTransfer)transfer;
+            var bankTransfer = (BankTransfer)transfer;
 
-            var message = new ProcessAchTransferIntegrationEvent(achTransfer.Id, achTransfer.WalletId, achTransfer.CounterPartyId,
-                achTransfer.Amount, achTransfer.Direction);
+            var message = new ProcessBankTransferIntegrationEvent(bankTransfer.Id, bankTransfer.WalletId, bankTransfer.CounterPartyId,
+                bankTransfer.Amount, bankTransfer.Direction, bankTransfer.BankTransferType);
 
             await _publishEndpoint.Publish(message);
         }
 
 
-        private async Task HandleWireTransfer(Transfer transfer)
-        {
-            var wireTransfer = (WireTransfer)transfer;
-
-            var message = new ProcessWireTransferIntegrationEvent(wireTransfer.Id, wireTransfer.WalletId, wireTransfer.CounterPartyId, wireTransfer.Amount, wireTransfer.Direction);
-
-            await _publishEndpoint.Publish(message);
-        }
+ 
     }
 }

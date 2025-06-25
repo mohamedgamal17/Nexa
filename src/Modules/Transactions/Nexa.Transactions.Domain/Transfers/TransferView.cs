@@ -10,6 +10,7 @@ namespace Nexa.Transactions.Domain.Transfers
         public string? ReciverId { get; set; }
         public string? CounterPartyId { get; set; }
         public TransferDirection? Direction { get; set; }
+        public BankTransferType? BankTransferType { get; set; }
         public TransferStatus Status { get; set; }
         public DateTime? CompletedAt { get; set; }
         public TransferType Type { get; set; }

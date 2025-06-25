@@ -71,6 +71,9 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CounterPartyId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Direction")
                         .HasColumnType("int");
 
@@ -79,9 +82,6 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReciverId")
@@ -102,9 +102,12 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
                     b.ToView("Transfers", "Transactions");
                 });
 
-            modelBuilder.Entity("Nexa.Transactions.Domain.Transfers.AchTransfer", b =>
+            modelBuilder.Entity("Nexa.Transactions.Domain.Transfers.BankTransfer", b =>
                 {
                     b.HasBaseType("Nexa.Transactions.Domain.Transfers.Transfer");
+
+                    b.Property<int>("BankTransferType")
+                        .HasColumnType("int");
 
                     b.Property<string>("CounterPartyId")
                         .IsRequired()
@@ -131,32 +134,6 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Migrations
                     b.HasIndex("ReciverId");
 
                     b.HasDiscriminator().HasValue(0);
-                });
-
-            modelBuilder.Entity("Nexa.Transactions.Domain.Transfers.WireTransfer", b =>
-                {
-                    b.HasBaseType("Nexa.Transactions.Domain.Transfers.Transfer");
-
-                    b.Property<string>("CounterPartyId")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("Direction")
-                        .HasColumnType("int");
-
-                    b.HasIndex("CounterPartyId");
-
-                    b.ToTable("Transfers", "Transactions", t =>
-                        {
-                            t.Property("CounterPartyId")
-                                .HasColumnName("WireTransfer_CounterPartyId");
-
-                            t.Property("Direction")
-                                .HasColumnName("WireTransfer_Direction");
-                        });
-
-                    b.HasDiscriminator().HasValue(10);
                 });
 #pragma warning restore 612, 618
         }
