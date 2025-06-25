@@ -12,7 +12,7 @@ namespace Nexa.Transactions.Application.Transfers.Dtos
         public decimal Amount { get; set; }
         public string? ReciverId { get; set; }
         public WalletListDto? Reciver { get; set; }
-        public string? PaymentId { get; set; }
+        public string? CounterPartyId { get; set; }
         public TransferDirection? Direction { get; set; }
         public TransferStatus Status { get; set; }
         public DateTime? CompletedAt { get; set; }

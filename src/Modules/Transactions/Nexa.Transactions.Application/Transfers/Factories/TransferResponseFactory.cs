@@ -65,7 +65,7 @@ namespace Nexa.Transactions.Application.Transfers.Factories
                 Amount = view.Amount,
                 ReciverId = view.ReciverId,
                 Reciver = reciverWallet,
-                PaymentId = view.PaymentId,
+                CounterPartyId = view.CounterPartyId,
                 Direction = view.Direction,
                 Status = view.Status,
                 CompletedAt = view.CompletedAt,
