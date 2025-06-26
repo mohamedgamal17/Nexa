@@ -1,5 +1,6 @@
 ﻿using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
 
 namespace Nexa.Accounting.Application.Tests.Wallets
@@ -8,9 +9,11 @@ namespace Nexa.Accounting.Application.Tests.Wallets
     {
         protected IWalletRepository WalletRepository { get; }
 
+        protected IAccountingRepository<LedgerEntry> LedgerEntryRepository { get; }
         public WalletTestFixture()
         {
             WalletRepository = ServiceProvider.GetRequiredService<IWalletRepository>();
+            LedgerEntryRepository = ServiceProvider.GetRequiredService<IAccountingRepository<LedgerEntry>>();
         }
 
         protected override async Task InitializeAsync(IServiceProvider services)
@@ -25,6 +28,20 @@ namespace Nexa.Accounting.Application.Tests.Wallets
             await base.ShutdownAsync(services);
 
             await TestHarness.Stop();
+        }
+
+        public async Task<Wallet> CreateWalletWithReservedBalanceAsync(string? userId = null, decimal balance = 0 , decimal reservedBalance =0)
+        {
+            return await WithScopeAsync(async (sp) =>
+            {
+                var repository = sp.GetRequiredService<IWalletRepository>();
+
+                var wallet = await CreateWalletAsync(userId, balance);
+
+                wallet.Reserve(reservedBalance);
+
+                return await repository.UpdateAsync(wallet);
+            });
         }
         public async Task<Wallet> CreateWalletAsync(string? userId = null , decimal balance = 0)
         {
