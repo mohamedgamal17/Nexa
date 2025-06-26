@@ -37,8 +37,6 @@ namespace Nexa.Accounting.Domain.Wallets
             }
 
             ReservedBalance -= amount;
-
-            Balance -= amount;
         }
 
 
