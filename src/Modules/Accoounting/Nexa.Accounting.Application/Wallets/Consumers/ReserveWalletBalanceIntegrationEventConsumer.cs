@@ -41,6 +41,8 @@ namespace Nexa.Accounting.Application.Wallets.Consumers
                     WalletId = context.Message.WalletId,
                     Amount = context.Message.Amount
                 };
+
+                await _publishEndpoint.Publish(message);
             }
         }
     }
