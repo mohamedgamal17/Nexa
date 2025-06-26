@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="FastEndpoints.Generator" Version="5.28.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="FastEndpoints.Swagger" Version="5.28.0" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.7.1" />
+		<PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+		<PackageReference Include="IdentityModel" Version="6.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+		<PackageReference Include="MimeMapping" Version="3.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Accoounting\Nexa.Accounting.Infrastructure\Nexa.Accounting.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\CustomerManagement\Nex.CustomerManagement.Infrastructure\Nexa.CustomerManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Transactions\Nexa.Transactions.Infrastructure\Nexa.Transactions.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
