@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-namespace Nexa.Accounting.Domain
+namespace Nexa.Accounting.Infrastructure
 {
     public class AssemblyReference
     {
