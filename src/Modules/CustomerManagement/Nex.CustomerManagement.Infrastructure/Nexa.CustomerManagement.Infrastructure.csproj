@@ -21,5 +21,6 @@
 	  <ProjectReference Include="..\..\..\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj" />
 	  <ProjectReference Include="..\Nexa.CustomerManagement.Application\Nexa.CustomerManagement.Application.csproj" />
 	  <ProjectReference Include="..\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj" />
+	  <ProjectReference Include="..\Nexa.CustomerManagement.Presentation\Nexa.CustomerManagement.Presentation.csproj" />
 	</ItemGroup>
 </Project>
