@@ -9,7 +9,8 @@
 		<PackageReference Include="FastEndpoints" Version="5.28.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\src\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
-	  <ProjectReference Include="..\src\Modules\Accoounting\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj" />
+	  <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj" />
+
 	</ItemGroup>
 </Project>

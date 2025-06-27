@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Nexa.Accounting.Presentation\Nexa.Accounting.Presentation.csproj" />
+    <ProjectReference Include="..\Nexa.Accounting.Presentation\Nexa.Accounting.Presentation.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj" />
     <ProjectReference Include="..\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj" />

@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Host", "src\Nexa.Host\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Presentation", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Presentation\Nexa.CustomerManagement.Presentation.csproj", "{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Presentation", "Nexa.Accounting.Presentation\Nexa.Accounting.Presentation.csproj", "{E5356042-272B-4A56-9958-228B6D86D83E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Accounting.Presentation", "src\Modules\Accoounting\Nexa.Accounting.Presentation\Nexa.Accounting.Presentation.csproj", "{E5356042-272B-4A56-9958-228B6D86D83E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Transactions.Presentation", "src\Modules\Transactions\Nexa.Transactions.Presentation\Nexa.Transactions.Presentation.csproj", "{EB444085-546B-47E2-95E6-18F324DAA25B}"
 EndProject
