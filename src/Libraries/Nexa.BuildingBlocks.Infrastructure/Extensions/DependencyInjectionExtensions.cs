@@ -8,7 +8,8 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
     {
         public static IServiceCollection RegisterSecurityService(this IServiceCollection services)
         {
-            return services.AddTransient<IApplicationAuthorizationService, ApplicationAuthorizationService>();
+            return services.AddTransient<IApplicationAuthorizationService, ApplicationAuthorizationService>()
+                .AddTransient<ISecurityContext, SecurityContext>();
         }
     }
 }
