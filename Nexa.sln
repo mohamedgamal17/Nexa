@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Host", "src\Nexa.Host\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.CustomerManagement.Presentation", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Presentation\Nexa.CustomerManagement.Presentation.csproj", "{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Accounting.Presentation", "Nexa.Accounting.Presentation\Nexa.Accounting.Presentation.csproj", "{E5356042-272B-4A56-9958-228B6D86D83E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,10 @@ Global
 		{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5356042-272B-4A56-9958-228B6D86D83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5356042-272B-4A56-9958-228B6D86D83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5356042-272B-4A56-9958-228B6D86D83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5356042-272B-4A56-9958-228B6D86D83E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,6 +205,7 @@ Global
 		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA} = {652810BE-012D-4844-BC07-79FFD1D54A87}
 		{27171FBB-EA58-4B2F-851B-582BECA8AF7C} = {2030EAB6-A932-4DBA-A14A-7EAE825E0E33}
 		{A9BAAAA4-371A-46F6-9F38-9E70BB92071F} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
+		{E5356042-272B-4A56-9958-228B6D86D83E} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}

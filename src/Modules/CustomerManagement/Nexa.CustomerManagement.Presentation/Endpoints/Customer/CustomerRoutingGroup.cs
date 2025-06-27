@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
@@ -7,10 +8,13 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
     {
         public CustomerRoutingGroup()
         {
-            Configure("customers", ep =>
+            Configure("user/customers", ep =>
             {
+      
                 ep.Description(x =>
-                    x.Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
+                    x
+                    .WithGroupName("Customers")
+                    .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status500InternalServerError, typeof(ProblemDetails)));
