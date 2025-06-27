@@ -12,23 +12,11 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
             {
                 Id = view.Id,
                 FirstName = view.FirstName,
-                MiddleName = view.MiddleName,
                 LastName = view.LastName,
                 EmailAddress = view.EmailAddress,
-                Nationality = view.Nationality,
                 BirthDate = view.BirthDate,
                 PhoneNumber = view.PhoneNumber,
                 Gender = view.Gender,
-                Address = new AddressDto
-                {
-                    Country = view.Address.Country,
-                    City = view.Address.City,
-                    State = view.Address.State,
-                    StreetLine1 = view.Address.StreetLine1,
-                    StreetLine2 = view.Address.StreetLine2,
-                    PostalCode = view.Address.PostalCode,
-                    ZipCode = view.Address.ZipCode
-                }
             };
 
             return Task.FromResult(dto);

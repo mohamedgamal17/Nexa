@@ -1,12 +1,10 @@
-﻿using MediatR;
-using Nexa.BuildingBlocks.Application.Abstractions.Security;
+﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
@@ -15,14 +13,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerResponseFactory _customerResponseFactory;
-        private readonly IKYCProvider _kycProvider;
 
-        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
+        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory)
         {
             _customerRepository = customerRepository;
             _securityContext = securityContext;
             _customerResponseFactory = customerResponseFactory;
-            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -36,13 +32,10 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 return new Result<CustomerDto>(new BusinessLogicException("User customer application already created."));
             }
 
-            var kycRequest = PrepareKYCClientRequest(request);
-
-            var kycClient = await _kycProvider.CreateClientAsync(kycRequest); 
 
             var customer = new Customer();
 
-            PrepareCustomerEntity(customer, userId, kycClient.Id ,request);
+            PrepareCustomerEntity(customer, userId ,request);
 
             await _customerRepository.InsertAsync(customer);
 
@@ -52,51 +45,15 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         }
 
 
-        private void PrepareCustomerEntity(Customer customer, string userId,string externalId  ,CreateCustomerCommand command)
+        private void PrepareCustomerEntity(Customer customer, string userId ,CreateCustomerCommand command)
         {
-            customer.KYCExternalId = externalId;
             customer.UserId = userId;
             customer.FirstName = command.FirstName;
             customer.LastName = command.LastName;
-            customer.MiddleName = command.MiddleName;
-            customer.Nationality = command.Nationality;
             customer.BirthDate = command.BirthDate;
             customer.PhoneNumber = command.PhoneNumber;
             customer.EmailAddress = command.EmailAddress;
             customer.Gender = command.Gender;
-
-            if (command.Address != null)
-            {
-                customer.Address = new Address
-                {
-                    Country = command.Address.Country,
-                    City = command.Address.City,
-                    State = command.Address.State,
-                    StreetLine1 = command.Address.StreetLine1,
-                    StreetLine2 = command.Address.StreetLine2,
-                    PostalCode = command.Address.PostalCode,
-                    ZipCode = command.Address.ZipCode
-                };
-            }
         }
-
-        private KYCClientRequest PrepareKYCClientRequest(CreateCustomerCommand command)
-        {
-            var request = new KYCClientRequest
-            {
-                FirstName = command.FirstName,
-                MiddleName = command.MiddleName,
-                LastName = command.LastName,
-                PhoneNumber = command.PhoneNumber,
-                EmailAddress = command.EmailAddress,
-                BirthDate = command.BirthDate,
-                Gender = command.Gender,
-                Nationality = command.Nationality
-            };
-
-            return request;
-        }
-
-
     }
 }

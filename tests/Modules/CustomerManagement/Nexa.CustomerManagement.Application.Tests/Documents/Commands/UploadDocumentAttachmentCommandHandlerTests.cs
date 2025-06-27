@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;

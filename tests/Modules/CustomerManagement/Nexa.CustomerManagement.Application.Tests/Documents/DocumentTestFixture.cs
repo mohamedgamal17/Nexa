@@ -26,26 +26,12 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
                 var customer = new Customer
                 {
                     UserId = userId ?? Guid.NewGuid().ToString(),
-                    KYCExternalId = Guid.NewGuid().ToString(),
                     FirstName = Faker.Person.FirstName,
-                    MiddleName = Faker.Person.LastName,
                     LastName = Faker.Person.LastName,
                     Gender = Faker.PickRandom<Gender>(),
                     EmailAddress = Faker.Person.Email,
                     PhoneNumber = "13322767084",
-                    Nationality = "US",
-                    BirthDate = DateTime.Now.AddYears(-25),
-                    Address = new Address
-                    {
-                        Country = Faker.Address.CountryCode(),
-                        State = Faker.Address.State(),
-                        City = Faker.Address.City(),
-                        StreetLine1 = Faker.Address.StreetAddress(),
-                        StreetLine2 = Faker.Address.StreetAddress(),
-                        PostalCode = Faker.Address.ZipCode(),
-                        ZipCode = Faker.Address.ZipCode()
-                    },
-
+                    BirthDate = DateTime.Now.AddYears(-25),               
                 };
 
 
