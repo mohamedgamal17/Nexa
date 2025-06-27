@@ -3,10 +3,11 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Domain.CustomerApplication
+namespace Nexa.CustomerManagement.Domain.CustomerApplications
 {
     public class CustomerApplication : AggregateRoot
     {
+        public string CustomerId { get; set; }
         public string KycExternalId { get;  set; }
         public string? KycCheckId { get;  set; }
         public string? CustomerApplicationExternalId { get;  set; }
@@ -19,7 +20,7 @@ namespace Nexa.CustomerManagement.Domain.CustomerApplication
         public DateTime BirthDate { get; set; }
         public string Nationality { get; set; }
         public Gender Gender { get; set; }
-        public CustomerStatus Status { get;private set; }
+        public CustomerApplicationStatus Status { get;private set; }
         public List<Document> Documents { get; set; } = new List<Document>();
 
     }
