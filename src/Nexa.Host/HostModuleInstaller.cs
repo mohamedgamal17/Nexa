@@ -86,7 +86,10 @@ namespace Nexa.Host
         }
         private void ConfigureSwagger(IServiceCollection services)
         {
-            services.SwaggerDocument();
+            services.SwaggerDocument(opt =>
+            {
+                opt.AutoTagPathSegmentIndex = 2;
+            });
         }
 
         private void ConfigureSignalRHubs(IServiceCollection services)
