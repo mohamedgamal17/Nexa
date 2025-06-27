@@ -63,11 +63,19 @@ namespace Nexa.Host
         {
             services.AddMassTransit(busRegisterConfig =>
             {
+
+                busRegisterConfig.AddConsumers(
+                    Transactions.Application.AssemblyReference.Assembly,
+                    Accounting.Application.AssemblyReference.Assembly
+                    );
+
                 busRegisterConfig.UsingRabbitMq((ctx, rabbitMqConfig) =>
                 {
                     string rabbitMqHost = configuration.GetValue<string>("RabbitMq:Host")!;
                     string userName = configuration.GetValue<string>("RabbitMq:UserName")!;
                     string password = configuration.GetValue<string>("RabbitMq:Password")!;
+
+                    
                     rabbitMqConfig.Host(rabbitMqHost, hostConfig =>
                     {
                         hostConfig.Username(userName);
