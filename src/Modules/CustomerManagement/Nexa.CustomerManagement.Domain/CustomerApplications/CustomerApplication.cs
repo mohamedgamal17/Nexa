@@ -1,5 +1,4 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Enums;
 

@@ -11,6 +11,7 @@ namespace Nexa.CustomerManagement.Application.CustomerApplications.Factories
         {
             var dto = new CustomerApplicationDto
             {
+                Id = view.Id,
                 KycExternalId = view.KycExternalId,
                 KycCheckId = view.KycCheckId,
                 CustomerApplicationExternalId = view.CustomerApplicationExternalId,

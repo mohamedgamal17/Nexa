@@ -1,4 +1,4 @@
-﻿namespace Nexa.CustomerManagement.Domain.Customers
+﻿namespace Nexa.CustomerManagement.Domain.CustomerApplications
 {
     public static class AddressTableConstants
     {

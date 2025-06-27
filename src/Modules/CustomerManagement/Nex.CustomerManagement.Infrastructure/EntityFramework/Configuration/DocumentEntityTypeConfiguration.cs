@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Nexa.CustomerManagement.Domain.CustomerApplication;
+using Nexa.CustomerManagement.Domain.CustomerApplications;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
@@ -25,7 +25,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.HasIndex(x => x.KYCExternalId);
 
-            builder.HasOne<CustomerApplication>().WithMany().HasForeignKey(x => x.CustomerApplicationId);
 
             builder.HasMany(x => x.Attachments).WithOne();
 

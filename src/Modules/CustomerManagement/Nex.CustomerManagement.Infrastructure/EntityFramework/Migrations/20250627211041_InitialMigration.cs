@@ -21,26 +21,55 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    KYCExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Nationality = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomersApplications",
+                schema: "CustomerManagement",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    KycExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    KycCheckId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    CustomerApplicationExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Address_Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Address_City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Address_State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Address_StreetLine1 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Address_StreetLine2 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Address_PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Address_ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
+                    Address_ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Nationality = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_CustomersApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomersApplications_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "CustomerManagement",
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,7 +78,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CustomerApplicationId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     KYCExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     IssuingCountry = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
@@ -63,10 +92,10 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Document", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Document_Customers_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Document_CustomersApplications_CustomerApplicationId",
+                        column: x => x.CustomerApplicationId,
                         principalSchema: "CustomerManagement",
-                        principalTable: "Customers",
+                        principalTable: "CustomersApplications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -96,22 +125,40 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_KYCExternalId",
-                schema: "CustomerManagement",
-                table: "Customers",
-                column: "KYCExternalId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Customers_UserId",
                 schema: "CustomerManagement",
                 table: "Customers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Document_CustomerId",
+                name: "IX_CustomersApplications_CustomerApplicationExternalId",
+                schema: "CustomerManagement",
+                table: "CustomersApplications",
+                column: "CustomerApplicationExternalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomersApplications_CustomerId",
+                schema: "CustomerManagement",
+                table: "CustomersApplications",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomersApplications_KycCheckId",
+                schema: "CustomerManagement",
+                table: "CustomersApplications",
+                column: "KycCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomersApplications_KycExternalId",
+                schema: "CustomerManagement",
+                table: "CustomersApplications",
+                column: "KycExternalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document_CustomerApplicationId",
                 schema: "CustomerManagement",
                 table: "Document",
-                column: "CustomerId");
+                column: "CustomerApplicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Document_KYCExternalId",
@@ -147,6 +194,10 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "Document",
+                schema: "CustomerManagement");
+
+            migrationBuilder.DropTable(
+                name: "CustomersApplications",
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(

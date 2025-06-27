@@ -23,6 +23,81 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Nexa.CustomerManagement.Domain.CustomerApplications.CustomerApplication", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerApplicationExternalId")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KycCheckId")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("KycExternalId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Nationality")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerApplicationExternalId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("KycCheckId");
+
+                    b.HasIndex("KycExternalId");
+
+                    b.ToTable("CustomersApplications", "CustomerManagement");
+                });
+
             modelBuilder.Entity("Nexa.CustomerManagement.Domain.Customers.Customer", b =>
                 {
                     b.Property<string>("Id")
@@ -45,29 +120,15 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<string>("KYCExternalId")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(35)
+                        .HasColumnType("nvarchar(35)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -75,8 +136,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("KYCExternalId");
 
                     b.HasIndex("UserId");
 
@@ -89,7 +148,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("CustomerId")
+                    b.Property<string>("CustomerApplicationId")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -125,7 +184,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerApplicationId");
 
                     b.HasIndex("KYCExternalId");
 
@@ -172,11 +231,17 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     b.ToTable("DocumentAttachment", "CustomerManagement");
                 });
 
-            modelBuilder.Entity("Nexa.CustomerManagement.Domain.Customers.Customer", b =>
+            modelBuilder.Entity("Nexa.CustomerManagement.Domain.CustomerApplications.CustomerApplication", b =>
                 {
-                    b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.Address", "Address", b1 =>
+                    b.HasOne("Nexa.CustomerManagement.Domain.Customers.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Nexa.CustomerManagement.Domain.CustomerApplications.Address", "Address", b1 =>
                         {
-                            b1.Property<string>("CustomerId")
+                            b1.Property<string>("CustomerApplicationId")
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<string>("City")
@@ -211,12 +276,12 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)");
 
-                            b1.HasKey("CustomerId");
+                            b1.HasKey("CustomerApplicationId");
 
-                            b1.ToTable("Customers", "CustomerManagement");
+                            b1.ToTable("CustomersApplications", "CustomerManagement");
 
                             b1.WithOwner()
-                                .HasForeignKey("CustomerId");
+                                .HasForeignKey("CustomerApplicationId");
                         });
 
                     b.Navigation("Address")
@@ -225,9 +290,9 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
             modelBuilder.Entity("Nexa.CustomerManagement.Domain.Documents.Document", b =>
                 {
-                    b.HasOne("Nexa.CustomerManagement.Domain.Customers.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
+                    b.HasOne("Nexa.CustomerManagement.Domain.CustomerApplications.CustomerApplication", null)
+                        .WithMany("Documents")
+                        .HasForeignKey("CustomerApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -237,6 +302,11 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     b.HasOne("Nexa.CustomerManagement.Domain.Documents.Document", null)
                         .WithMany("Attachments")
                         .HasForeignKey("DocumentId");
+                });
+
+            modelBuilder.Entity("Nexa.CustomerManagement.Domain.CustomerApplications.CustomerApplication", b =>
+                {
+                    b.Navigation("Documents");
                 });
 
             modelBuilder.Entity("Nexa.CustomerManagement.Domain.Documents.Document", b =>

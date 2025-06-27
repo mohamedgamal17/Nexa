@@ -1,7 +1,8 @@
-﻿using Nexa.CustomerManagement.Shared.Enums;
+﻿using Nexa.BuildingBlocks.Domain.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Shared.Dtos
 {
-    public class CustomerApplicationDto
+    public class CustomerApplicationDto : EntityDto
     {
         public string CustomerId { get; set; }
         public string KycExternalId { get; set; }
