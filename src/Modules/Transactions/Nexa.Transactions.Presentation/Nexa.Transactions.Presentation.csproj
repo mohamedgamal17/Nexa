@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="FastEndpoints" Version="5.28.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Nexa.Transactions.Application\Nexa.Transactions.Application.csproj" />
+	</ItemGroup>
+</Project>

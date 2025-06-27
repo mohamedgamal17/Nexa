@@ -18,5 +18,6 @@
 	  <ProjectReference Include="..\..\..\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj" />
 	  <ProjectReference Include="..\Nexa.Transactions.Application\Nexa.Transactions.Application.csproj" />
 	  <ProjectReference Include="..\Nexa.Transactions.Domain\Nexa.Transactions.Domain.csproj" />
+	  <ProjectReference Include="..\Nexa.Transactions.Presentation\Nexa.Transactions.Presentation.csproj" />
 	</ItemGroup>
 </Project>
