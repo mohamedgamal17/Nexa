@@ -18,7 +18,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Factories
             var dto = new DocumentDto
             {
                 Id = view.Id,
-                CustomerId = view.CustomerId,
+                CustomerId = view.CustomerApplicationId,
                 UserId = view.UserId,
                 KYCExternalId = view.KYCExternalId,
                 Type = view.Type,

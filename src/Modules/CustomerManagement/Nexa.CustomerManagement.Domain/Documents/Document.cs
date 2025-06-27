@@ -4,7 +4,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
 {
     public class Document : AggregateRoot
     {
-        public string CustomerId { get; set; }
+        public string CustomerApplicationId { get; set; }
         public string UserId { get; set; }
         public string KYCExternalId { get; set; }
         public string IssuingCountry { get; set; }
@@ -18,7 +18,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
         private Document() { }
         public Document(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type)
         {
-            CustomerId = customerId;
+            CustomerApplicationId = customerId;
             UserId = userId;
             IssuingCountry = issuingCountry;
             KYCExternalId = kycExternalId;
@@ -27,7 +27,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
         internal Document(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type , bool isActive,DocumentStatus status, DateTime? verifiedAt, DateTime? rejctedAt)
         {
-            CustomerId = customerId;
+            CustomerApplicationId = customerId;
             UserId = userId;
             IssuingCountry = issuingCountry;
             KYCExternalId = kycExternalId;

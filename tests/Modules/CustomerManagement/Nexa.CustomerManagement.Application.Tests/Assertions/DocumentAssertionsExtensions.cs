@@ -12,7 +12,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             string userId , string customerId , bool isActive ,DocumentStatus status)
         {
             document.UserId.Should().Be(userId);
-            document.CustomerId.Should().Be(customerId);
+            document.CustomerApplicationId.Should().Be(customerId);
             document.Type.Should().Be(command.Type);
             document.IssuingCountry.Should().Be(command.IssuingCountry);
             document.IsActive.Should().Be(isActive);
@@ -22,7 +22,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         public static void AssertDocumentDto(this DocumentDto dto , Document document)
         {
             dto.Id.Should().Be(document.Id);
-            dto.CustomerId.Should().Be(document.CustomerId);
+            dto.CustomerId.Should().Be(document.CustomerApplicationId);
             dto.UserId.Should().Be(document.UserId);
             dto.KYCExternalId.Should().Be(document.KYCExternalId);
             dto.Type.Should().Be(document.Type);

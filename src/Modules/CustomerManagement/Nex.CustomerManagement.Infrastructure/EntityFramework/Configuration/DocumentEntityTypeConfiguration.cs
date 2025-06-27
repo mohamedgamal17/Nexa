@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Nexa.CustomerManagement.Domain.CustomerApplication;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
@@ -14,7 +15,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.Property(x => x.UserId).HasMaxLength(DocumentTableConsts.UserIdLength);
 
-            builder.Property(x => x.CustomerId).HasMaxLength(DocumentTableConsts.CustomerIdLength);
+            builder.Property(x => x.CustomerApplicationId).HasMaxLength(DocumentTableConsts.CustomerIdLength);
 
             builder.Property(x => x.KYCExternalId).IsRequired(false).HasMaxLength(DocumentTableConsts.KYCExternalIdLength);
 
@@ -24,7 +25,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.HasIndex(x => x.KYCExternalId);
 
-            builder.HasOne<Customer>().WithMany().HasForeignKey(x => x.CustomerId);
+            builder.HasOne<CustomerApplication>().WithMany().HasForeignKey(x => x.CustomerApplicationId);
 
             builder.HasMany(x => x.Attachments).WithOne();
 
