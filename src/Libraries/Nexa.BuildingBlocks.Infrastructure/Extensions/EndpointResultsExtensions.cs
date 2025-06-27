@@ -102,7 +102,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
             {
                 var problemDetails = new ProblemDetails
                 {
-                    Status = StatusCodes.Status404NotFound,
+                    Status = StatusCodes.Status500InternalServerError,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Title = "Internal server error",
                     Detail = exception.Message
