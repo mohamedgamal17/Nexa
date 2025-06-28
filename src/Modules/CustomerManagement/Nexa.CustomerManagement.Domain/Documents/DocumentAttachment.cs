@@ -11,23 +11,14 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public string ContentType { get; set; }
         public DocumentSide Side { get; set; }
         private DocumentAttachment() { }
-        public DocumentAttachment(string externalId, string fileName, long size, string contentType)
+        public DocumentAttachment(string externalId, string fileName, long size, string contentType, DocumentSide side)
         {
             KYCExternalId = externalId;
             FileName = fileName;
             Size = size;
             ContentType = contentType;
-  
-        }
-
-        //for testing purpose
-        internal DocumentAttachment(string kYCExternalId, string fileName, long size, string contentType, DocumentSide side)
-        {
-            KYCExternalId = kYCExternalId;
-            FileName = fileName;
-            Size = size;
-            ContentType = contentType;
             Side = side;
         }
+
     }
 }

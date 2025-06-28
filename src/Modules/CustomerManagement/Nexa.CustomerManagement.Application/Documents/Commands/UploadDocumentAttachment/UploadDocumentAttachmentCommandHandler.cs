@@ -83,7 +83,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
             var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.KYCExternalId, kycRequest);
 
-            var attachment = new DocumentAttachment(kycResponse.Id,fileName, kycResponse.Size, kycResponse.ContentType);
+            var attachment = new DocumentAttachment(kycResponse.Id,fileName, kycResponse.Size, kycResponse.ContentType, request.Side);
 
             document.AddAttachment(attachment);
 

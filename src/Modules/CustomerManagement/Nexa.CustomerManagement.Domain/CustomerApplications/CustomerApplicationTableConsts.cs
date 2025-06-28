@@ -22,7 +22,7 @@
 
         public const int NationalityLength = 3;
 
-        public const int PhoneNumberLength = 20;
+        public const int PhoneNumberLength = 35;
 
         public const int EmailAddressLength = 256;
 
