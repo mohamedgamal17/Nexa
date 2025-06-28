@@ -38,41 +38,20 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
                 return await repository.InsertAsync(customer);
             });
         }
-        protected async Task<Document> CreateDocumentAsync(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type, bool isActive, DocumentStatus status, DateTime? verifiedAt, DateTime? rejctedAt)
+        protected async Task<Document> CreateDocumentAsync(string customerId,  string issuingCountry, string kycExternalId, DocumentType type)
         {
             return await WithScopeAsync(async sp =>
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Document>>();
 
-                var document = new Document(customerId, userId, issuingCountry, kycExternalId, type,isActive, status, verifiedAt, rejctedAt);
+                var document = new Document(customerId,  issuingCountry, kycExternalId, type);
 
                 return await repository.InsertAsync(document);
             });
         }
 
-        protected async Task<Document> CreatePendingDocumentAsync(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type)
-        {
-            return await CreateDocumentAsync(customerId, userId, issuingCountry, kycExternalId, type, false, DocumentStatus.Pending, null, null);
-
-        }
-        protected async Task<Document> CreateActiveDocumentAsync(string customerId , string userId, string issuingCountry, string kycExternalId, DocumentType type)
-        {
-
-            return await CreateDocumentAsync(customerId, userId, issuingCountry, kycExternalId, type, true, DocumentStatus.Processing, null, null);
-        }
-
-        protected async Task<Document> CreateApprovedDocumentAsync(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type)
-        {
-            return await CreateDocumentAsync(customerId, userId, issuingCountry, kycExternalId, type, false, DocumentStatus.Approved, DateTime.UtcNow, null);
-        }
-
-
-        protected async Task<Document> CreateRejectedDocumentAsync(string customerId, string userId, string issuingCountry, string kycExternalId, DocumentType type)
-        {
-            return await CreateDocumentAsync(customerId, userId, issuingCountry, kycExternalId, type, false, DocumentStatus.Rejected,null ,DateTime.UtcNow);
-        }
-
-        protected async Task<DocumentAttachment> CreateDocumentAttachmentAsync(string documentId,  string userId, DocumentSide documentSide)
+     
+        protected async Task<DocumentAttachment> CreateDocumentAttachmentAsync(string documentId,   DocumentSide documentSide)
         {
             return await WithScopeAsync(async (sp) =>
             {

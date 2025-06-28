@@ -22,5 +22,19 @@ namespace Nexa.CustomerManagement.Domain.CustomerApplications
         public CustomerApplicationStatus Status { get;private set; }
         public List<Document> Documents { get; set; } = new List<Document>();
 
+        public void AddDocument(Document document)
+        {
+            Documents.Add(document);
+        }
+
+        public Document? FindDocument(string id)
+        {
+            return Documents.SingleOrDefault(x => x.Id == id);
+        }
+
+        public void RemoveDocument(Document document)
+        {
+            Documents.Remove(document);
+        }
     }
 }

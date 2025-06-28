@@ -8,6 +8,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
     [Authorize]
     public class CreateDocumentCommand : ICommand<DocumentDto>
     {
+        public string CustomerApplicationId { get; set; }
         public DocumentType Type { get; set; }
 
         public string IssuingCountry { get; set; }

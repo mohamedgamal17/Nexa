@@ -1,28 +1,33 @@
-﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
+﻿using Microsoft.EntityFrameworkCore;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.CustomerManagement.Application.CustomerApplications.Policies;
 using Nexa.CustomerManagement.Application.Documents.Factories;
-using Nexa.CustomerManagement.Application.Helpers;
 using Nexa.CustomerManagement.Domain;
+using Nexa.CustomerManagement.Domain.CustomerApplications;
+using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
-
 namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
 {
     public class UploadDocumentAttachmentCommandHandler : IApplicationRequestHandler<UploadDocumentAttachmentCommand, DocumentAttachementDto>
     {
-        private readonly ICustomerManagementRepository<Document> _documentRepository;
-        private readonly ICustomerManagementRepository<DocumentAttachment> _documentAttachmentRepository;
+        private readonly ICustomerManagementRepository<Customer> _customerRepository;
+        private readonly ICustomerManagementRepository<CustomerApplication> _customerApplicationRepository;
+        private readonly IApplicationAuthorizationService _applicationAuthorizationService;
         private readonly IDocumentAttachementResponseFactory _documentAttachementResponseFactory;
         private readonly ISecurityContext _securityContext;
         private readonly IKYCProvider _kycProvider;
-        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Document> documentRepository, ICustomerManagementRepository<DocumentAttachment> documentAttachmentRepository, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
+
+        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<CustomerApplication> customerApplicationRepository, IApplicationAuthorizationService applicationAuthorizationService, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
         {
-            _documentRepository = documentRepository;
-            _documentAttachmentRepository = documentAttachmentRepository;
+            _customerRepository = customerRepository;
+            _customerApplicationRepository = customerApplicationRepository;
+            _applicationAuthorizationService = applicationAuthorizationService;
             _documentAttachementResponseFactory = documentAttachementResponseFactory;
             _securityContext = securityContext;
             _kycProvider = kycProvider;
@@ -32,29 +37,44 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
         {
             string userId = _securityContext.User!.Id;
 
-            var document = await _documentRepository.SingleOrDefaultAsync(x => x.Id == request.DocumentId);
+            var currentCustomerExist = await _customerRepository.AnyAsync(x => x.UserId == userId);
+
+            if (!currentCustomerExist)
+            {
+                return new Result<DocumentAttachementDto>(new BusinessLogicException("Current user should complete thier customer application first before creating kyc document."));
+            }
+
+            var customerApplication = await _customerApplicationRepository.AsQuerable()
+                .Include(x => x.Documents)
+                .SingleOrDefaultAsync(x => x.Id == request.CustomerApplicationId);
+
+            if (customerApplication == null)
+            {
+                return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(CustomerApplication), request.CustomerApplicationId));
+            }
+
+            var authorizationRequirment = await _applicationAuthorizationService
+                .AuthorizeAsync(customerApplication, CustomerApplicationOperationalRequirement.IsCustomerApplicationOwner);
+
+            if (authorizationRequirment.IsFailure)
+            {
+                return new Result<DocumentAttachementDto>(authorizationRequirment.Exception!);
+            }
+
+
+            if (customerApplication.Status != CustomerApplicationStatus.Draft)
+            {
+                return new Result<DocumentAttachementDto>(new BusinessLogicException("Customer application must be in draft state to be able to attach document."));
+            }
+
+
+            var document = customerApplication.FindDocument(request.DocumentId);
 
             if (document == null)
             {
                 return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(Document), request.DocumentId));
             }
 
-            var isDocumentOwner = IsDocumentOwner(userId, document);
-
-            if (!isDocumentOwner)
-            {
-                return new Result<DocumentAttachementDto>(new ForbiddenAccessException());
-            }
-
-            if (document.IsActive)
-            {
-                return new Result<DocumentAttachementDto>(new BusinessLogicException("Cannot delete active processing kyc document."));
-            }
-
-            if (document.Status == DocumentStatus.Approved)
-            {
-                return new Result<DocumentAttachementDto>(new BusinessLogicException("Cannot delete approved kyc document."));
-            }
             string extensions = request.Data.FileName.Split(".")[1];
 
             string fileName = $"{DateTime.Now.Ticks}.{extensions}";
@@ -67,17 +87,9 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
             document.AddAttachment(attachment);
 
-            await _documentRepository.UpdateAsync(document);
+            await _customerApplicationRepository.UpdateAsync(customerApplication);
 
-            var response = await _documentAttachmentRepository.SingleAsync(x => x.Id == attachment.Id);
-
-            return await _documentAttachementResponseFactory.PrepareDto(response);
-
-        }
-
-        private bool IsDocumentOwner(string userId, Document document)
-        {
-            return userId == document.UserId;
+            return await _documentAttachementResponseFactory.PrepareDto(attachment);
         }
 
         private KYCDocumentAttachmentRequest PrepareKYCDocumentAttachement(string fileName,UploadDocumentAttachmentCommand command) 

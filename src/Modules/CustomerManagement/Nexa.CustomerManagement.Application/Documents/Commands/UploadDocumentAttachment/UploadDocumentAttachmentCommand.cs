@@ -10,6 +10,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
     [Authorize]
     public class UploadDocumentAttachmentCommand : ICommand<DocumentAttachementDto>
     {
+        public string CustomerApplicationId { get; set; }
         public string DocumentId { get; set; }
         public IFormFile Data { get; set; }
         public DocumentSide Side { get; set; }
