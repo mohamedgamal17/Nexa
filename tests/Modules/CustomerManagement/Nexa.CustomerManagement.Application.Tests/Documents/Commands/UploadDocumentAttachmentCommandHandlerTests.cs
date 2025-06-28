@@ -32,10 +32,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
-            var fakeDocument = await CreatePendingDocumentAsync(fakeCustomer.Id, userId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
+            var fakeCustomerApplication = await CreateCustomerApplicationAsync(fakeCustomer.Id);
+
+            var fakeDocument = await CreateDocumentAsync(fakeCustomerApplication.Id, Faker.PickRandom<DocumentType>());
 
             var command = new UploadDocumentAttachmentCommand
             {
+                CustomerApplicationId = fakeCustomerApplication.Id,
                 DocumentId = fakeDocument.Id,
                 Data = await PrepareImageData(),
                 Side = Faker.PickRandom<DocumentSide>()
@@ -57,17 +60,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         [Test]
         public async Task Should_failure_while_uploading_document_attachment_when_user_is_not_authorized()
         {
-            var fakeCustomer = await CreateCustomerAsync();
-
-            var fakeDocument = await CreatePendingDocumentAsync(fakeCustomer.Id, fakeCustomer.UserId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
 
             var command = new UploadDocumentAttachmentCommand
             {
-                DocumentId = fakeDocument.Id,
+                CustomerApplicationId = Guid.NewGuid().ToString(),
+                DocumentId = Guid.NewGuid().ToString(),
                 Data = await PrepareImageData(),
                 Side = Faker.PickRandom<DocumentSide>()
             };
-
 
             var result = await Mediator.Send(command);
 
@@ -75,17 +75,23 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         }
 
         [Test]
-        public async Task Should_failure_while_uploading_document_attachment_when_user_is_not_own_the_document()
+        public async Task Should_failure_while_uploading_document_attachment_when_user_is_not_own_customer_application()
         {
             AuthenticationService.Login();
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync();
+            var owenedCustomer = await CreateCustomerAsync(userId);
 
-            var fakeDocument = await CreatePendingDocumentAsync(fakeCustomer.Id, fakeCustomer.UserId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
+            var unownedCustomer = await CreateCustomerAsync();
+
+            var fakeApplication = await CreateCustomerApplicationAsync(unownedCustomer.Id);
+
+            var fakeDocument = await CreateDocumentAsync(fakeApplication.Id, DocumentType.Passport);
 
 
             var command = new UploadDocumentAttachmentCommand
             {
+                CustomerApplicationId = fakeApplication.Id,
                 DocumentId = fakeDocument.Id,
                 Data = await PrepareImageData(),
                 Side = Faker.PickRandom<DocumentSide>()
@@ -97,30 +103,31 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         }
 
         [Test]
-        public async Task Should_failure_while_uploading_document_attachment_when_document_is_already_in_processing()
+        public async Task Should_failure_while_uploading_document_attachment_when_customer_application_not_exist()
         {
             AuthenticationService.Login();
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId);
+            await CreateCustomerAsync(userId);
 
-            var fakeDocument = await CreateActiveDocumentAsync(fakeCustomer.Id, userId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
 
             var command = new UploadDocumentAttachmentCommand
             {
-                DocumentId = fakeDocument.Id,
+                CustomerApplicationId = Guid.NewGuid().ToString(),
+                DocumentId = Guid.NewGuid().ToString(),
                 Data = await PrepareImageData(),
                 Side = Faker.PickRandom<DocumentSide>()
             };
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException));
+
         }
 
         [Test]
-        public async Task Should_failure_while_uploading_document_attachment_when_document_is_already_approved()
+        public async Task Should_failure_while_uploading_document_attachment_when_document_is_not_exist()
         {
             AuthenticationService.Login();
 
@@ -128,18 +135,19 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
-            var fakeDocument = await CreateApprovedDocumentAsync(fakeCustomer.Id, userId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
+            var fakeApplication = await CreateCustomerApplicationAsync(fakeCustomer.Id);
 
             var command = new UploadDocumentAttachmentCommand
             {
-                DocumentId = fakeDocument.Id,
+                CustomerApplicationId = fakeApplication.Id,
+                DocumentId = Guid.NewGuid().ToString(),
                 Data = await PrepareImageData(),
                 Side = Faker.PickRandom<DocumentSide>()
             };
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException));
 
         }
 

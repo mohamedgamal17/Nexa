@@ -7,8 +7,6 @@ using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Enums;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-
 namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 {
     [TestFixture]
@@ -31,8 +29,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
+            var fakeCustomerApplication = await CreateCustomerApplicationAsync(fakeCustomer.Id);
+
             var command = new CreateDocumentCommand
             {
+                CustomerApplicationId = fakeCustomerApplication.Id,
                 IssuingCountry = "US",
                 Type = Faker.PickRandom<DocumentType>()
             };
@@ -41,11 +42,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             response.ShouldBeSuccess();
 
-            var document = await DocumentRepositorty.SingleOrDefaultAsync(x => x.Id == response.Value.Id);
+            var document = await DocumentRepositorty.SingleOrDefaultAsync(x => x.Id == response.Value!.Id);
 
             document.Should().NotBeNull();
 
-            document!.AssertDocument(command, userId, fakeCustomer.Id, false, DocumentStatus.Pending);
+            document!.AssertDocument(command, fakeCustomerApplication.Id);
 
             response.Value!.AssertDocumentDto(document!);
         }
@@ -53,10 +54,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         [Test]
         public async Task Should_failure_while_creating_document_when_user_is_not_authenticated()
         {
-            var fakeCustomer = await CreateCustomerAsync();
-
             var command = new CreateDocumentCommand
             {
+                CustomerApplicationId = Guid.NewGuid().ToString(),
                 IssuingCountry = "US",
                 Type = Faker.PickRandom<DocumentType>()
             };
@@ -68,12 +68,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
 
         [Test]
-        public async Task Should_failure_while_creating_document_when_customer_application_is_not_created()
+        public async Task Should_failure_while_creating_document_when_customer_is_not_created()
         {
             AuthenticationService.Login();
 
             var commadn = new CreateDocumentCommand
             {
+                CustomerApplicationId = Guid.NewGuid().ToString(),
                 IssuingCountry = "US",
                 Type = Faker.PickRandom<DocumentType>()
             };
@@ -84,50 +85,25 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         }
 
         [Test]
-        public async Task Should_failure_while_creating_document_when_there_is_already_active_processing_document()
+        public async Task Should_failure_while_creating_document_when_customer_application_is_not_created()
         {
             AuthenticationService.Login();
+
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
-            var fakeDocument = await CreateActiveDocumentAsync(fakeCustomer.Id, userId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
-
-
             var command = new CreateDocumentCommand
             {
+                CustomerApplicationId = Guid.NewGuid().ToString(),
                 IssuingCountry = "US",
                 Type = Faker.PickRandom<DocumentType>()
             };
 
             var response = await Mediator.Send(command);
 
-            response.ShoulBeFailure(typeof(BusinessLogicException));
+            response.ShoulBeFailure(typeof(EntityNotFoundException));
         }
-
-        [Test]
-        public async Task Should_failure_while_creating_document_when_there_is_already_approved_document()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerAsync(userId);
-
-            var fakeDocument = await CreateApprovedDocumentAsync(fakeCustomer.Id, userId, "US", Guid.NewGuid().ToString(), Faker.PickRandom<DocumentType>());
-
-
-            var command = new CreateDocumentCommand
-            {
-                IssuingCountry = "US",
-                Type = Faker.PickRandom<DocumentType>()
-            };
-
-            var response = await Mediator.Send(command);
-
-            response.ShoulBeFailure(typeof(BusinessLogicException));
-        }
-
     }
 }

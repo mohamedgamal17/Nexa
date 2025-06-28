@@ -8,8 +8,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
 {
     public static class DocumentAssertionsExtensions
     {
-        public static void AssertDocument(this Document document , CreateDocumentCommand command ,
-            string userId , string customerApplicationId , bool isActive ,DocumentStatus status)
+        public static void AssertDocument(this Document document , CreateDocumentCommand command , string customerApplicationId)
         {
             document.CustomerApplicationId.Should().Be(customerApplicationId);
             document.Type.Should().Be(command.Type);
