@@ -33,5 +33,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddres;
         }
+
+        public void UpdateInfo(CustomerInfo info)
+        {
+            Info = info;
+        }
     }
 }
