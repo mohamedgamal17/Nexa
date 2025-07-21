@@ -1,4 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Domain;
+using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Documents
 {
@@ -8,6 +9,8 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public string KYCExternalId { get; set; }
         public string IssuingCountry { get; set; }
         public DocumentType Type { get; set; }
+
+        public VerificationState State { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
         private Document() { }
         public Document(string customerApplicationId, string issuingCountry, string kycExternalId, DocumentType type)

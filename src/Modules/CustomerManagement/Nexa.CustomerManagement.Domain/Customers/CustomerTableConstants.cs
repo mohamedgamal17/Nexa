@@ -8,13 +8,9 @@
 
         public const int UserIdLength = 256;
 
-        public const int FirstNameLength = 256;
+        public const int KycCustomerId = 256;
 
-        public const int MiddleNameLength = 256;
-
-        public const int LastNameLength = 256;
-
-        public const int NationalityLength = 3;
+        public const int FintechCustomerId = 256;
 
         public const int PhoneNumberLength = 35;
 
