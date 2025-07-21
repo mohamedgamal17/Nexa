@@ -33,27 +33,13 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
             }
 
 
-            var customer = new Customer();
-
-            PrepareCustomerEntity(customer, userId ,request);
+            var customer = new Customer(userId,request.PhoneNumber,request.EmailAddress);
 
             await _customerRepository.InsertAsync(customer);
 
             var result = await _customerRepository.SingleAsync(x => x.Id == customer.Id);
 
             return await _customerResponseFactory.PrepareDto(result);
-        }
-
-
-        private void PrepareCustomerEntity(Customer customer, string userId ,CreateCustomerCommand command)
-        {
-            customer.UserId = userId;
-            customer.FirstName = command.FirstName;
-            customer.LastName = command.LastName;
-            customer.BirthDate = command.BirthDate;
-            customer.PhoneNumber = command.PhoneNumber;
-            customer.EmailAddress = command.EmailAddress;
-            customer.Gender = command.Gender;
         }
     }
 }

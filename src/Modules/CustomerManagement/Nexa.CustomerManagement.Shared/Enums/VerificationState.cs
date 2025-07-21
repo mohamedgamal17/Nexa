@@ -1,5 +1,4 @@
-﻿
-namespace Nexa.CustomerManagement.Domain.Customers
+﻿namespace Nexa.CustomerManagement.Shared.Enums
 {
     public enum VerificationState
     {

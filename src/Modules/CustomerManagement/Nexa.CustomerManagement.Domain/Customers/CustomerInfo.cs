@@ -13,6 +13,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string IdNumber { get; private set; }
         public Address Address { get; private set; }
 
+        private CustomerInfo()
+        {
+            
+        }
         public CustomerInfo(string firstName, string lastName, DateTime birthDate, string nationality, Gender gender, string idNumber, Address address)
         {
             FirstName = firstName;

@@ -32,23 +32,13 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
                 return new Result<CustomerDto>(new EntityNotFoundException("Current user dosen't have customer application"));
             }
 
-            PrepareCustomerEntity(customer, request);
+            customer.Update(request.PhoneNumber, request.EmailAddress);
 
             await _customerRepository.UpdateAsync(customer);
 
             var result = await _customerRepository.SingleAsync(x => x.Id == customer.Id);
 
             return await _customerResponseFactory.PrepareDto(result);
-        }
-
-        private void PrepareCustomerEntity(Customer customer, UpdateCustomerCommand command)
-        {
-            customer.FirstName = command.FirstName;
-            customer.LastName = command.LastName;
-            customer.BirthDate = command.BirthDate;
-            customer.PhoneNumber = command.PhoneNumber;
-            customer.EmailAddress = command.EmailAddress;
-            customer.Gender = command.Gender;
         }
     }
 }

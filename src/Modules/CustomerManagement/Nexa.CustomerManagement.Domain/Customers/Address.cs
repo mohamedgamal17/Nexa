@@ -10,6 +10,11 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string StreetLine { get; private set; }
         public string? PostalCode { get; private set; }
         public string? ZipCode { get; private set; }
+
+        private Address()
+        {
+            
+        }
         public Address(string country, string city, string state, string streetLine, string? postalCode = null, string? zipCode = null)
         {
             Country = country;

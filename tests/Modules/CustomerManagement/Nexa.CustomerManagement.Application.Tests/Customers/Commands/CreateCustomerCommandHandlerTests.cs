@@ -1,16 +1,12 @@
 ﻿using Bogus;
-using Bogus.Extensions.Canada;
-using Bogus.Extensions.UnitedStates;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
-using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]
@@ -76,12 +72,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var command = new CreateCustomerCommand()
             {
-                FirstName = faker.Person.FirstName,
-                LastName = faker.Person.LastName,
-                Gender = faker.PickRandom<Gender>(),
                 EmailAddress = faker.Person.Email,
-                PhoneNumber = "13322767084",
-                BirthDate = DateTime.Now.AddYears(-25),
+                PhoneNumber = faker.Person.Phone,
             };
 
             return command;

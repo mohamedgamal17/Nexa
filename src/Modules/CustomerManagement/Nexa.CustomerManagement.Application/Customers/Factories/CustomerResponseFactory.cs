@@ -11,15 +11,42 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
             var dto = new CustomerDto
             {
                 Id = view.Id,
-                FirstName = view.FirstName,
-                LastName = view.LastName,
                 EmailAddress = view.EmailAddress,
-                BirthDate = view.BirthDate,
                 PhoneNumber = view.PhoneNumber,
-                Gender = view.Gender,
             };
 
+            if(view.Info != null)
+            {
+                dto.Info = PrepareCustomerInfoDto(view.Info);
+            }
+
             return Task.FromResult(dto);
+        }
+
+
+        private CustomerInfoDto PrepareCustomerInfoDto(CustomerInfo info)
+        {
+            var dto = new CustomerInfoDto
+            {
+                FirstName = info.FirstName,
+                LastName = info.LastName,
+                Nationality = info.Nationality,
+                Gender = info.Gender,
+                BirthDate = info.BirthDate,
+                IdNumber = info.IdNumber,
+                Address = new AddressDto
+                {
+                    Country = info.Address.Country,
+                    City = info.Address.City,
+                    State = info.Address.State,
+                    StreetLine = info.Address.StreetLine,
+                    PostalCode = info.Address.PostalCode,
+                    ZipCode = info.Address.ZipCode
+                }
+
+            };
+
+            return dto;
         }
     }
 }

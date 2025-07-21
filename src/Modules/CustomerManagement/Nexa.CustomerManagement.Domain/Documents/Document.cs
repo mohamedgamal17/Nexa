@@ -1,5 +1,4 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Documents
 {
@@ -9,7 +8,6 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public string KYCExternalId { get; set; }
         public string IssuingCountry { get; set; }
         public DocumentType Type { get; set; }
-
         public VerificationState State { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
         private Document() { }
@@ -38,21 +36,6 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Attachments.Add(attachment);
         }
 
-        public DocumentAttachment? FindAttachment(string id)
-        {
-            return Attachments.SingleOrDefault(x => x.Id == id);
-        }
 
-        public void RemoveAttachment(DocumentAttachment attachment)
-        {
-             Attachments.Remove(attachment);
-        }
-        public bool HasAttachmentsBothSides()
-        {
-            var sides = Attachments.Select(x => x.Side);
-
-            return sides.Contains(DocumentSide.Front) && sides.Contains(DocumentSide.Back);
-        }
-    
     }
 }

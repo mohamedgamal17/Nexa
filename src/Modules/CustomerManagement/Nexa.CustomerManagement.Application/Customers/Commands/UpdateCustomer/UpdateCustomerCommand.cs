@@ -10,12 +10,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
     [Authorize]
     public class UpdateCustomerCommand : ICommand<CustomerDto>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
-        public DateTime BirthDate { get; set; }
-        public Gender Gender { get; set; }
-
     }
 }

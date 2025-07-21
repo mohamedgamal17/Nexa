@@ -23,19 +23,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
 
-
-                var customer = new Customer
-                {
-                    UserId = userId ?? Guid.NewGuid().ToString(),
-                    FirstName = Faker.Person.FirstName,
-                    LastName = Faker.Person.LastName,
-                    Gender = Faker.PickRandom<Gender>(),
-                    EmailAddress = Faker.Person.Email,
-                    PhoneNumber = "13322767084",
-                    BirthDate = DateTime.Now.AddYears(-25),               
-                };
-
-
+                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email);
+               
                 return await repository.InsertAsync(customer);
             });
         }
