@@ -1,103 +1,88 @@
-﻿//using Microsoft.EntityFrameworkCore;
-//using Nexa.BuildingBlocks.Application.Abstractions.Security;
-//using Nexa.BuildingBlocks.Application.Requests;
-//using Nexa.BuildingBlocks.Domain.Exceptions;
-//using Nexa.BuildingBlocks.Domain.Results;
-//using Nexa.CustomerManagement.Application.Documents.Factories;
-//using Nexa.CustomerManagement.Domain;
-//using Nexa.CustomerManagement.Domain.CustomerApplications;
-//using Nexa.CustomerManagement.Domain.Customers;
-//using Nexa.CustomerManagement.Domain.Documents;
-//using Nexa.CustomerManagement.Domain.KYC;
-//using Nexa.CustomerManagement.Shared.Dtos;
-//using Nexa.CustomerManagement.Shared.Enums;
-//namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
-//{
-//    public class UploadDocumentAttachmentCommandHandler : IApplicationRequestHandler<UploadDocumentAttachmentCommand, DocumentAttachementDto>
-//    {
-//        private readonly ICustomerManagementRepository<Customer> _customerRepository;
-//        private readonly ICustomerManagementRepository<CustomerApplication> _customerApplicationRepository;
-//        private readonly IApplicationAuthorizationService _applicationAuthorizationService;
-//        private readonly IDocumentAttachementResponseFactory _documentAttachementResponseFactory;
-//        private readonly ISecurityContext _securityContext;
-//        private readonly IKYCProvider _kycProvider;
+﻿using Microsoft.EntityFrameworkCore;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
+using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.CustomerManagement.Application.Documents.Factories;
+using Nexa.CustomerManagement.Domain;
+using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Dtos;
+namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
+{
+    public class UploadDocumentAttachmentCommandHandler : IApplicationRequestHandler<UploadDocumentAttachmentCommand, DocumentAttachementDto>
+    {
+        private readonly ICustomerManagementRepository<Customer> _customerRepository;
+        private readonly ICustomerManagementRepository<Document> _documentRepository;
+        private readonly IApplicationAuthorizationService _applicationAuthorizationService;
+        private readonly IDocumentAttachementResponseFactory _documentAttachementResponseFactory;
+        private readonly ISecurityContext _securityContext;
+        private readonly IKYCProvider _kycProvider;
 
-//        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<CustomerApplication> customerApplicationRepository, IApplicationAuthorizationService applicationAuthorizationService, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
-//        {
-//            _customerRepository = customerRepository;
-//            _customerApplicationRepository = customerApplicationRepository;
-//            _applicationAuthorizationService = applicationAuthorizationService;
-//            _documentAttachementResponseFactory = documentAttachementResponseFactory;
-//            _securityContext = securityContext;
-//            _kycProvider = kycProvider;
-//        }
+        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<Document> documentRepository, IApplicationAuthorizationService applicationAuthorizationService, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
+        {
+            _customerRepository = customerRepository;
+            _documentRepository = documentRepository;
+            _applicationAuthorizationService = applicationAuthorizationService;
+            _documentAttachementResponseFactory = documentAttachementResponseFactory;
+            _securityContext = securityContext;
+            _kycProvider = kycProvider;
+        }
 
-//        public async Task<Result<DocumentAttachementDto>> Handle(UploadDocumentAttachmentCommand request, CancellationToken cancellationToken)
-//        {
-//            string userId = _securityContext.User!.Id;
+        public async Task<Result<DocumentAttachementDto>> Handle(UploadDocumentAttachmentCommand request, CancellationToken cancellationToken)
+        {
+            string userId = _securityContext.User!.Id;
 
-//            var currentCustomerExist = await _customerRepository.AnyAsync(x => x.UserId == userId);
+            var customer = await _customerRepository
+                .AsQuerable()
+                .Include(x => x.Documents)
+                .ThenInclude(x => x.Attachments)
+                .SingleOrDefaultAsync(x => x.UserId == userId);
 
-//            if (!currentCustomerExist)
-//            {
-//                return new Result<DocumentAttachementDto>(new BusinessLogicException("Current user should complete thier customer application first before creating kyc document."));
-//            }
+            if (customer == null)
+            {
+                return new Result<DocumentAttachementDto>(new BusinessLogicException("Current user customer is not exist."));
+            }
 
-//            var customerApplication = await _customerApplicationRepository.AsQuerable()
-//                .Include(x => x.Documents)
-//                .SingleOrDefaultAsync(x => x.Id == request.CustomerApplicationId);
+            var document = customer.FindDocument(request.DocumentId);
 
-//            if (customerApplication == null)
-//            {
-//                return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(CustomerApplication), request.CustomerApplicationId));
-//            }
+            if(document == null)
+            {
+                return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(Document)  ,request.DocumentId));
+            }
 
-        
+            string extensions = request.Data.FileName.Split(".")[1];
 
-//            if (customerApplication.Status != CustomerApplicationStatus.Draft)
-//            {
-//                return new Result<DocumentAttachementDto>(new BusinessLogicException("Customer application must be in draft state to be able to attach document."));
-//            }
+            string fileName = $"{DateTime.Now.Ticks}.{extensions}";
 
+            var attachmentRequest = PrepareKYCDocumentAttachement(fileName, request);
 
-//            var document = customerApplication.FindDocument(request.DocumentId);
+            var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.KYCExternalId!, attachmentRequest);
 
-//            if (document == null)
-//            {
-//                return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(Document), request.DocumentId));
-//            }
+            var attachment = new DocumentAttachment(kycResponse.Id, fileName, kycResponse.Size, kycResponse.ContentType, request.Side);
 
-//            string extensions = request.Data.FileName.Split(".")[1];
+            document.AddAttachment(attachment);
 
-//            string fileName = $"{DateTime.Now.Ticks}.{extensions}";
+            await _customerRepository.UpdateAsync(customer);
 
-//            var kycRequest = PrepareKYCDocumentAttachement(fileName,request);
+            return await _documentAttachementResponseFactory.PrepareDto(attachment);
+        }
 
-//            var kycResponse = await _kycProvider.UploadDocumentAttachementAsync(document.KYCExternalId, kycRequest);
+        private KYCDocumentAttachmentRequest PrepareKYCDocumentAttachement(string fileName, UploadDocumentAttachmentCommand command)
+        {
+            var imageStream = new MemoryStream();
 
-//            var attachment = new DocumentAttachment(kycResponse.Id,fileName, kycResponse.Size, kycResponse.ContentType, request.Side);
+            command.Data.CopyTo(imageStream);
 
-//            document.AddAttachment(attachment);
+            var request = new KYCDocumentAttachmentRequest
+            {
+                FileName = fileName,
+                Data = imageStream,
+                Side = command.Side
+            };
 
-//            await _customerApplicationRepository.UpdateAsync(customerApplication);
-
-//            return await _documentAttachementResponseFactory.PrepareDto(attachment);
-//        }
-
-//        private KYCDocumentAttachmentRequest PrepareKYCDocumentAttachement(string fileName,UploadDocumentAttachmentCommand command) 
-//        {
-//            var imageStream = new MemoryStream();
-
-//            command.Data.CopyTo(imageStream);
-
-//            var request = new KYCDocumentAttachmentRequest
-//            {
-//                FileName = fileName,
-//                Data = imageStream,
-//                Side = command.Side
-//            };
-
-//            return request;
-//        }
-//    }
-//}
+            return request;
+        }
+    }
+}

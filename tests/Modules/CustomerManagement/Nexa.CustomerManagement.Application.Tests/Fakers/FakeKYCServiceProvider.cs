@@ -1,10 +1,13 @@
 ﻿using Nexa.CustomerManagement.Domain.KYC;
-using Nexa.CustomerManagement.Shared.Enums;
-
 namespace Nexa.CustomerManagement.Application.Tests.Fakers
 {
     public class FakeKYCServiceProvider : IKYCProvider
     {
+        private readonly static List<KYCClient> _kycClients = new List<KYCClient>();
+
+        private readonly static List<KYCDocument> _kycDocuments = new List<KYCDocument>();
+
+        private readonly static List<KYCCheck> _kycCheck = new List<KYCCheck>();
         public Task<KYCCheck> CreateCheckAsync(KYCCheckRequest request, CancellationToken cancellationToken = default)
         {
             var kycCheck = new KYCCheck
@@ -15,6 +18,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 ClientId = request.ClientId,
                 Status = KYCCheckStatus.Pending
             };
+
+            _kycCheck.Add(kycCheck);
 
             return Task.FromResult(kycCheck);
         }
@@ -34,6 +39,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 Gender = request.Gender
             };
 
+            _kycClients.Add(response);
+
             return Task.FromResult(response);
         }
         public Task<KYCClient> UpdateClientAsync(string clientId, KYCClientRequest request, CancellationToken cancellationToken = default)
@@ -51,6 +58,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 Gender = request.Gender
             };
 
+            _kycClients.Add(response);
+
             return Task.FromResult(response);
 
         }
@@ -64,33 +73,44 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 Type = request.Type
             };
 
+            _kycDocuments.Add(response);
+
             return Task.FromResult(response);
         }
 
         public Task<KYCDocument> GetDocumentAsync(string documentId, CancellationToken cancellationToken = default)
         {
-            var response = new KYCDocument
-            {
-                Id = documentId,
-                ClientId = Guid.NewGuid().ToString(),
-                IssuingCountry = "US",
-                Type = DocumentType.Passport
-            };
+            var response = _kycDocuments.Single(x => x.Id == documentId);
 
             return Task.FromResult(response);
         }
         public Task DeleteDocumentAsync(string documentId, CancellationToken cancellationToken = default)
         {
+            var data =  _kycDocuments.Single(x => x.Id == documentId);
+
+            _kycDocuments.Remove(data);
+
             return Task.CompletedTask;
         }
         
 
         public Task DeleteDocumentAttachementAsync(string documentId, string attachmentId, CancellationToken cancellationToken = default)
         {
+            var data = _kycDocuments.Single(x => x.Id == documentId);
+
+            var attachment =  data.Attachements?.SingleOrDefault(x => x.Id == attachmentId);
+
+            if(attachment != null)
+            {
+                data.Attachements!.Remove(attachment);
+            }
+           
             return Task.CompletedTask;
         }
         public Task<KYCDocumentAttachement> UploadDocumentAttachementAsync(string documentId, KYCDocumentAttachmentRequest request, CancellationToken cancellationToken = default)
         {
+            var document = _kycDocuments.Single(x => x.Id == documentId);
+
             var response = new KYCDocumentAttachement
             {
                 Id = Guid.NewGuid().ToString(),
@@ -101,40 +121,27 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 DownloadLink = Guid.NewGuid().ToString()
             };
 
+            if (document.Attachements == null)
+                document.Attachements = new List<KYCDocumentAttachement>();
+
+            document.Attachements.Add(response);
+
             return Task.FromResult(response);
         }
         public Task<KYCDocumentAttachement> DownloadDocumentAttachementAsync(string documentId, string attachmentId)
         {
-            var attachment = new KYCDocumentAttachement
-            {
-                Id = attachmentId,
-                FileName = Guid.NewGuid().ToString(),
-                Side = DocumentSide.Front,
-                Size = 655445,
-                ContentType = "imag/jpg",
-                DownloadLink = Guid.NewGuid().ToString()
-            };
+            var document = _kycDocuments.Single(x => x.Id == documentId);
+
+            var attachment = document.Attachements!.Single(x => x.Id == attachmentId);
 
             return Task.FromResult(attachment);
         }
 
         public Task<KYCCheck> GetCheckAsync(string checkId, CancellationToken cancellationToken = default)
         {
-            var kycCheck = new KYCCheck
-            {
-                Id = checkId,
-                ClientId = Guid.NewGuid().ToString(),
-                DocumentId = Guid.NewGuid().ToString(),
-                Status = KYCCheckStatus.Pending,
-                Type = KYCCheckType.DocumentCheck
-            };
+            var kycCheck = _kycCheck.Single(x => x.Id == checkId);
 
             return Task.FromResult(kycCheck);
         }
-
-
-
-
-    
     }
 }

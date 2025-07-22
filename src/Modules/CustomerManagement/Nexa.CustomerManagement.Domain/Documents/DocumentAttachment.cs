@@ -19,6 +19,17 @@ namespace Nexa.CustomerManagement.Domain.Documents
             ContentType = contentType;
             Side = side;
         }
+        public DocumentAttachment( string fileName, long size, string contentType, DocumentSide side)
+        {
+            FileName = fileName;
+            Size = size;
+            ContentType = contentType;
+            Side = side;
+        }
+        public void AddKycExternalId(string id)
+        {
+            KYCExternalId = id;
+        }
 
     }
 }

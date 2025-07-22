@@ -28,10 +28,24 @@ namespace Nexa.CustomerManagement.Domain.Customers
             EmailAddress = emailAddres;
         }
 
+        public void AddKycCustomerId(string kycCustomerId)
+        {
+            KycCustomerId = kycCustomerId;
+        }
         public void Update(string phoneNumber , string emailAddres)
         {
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddres;
+        }
+
+        public void AddDocument(Document document)
+        {
+            Documents.Add(document);
+        }
+
+        public Document? FindDocument(string id)
+        {
+            return Documents.SingleOrDefault(x => x.Id == id);
         }
 
         public void UpdateInfo(CustomerInfo info)

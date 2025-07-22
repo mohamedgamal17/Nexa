@@ -1,82 +1,112 @@
-﻿//using Microsoft.EntityFrameworkCore;
-//using Nexa.BuildingBlocks.Application.Abstractions.Security;
-//using Nexa.BuildingBlocks.Application.Requests;
-//using Nexa.BuildingBlocks.Domain.Exceptions;
-//using Nexa.BuildingBlocks.Domain.Results;
-//using Nexa.CustomerManagement.Application.Documents.Factories;
-//using Nexa.CustomerManagement.Domain;
-//using Nexa.CustomerManagement.Domain.CustomerApplications;
-//using Nexa.CustomerManagement.Domain.Customers;
-//using Nexa.CustomerManagement.Domain.Documents;
-//using Nexa.CustomerManagement.Domain.KYC;
-//using Nexa.CustomerManagement.Shared.Dtos;
-//using Nexa.CustomerManagement.Shared.Enums;
-//namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
-//{
-//    public class CreateDocumentCommandHandler : IApplicationRequestHandler<CreateDocumentCommand, DocumentDto>
-//    {
-//        private readonly ICustomerManagementRepository<Customer> _customerRepository;
-//        private readonly ICustomerManagementRepository<Document> _documentRepository;
-//        private readonly ISecurityContext _securityContext;
-//        private readonly IDocumentResponseFactory _documentResponseFactory;
-//        private readonly IKYCProvider _kycProvider;
-//        private readonly IApplicationAuthorizationService _applicationAuthorizationService;
+﻿using Microsoft.EntityFrameworkCore;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
+using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.CustomerManagement.Application.Documents.Factories;
+using Nexa.CustomerManagement.Domain;
+using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Dtos;
+namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
+{
+    public class CreateDocumentCommandHandler : IApplicationRequestHandler<CreateDocumentCommand, DocumentDto>
+    {
+        private readonly ICustomerManagementRepository<Customer> _customerRepository;
+        private readonly ICustomerManagementRepository<Document> _documentRepository;
+        private readonly ISecurityContext _securityContext;
+        private readonly IDocumentResponseFactory _documentResponseFactory;
+        private readonly IKYCProvider _kycProvider;
 
-//        public CreateDocumentCommandHandler(ICustomerManagementRepository<Customer> customerRepository , ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext, IDocumentResponseFactory documentResponseFactory, IKYCProvider kycProvider, IApplicationAuthorizationService applicationAuthorizationService)
-//        {
-//            _customerRepository = customerRepository;
-//            _documentRepository = documentRepository;
-//            _securityContext = securityContext;
-//            _documentResponseFactory = documentResponseFactory;
-//            _kycProvider = kycProvider;
-//            _applicationAuthorizationService = applicationAuthorizationService;
-//        }
+        public CreateDocumentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<Document> documentRepository, ISecurityContext securityContext, IDocumentResponseFactory documentResponseFactory, IKYCProvider kycProvider)
+        {
+            _customerRepository = customerRepository;
+            _documentRepository = documentRepository;
+            _securityContext = securityContext;
+            _documentResponseFactory = documentResponseFactory;
+            _kycProvider = kycProvider;
+        }
 
-//        public async Task<Result<DocumentDto>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
-//        {
-//            var userId = _securityContext.User!.Id;
+        public async Task<Result<DocumentDto>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
+        {
+            var userId = _securityContext.User!.Id;
 
-//            var currentCustomerExist = await _customerRepository.AnyAsync(x => x.UserId == userId);
-
-//            if (!currentCustomerExist)
-//            {
-//                return new Result<DocumentDto>(new BusinessLogicException("Current user should complete thier customer application first before creating kyc document."));
-//            }
-
-
+            var customer = await _customerRepository
+                .AsQuerable()
+                .Include(x=> x.Documents)
+                .ThenInclude(x=> x.Attachments)
+                .SingleOrDefaultAsync(x => x.UserId == userId);
             
-//            if(customerApplication.Status != CustomerApplicationStatus.Draft)
-//            {
-//                return new Result<DocumentDto>(new BusinessLogicException("Customer application must be in draft state to be able to attach document."));
-//            }
+            if (customer == null)
+            {
+                return new Result<DocumentDto>(new BusinessLogicException("Current user customer is not exist."));
+            }
+
+            if(customer.Info == null)
+            {
+                return new Result<DocumentDto>(new BusinessLogicException("Customer should complete peronal information before uploading document"));
+            }
+
+            var document = new Document(request.Type);
+
+            if(request.KycDocumentId != null)
+            {
+                var kycDocument = await _kycProvider.GetDocumentAsync(request.KycDocumentId);
+
+                if(!IsKycDocumentOwner(kycDocument, customer))
+                {
+                    return new Result<DocumentDto>(new ForbiddenAccessException());
+                }
+
+                document.AddKycExternalId(kycDocument.Id);
+
+                if(kycDocument.Attachements != null)
+                {
+                    kycDocument.Attachements.ForEach((attach) =>
+                    {
+                        var documentAttachment = new DocumentAttachment(
+                                attach.Id,
+                                attach.FileName,
+                                attach.Size,
+                                attach.ContentType,
+                                attach.Side
+                            );
 
 
-//            var kycReqeust = PrepareKYCDocumentRequest(customerApplication.KycExternalId, request);
+                        document.AddAttachment(documentAttachment);
+                    });
+                }
+            }
+            else
+            {
+                var kycDocumentRequest = new KYCDocumentRequest
+                {
+                    ClientId = customer.KycCustomerId!,
+                    Type = request.Type
+                };
 
-//            var kycResponse = await _kycProvider.CreateDocumentAsync(kycReqeust);
+                var kycDocument = await _kycProvider.CreateDocumentAsync(kycDocumentRequest);
 
-//            var kycDocument = new Document(request.IssuingCountry, kycResponse.Id, request.Type);
+                document.AddKycExternalId(kycDocument.Id);
+            }
 
-//            customerApplication.AddDocument(kycDocument);
 
-//            await _customerApplicationRepository.UpdateAsync(customerApplication);
+            customer.AddDocument(document);
 
-//            var response = await _documentRepository.SingleAsync(x => x.Id == kycDocument.Id);
+            await _customerRepository.UpdateAsync(customer);
 
-//            return await _documentResponseFactory.PrepareDto(response);
-//        }
+            var data = await _documentRepository.AsQuerable()
+                .Include(x => x.Attachments)
+                .SingleAsync(x => x.Id == document.Id);
 
-//        private KYCDocumentRequest PrepareKYCDocumentRequest(string kycClientId, CreateDocumentCommand command)
-//        {
-//            var request = new KYCDocumentRequest
-//            {
-//                ClientId = kycClientId,
-//                IssuingCountry = command.IssuingCountry,
-//                Type = command.Type
+            return await _documentResponseFactory.PrepareDto(data);
 
-//            };
+        }
 
-//            return request;
-//        }
-//    }
-//}
+        public bool IsKycDocumentOwner(KYCDocument kYCDocument , Customer customer)
+        {
+            return kYCDocument.ClientId == customer.KycCustomerId;
+        }
+    }
+}

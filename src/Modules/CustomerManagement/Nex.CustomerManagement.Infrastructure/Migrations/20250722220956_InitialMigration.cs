@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
+namespace Nexa.CustomerManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -64,50 +64,49 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Document",
+                name: "Documents",
                 schema: "CustomerManagement",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerApplicationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KYCExternalId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssuingCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    KYCExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(256)", nullable: true)
+                    State = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Document", x => x.Id);
+                    table.PrimaryKey("PK_Documents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Document_Customers_CustomerId",
+                        name: "FK_Documents_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalSchema: "CustomerManagement",
                         principalTable: "Customers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DocumentAttachment",
+                name: "DocumentsAttachments",
                 schema: "CustomerManagement",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    KYCExternalId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    KYCExternalId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Size = table.Column<long>(type: "bigint", nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Side = table.Column<int>(type: "int", nullable: false),
-                    DocumentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DocumentId = table.Column<string>(type: "nvarchar(256)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentAttachment", x => x.Id);
+                    table.PrimaryKey("PK_DocumentsAttachments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocumentAttachment_Document_DocumentId",
+                        name: "FK_DocumentsAttachments_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalSchema: "CustomerManagement",
-                        principalTable: "Document",
+                        principalTable: "Documents",
                         principalColumn: "Id");
                 });
 
@@ -118,16 +117,28 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Document_CustomerId",
+                name: "IX_Documents_CustomerId",
                 schema: "CustomerManagement",
-                table: "Document",
+                table: "Documents",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocumentAttachment_DocumentId",
+                name: "IX_Documents_KYCExternalId",
                 schema: "CustomerManagement",
-                table: "DocumentAttachment",
+                table: "Documents",
+                column: "KYCExternalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentsAttachments_DocumentId",
+                schema: "CustomerManagement",
+                table: "DocumentsAttachments",
                 column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentsAttachments_KYCExternalId",
+                schema: "CustomerManagement",
+                table: "DocumentsAttachments",
+                column: "KYCExternalId");
         }
 
         /// <inheritdoc />
@@ -138,11 +149,11 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(
-                name: "DocumentAttachment",
+                name: "DocumentsAttachments",
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(
-                name: "Document",
+                name: "Documents",
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(

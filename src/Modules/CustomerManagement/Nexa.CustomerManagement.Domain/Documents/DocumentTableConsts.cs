@@ -6,11 +6,10 @@
 
         public const int IdLength = 256;
 
-        public const int CustomerApplicationIdLength = 256;
+        public const int CustomerIdLength = 256;
 
         public const int KYCExternalIdLength = 256;
 
-        public const int IssuingCountryLength = 3;
 
     }
 }

@@ -1,109 +1,169 @@
-﻿//using FluentAssertions;
-//using Microsoft.Extensions.DependencyInjection;
-//using Nexa.Application.Tests.Extensions;
-//using Nexa.BuildingBlocks.Domain.Exceptions;
-//using Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument;
-//using Nexa.CustomerManagement.Application.Tests.Assertions;
-//using Nexa.CustomerManagement.Domain;
-//using Nexa.CustomerManagement.Domain.Documents;
-//using Nexa.CustomerManagement.Shared.Enums;
-//namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
-//{
-//    [TestFixture]
-//    public class CreateDocumentCommandHandlerTests : DocumentTestFixture
-//    {
-//        protected ICustomerManagementRepository<Document> DocumentRepositorty { get; }
+﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument;
+using Nexa.CustomerManagement.Application.Tests.Assertions;
+using Nexa.CustomerManagement.Domain;
+using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Shared.Enums;
+namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
+{
+    [TestFixture]
+    public class CreateDocumentCommandHandlerTests : DocumentTestFixture
+    {
+        protected ICustomerManagementRepository<Document> DocumentRepositorty { get; }
 
 
-//        public CreateDocumentCommandHandlerTests()
-//        {
-//            DocumentRepositorty = ServiceProvider.GetRequiredService<ICustomerManagementRepository<Document>>();
-//        }
+        public CreateDocumentCommandHandlerTests()
+        {
+            DocumentRepositorty = ServiceProvider.GetRequiredService<ICustomerManagementRepository<Document>>();
+        }
 
-//        [Test]
-//        public async Task Should_create_document()
-//        {
-//            AuthenticationService.Login();
+        [Test]
+        public async Task Should_create_document()
+        {
+            AuthenticationService.Login();
 
-//            string userId = AuthenticationService.GetCurrentUser()!.Id;
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-//            var fakeCustomer = await CreateCustomerAsync(userId);
-
-//            var fakeCustomerApplication = await CreateCustomerApplicationAsync(fakeCustomer.Id);
-
-//            var command = new CreateDocumentCommand
-//            {
-//                CustomerApplicationId = fakeCustomerApplication.Id,
-//                IssuingCountry = "US",
-//                Type = Faker.PickRandom<DocumentType>()
-//            };
-
-//            var response = await Mediator.Send(command);
-
-//            response.ShouldBeSuccess();
-
-//            var document = await DocumentRepositorty.SingleOrDefaultAsync(x => x.Id == response.Value!.Id);
-
-//            document.Should().NotBeNull();
-
-//            document!.AssertDocument(command, fakeCustomerApplication.Id);
-
-//            response.Value!.AssertDocumentDto(document!);
-//        }
-
-//        [Test]
-//        public async Task Should_failure_while_creating_document_when_user_is_not_authenticated()
-//        {
-//            var command = new CreateDocumentCommand
-//            {
-//                CustomerApplicationId = Guid.NewGuid().ToString(),
-//                IssuingCountry = "US",
-//                Type = Faker.PickRandom<DocumentType>()
-//            };
-
-//            var response = await Mediator.Send(command);
-
-//            response.ShoulBeFailure(typeof(UnauthorizedAccessException));
-//        }
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
 
-//        [Test]
-//        public async Task Should_failure_while_creating_document_when_customer_is_not_created()
-//        {
-//            AuthenticationService.Login();
+            var command = new CreateDocumentCommand
+            {
+                Type = Faker.PickRandom<DocumentType>()
+            };
 
-//            var commadn = new CreateDocumentCommand
-//            {
-//                CustomerApplicationId = Guid.NewGuid().ToString(),
-//                IssuingCountry = "US",
-//                Type = Faker.PickRandom<DocumentType>()
-//            };
+            var response = await Mediator.Send(command);
 
-//            var response = await Mediator.Send(commadn);
+            response.ShouldBeSuccess();
 
-//            response.ShoulBeFailure(typeof(BusinessLogicException));
-//        }
+            var document = await DocumentRepositorty.SingleOrDefaultAsync(x => x.Id == response.Value!.Id);
 
-//        [Test]
-//        public async Task Should_failure_while_creating_document_when_customer_application_is_not_created()
-//        {
-//            AuthenticationService.Login();
+            document.Should().NotBeNull();
+
+            document!.AssertDocument(command, fakeCustomer.Id);
+
+            response.Value!.AssertDocumentDto(document!);
+        }
+
+        [Test]
+        public async Task Should_create_document_whith_external_kyc_document_id_from_sdk_client()
+        {
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var fakeCustomer = await CreateCustomerAsync(userId);
+
+            var fakeKycDocument = await CreateKycDocument(fakeCustomer.KycCustomerId!, DocumentType.Passport);
+
+            var fakekycAttachment = await CreateKycDocumentAttachment(fakeKycDocument.Id, Guid.NewGuid().ToString(), DocumentSide.Front);
+
+            var command = new CreateDocumentCommand
+            {
+                Type = DocumentType.Passport,
+                KycDocumentId = fakeKycDocument.Id
+            };
+
+            var response = await Mediator.Send(command);
+
+            response.ShouldBeSuccess();
+
+            var document = await DocumentRepositorty
+                .AsQuerable()
+                .Include(x=> x.Attachments)
+                .SingleOrDefaultAsync(x => x.Id == response.Value!.Id);
+
+            document.Should().NotBeNull();
+
+            document!.KYCExternalId.Should().Be(fakeKycDocument.Id);
+
+            document.Attachments.Count.Should().Be(1);
+
+            var attachment = document.Attachments.First();
+
+            attachment.KYCExternalId.Should().Be(fakekycAttachment.Id);
+            attachment.FileName.Should().Be(fakekycAttachment.FileName);
+            attachment.Size.Should().Be(fakekycAttachment.Size);
+            attachment.Side.Should().Be(fakekycAttachment.Side);
+            attachment.ContentType.Should().Be(fakekycAttachment.ContentType);
+
+            document!.AssertDocument(command, fakeCustomer.Id);
+
+            response.Value!.AssertDocumentDto(document!);
+        }
+
+        [Test]
+        public async Task Should_failure_while_creating_document_when_user_is_not_authenticated()
+        {
+            var command = new CreateDocumentCommand
+            {
+                Type = Faker.PickRandom<DocumentType>()
+            };
+
+            var response = await Mediator.Send(command);
+
+            response.ShoulBeFailure(typeof(UnauthorizedAccessException));
+        }
 
 
-//            string userId = AuthenticationService.GetCurrentUser()!.Id;
+        [Test]
+        public async Task Should_failure_while_creating_document_when_customer_is_not_created()
+        {
+            AuthenticationService.Login();
 
-//            var fakeCustomer = await CreateCustomerAsync(userId);
+            var commadn = new CreateDocumentCommand
+            {
+                Type = Faker.PickRandom<DocumentType>()
+            };
 
-//            var command = new CreateDocumentCommand
-//            {
-//                CustomerApplicationId = Guid.NewGuid().ToString(),
-//                IssuingCountry = "US",
-//                Type = Faker.PickRandom<DocumentType>()
-//            };
+            var response = await Mediator.Send(commadn);
 
-//            var response = await Mediator.Send(command);
+            response.ShoulBeFailure(typeof(BusinessLogicException));
+        }
 
-//            response.ShoulBeFailure(typeof(EntityNotFoundException));
-//        }
-//    }
-//}
+        [Test]
+        public async Task Should_failure_while_creating_document_when_customer_info_is_not_completed()
+        {
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
+
+            var command = new CreateDocumentCommand
+            {
+                Type = Faker.PickRandom<DocumentType>()
+            };
+
+            var response = await Mediator.Send(command);
+
+            response.ShoulBeFailure(typeof(BusinessLogicException));
+        }
+
+        [Test]
+        public async Task Should_failure_while_creating_document_when_user_dose_not_own_kyc_document_id_aquired_by_sdk_client()
+        {
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var fakeCustomer = await CreateCustomerAsync(userId);
+
+            var fakeKycDocument = await CreateKycDocument(Guid.NewGuid().ToString(), DocumentType.Passport);
+
+            var command = new CreateDocumentCommand
+            {
+                Type = DocumentType.Passport,
+                KycDocumentId = fakeKycDocument.Id
+            };
+
+            var response = await Mediator.Send(command);
+
+            response.ShoulBeFailure(typeof(ForbiddenAccessException));
+        }
+    }
+}

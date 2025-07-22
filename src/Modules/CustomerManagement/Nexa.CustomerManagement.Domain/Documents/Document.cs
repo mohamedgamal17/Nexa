@@ -4,25 +4,37 @@ namespace Nexa.CustomerManagement.Domain.Documents
 {
     public class Document : AggregateRoot
     {
-        public string CustomerApplicationId { get; set; }
-        public string KYCExternalId { get; set; }
-        public string IssuingCountry { get; set; }
+        public string CustomerId { get; set; }
+        public string? KYCExternalId { get; set; }
         public DocumentType Type { get; set; }
         public VerificationState State { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
+
         private Document() { }
-        public Document(string customerApplicationId, string issuingCountry, string kycExternalId, DocumentType type)
+        public Document(DocumentType type)
         {
-            CustomerApplicationId = customerApplicationId;
-            IssuingCountry = issuingCountry;
+            Type = type;
+        }
+
+        public Document(string customerId, DocumentType documentType)
+        {
+            CustomerId = customerId;
+            Type = documentType;
+        }
+        public Document(string customerId,  string kycExternalId, DocumentType type)
+        {
+            CustomerId = customerId;
             KYCExternalId = kycExternalId;
             Type = type;
         }
-        public Document(string issuingCountry, string kycExternalId, DocumentType type)
+
+
+        public void AddKycExternalId(string id)
         {
-            IssuingCountry = issuingCountry;
-            KYCExternalId = kycExternalId;
-            Type = type;
+            if(State == VerificationState.Pending)
+            {
+                KYCExternalId = id;
+            }
         }
         public void AddAttachment(DocumentAttachment attachment)
         {
@@ -35,7 +47,5 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
             Attachments.Add(attachment);
         }
-
-
     }
 }

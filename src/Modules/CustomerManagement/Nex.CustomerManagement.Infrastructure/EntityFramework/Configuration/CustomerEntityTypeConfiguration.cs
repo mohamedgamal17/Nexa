@@ -42,6 +42,8 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
                 });
             });
 
+            builder.HasMany(x => x.Documents).WithOne().HasForeignKey(x => x.CustomerId);
+
             builder.HasIndex(x => x.UserId);
         }
     }
