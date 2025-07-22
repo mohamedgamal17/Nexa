@@ -5,6 +5,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 {
@@ -13,12 +14,13 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ICustomerResponseFactory _customerResponseFactory;
-
-        public UpdateCustomerCommandHandler(ISecurityContext securityContext, ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory)
+        private readonly IKYCProvider _kycProvider;
+        public UpdateCustomerCommandHandler(ISecurityContext securityContext, ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
         {
             _securityContext = securityContext;
             _customerRepository = customerRepository;
             _customerResponseFactory = customerResponseFactory;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
@@ -33,6 +35,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
             }
 
             customer.Update(request.PhoneNumber, request.EmailAddress);
+
+            var kycRequest = new KYCClientRequest
+            {
+                EmailAddress = customer.EmailAddress,
+                PhoneNumber = customer.PhoneNumber
+            };
+
+            await _kycProvider.UpdateClientAsync(customer.KycCustomerId!, kycRequest);
 
             await _customerRepository.UpdateAsync(customer);
 

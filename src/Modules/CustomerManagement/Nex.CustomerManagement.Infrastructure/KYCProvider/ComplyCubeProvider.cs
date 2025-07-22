@@ -1,5 +1,6 @@
 ﻿using ComplyCube.Net;
 using ComplyCube.Net.Model;
+using ComplyCube.Net.Resources.Addresses;
 using ComplyCube.Net.Resources.Checks;
 using ComplyCube.Net.Resources.Clients;
 using ComplyCube.Net.Resources.Documents;
@@ -17,6 +18,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
         private readonly ClientApi _clientApi;
 
+        private readonly AddressApi _addressApi;
+
         private readonly DocumentApi _documentApi;
 
         private readonly CheckApi _checkApi;
@@ -25,6 +28,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             _configuration = configuration;
             _client = new ComplyCubeClient(_configuration.ApiKey);
             _clientApi = new ClientApi(_client);
+            _addressApi = new AddressApi(_client);
             _documentApi = new DocumentApi(_client);
             _checkApi = new CheckApi(_client);
         }
@@ -35,21 +39,58 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 email = request.EmailAddress,
                 type = "person",
                 mobile = request.PhoneNumber,
-                personDetails = new PersonDetails
-                {
-                    firstName = request.FirstName,
-                    middleName = request.MiddleName,
-                    lastName = request.LastName,
-                    nationality = request.Nationality,
-                    gender = MapComplyCupeGender(request.Gender),
-                    dob = request.BirthDate.ToString()
-                },
 
             };
 
             var response = await _clientApi.CreateAsync(apiRequest);
 
             return PrepareKYCClient(response);
+        }
+
+        public async Task<KYCClient> UpdateClientInfoAsync(string clientId,KYCClientInfo request, CancellationToken cancellationToken = default)
+        {
+            var apiRequest = new ClientRequest
+            {
+                personDetails = new PersonDetails
+                {
+                    firstName = request.FirstName,
+                    lastName = request.LastName,
+                    nationality = request.Nationality,
+                    gender = MapComplyCupeGender(request.Gender),
+                    dob = request.BirthDate.ToString()
+                }
+            };
+
+            var response = await _clientApi.UpdateAsync(clientId, apiRequest);
+
+            if(request.Address != null)
+            {
+                var addressRequest = new AddressRequest
+                {
+                    clientId = clientId,
+                    country = request.Address.Country,
+                    city = request.Address.City,
+                    state = request.Address.State,
+                    type = "main",
+                    postalCode = request.Address.PostalCode,
+                    line = request.Address.StreetLine
+                };
+
+                var clientAddresses = await _addressApi.ListAsync(clientId);
+
+                if(clientAddresses.totalSize > 0)
+                {
+                    var mainId =  clientAddresses.items.Single(x => x.type == "main").id;
+
+                    await _addressApi.UpdateAsync(mainId, addressRequest);
+                }
+                else
+                {
+                    await _addressApi.CreateAsync(addressRequest);
+                }
+            }
+
+            return PrepareKYCClient(response, request.Address);
         }
 
         public async Task<KYCClient> UpdateClientAsync(string clientId, KYCClientRequest request, CancellationToken cancellationToken = default)
@@ -59,15 +100,6 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 email = request.EmailAddress,
                 type = "person",
                 mobile = request.PhoneNumber,
-                personDetails = new PersonDetails
-                {
-                    firstName = request.FirstName,
-                    middleName = request.MiddleName,
-                    lastName = request.LastName,
-                    nationality = request.Nationality,
-                    gender = MapComplyCupeGender(request.Gender),
-                    dob = request.BirthDate.ToString()
-                },
 
             };
 
@@ -175,20 +207,32 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 _ => KYCCheckStatus.Faild
             };
         }
-        private KYCClient PrepareKYCClient(Client client)
+        private KYCClient PrepareKYCClient(Client client, Domain.Customers.Address? address = null)
         {
             var response = new KYCClient
             {
                 Id = client.id,
-                FirstName = client.personDetails.firstName,
-                MiddleName = client.personDetails.middleName,
-                LastName = client.personDetails.lastName,
-                BirthDate = DateTime.Parse(client.personDetails.dob),
-                Nationality = client.personDetails.nationality,
-                Gender = client.personDetails.gender == "male" ? Gender.Male : Gender.Female,
                 EmailAddress = client.email,
                 PhoneNumber = client.mobile
             };
+
+            if(client.personDetails != null)
+            {
+                response.Info = new KYCClientInfo
+                {
+                    FirstName = client.personDetails.firstName,
+                    LastName = client.personDetails.lastName,
+                    BirthDate = DateTime.Parse(client.personDetails.dob),
+                    Nationality = client.personDetails.nationality,
+                    Gender = client.personDetails.gender == "male" ? Gender.Male : Gender.Female,
+
+                };
+
+                if(address != null)
+                {
+                    response.Info.Address = address;
+                }             
+            }
 
             return response;
         }

@@ -3,6 +3,7 @@
     public interface IKYCProvider
     {
         Task<KYCClient> CreateClientAsync(KYCClientRequest request , CancellationToken cancellationToken = default);
+        Task<KYCClient> UpdateClientInfoAsync(string clientId,KYCClientInfo request, CancellationToken cancellationToken = default);
         Task<KYCClient> UpdateClientAsync(string clientId,  KYCClientRequest request , CancellationToken cancellationToken = default);
         Task<KYCDocument> CreateDocumentAsync(KYCDocumentRequest request, CancellationToken cancellationToken = default);
         Task<KYCDocument> GetDocumentAsync(string documentId, CancellationToken cancellationToken = default);

@@ -5,6 +5,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
@@ -13,12 +14,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerResponseFactory _customerResponseFactory;
+        private readonly IKYCProvider _kycProvider;
 
-        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory)
+        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
         {
             _customerRepository = customerRepository;
             _securityContext = securityContext;
             _customerResponseFactory = customerResponseFactory;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -32,8 +35,17 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 return new Result<CustomerDto>(new BusinessLogicException("User customer application already created."));
             }
 
-
             var customer = new Customer(userId,request.PhoneNumber,request.EmailAddress);
+
+            var kycRequest = new KYCClientRequest
+            {
+                EmailAddress = customer.EmailAddress,
+                PhoneNumber = customer.PhoneNumber
+            };
+
+            var kycClient = await _kycProvider.CreateClientAsync(kycRequest);
+
+            customer.AddKycCustomerId(kycClient.Id);
 
             await _customerRepository.InsertAsync(customer);
 

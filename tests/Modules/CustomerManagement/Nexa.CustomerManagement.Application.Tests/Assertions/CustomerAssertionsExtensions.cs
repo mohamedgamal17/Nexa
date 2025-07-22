@@ -13,6 +13,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         public static void AssertCustomer(this  Customer customer ,string userId , CreateCustomerCommand command)
         {
             customer.UserId.Should().Be(userId);
+            customer.KycCustomerId.Should().NotBeNull();
             customer.EmailAddress.Should().Be(command.EmailAddress);
             customer.PhoneNumber.Should().Be(command.PhoneNumber);
                       

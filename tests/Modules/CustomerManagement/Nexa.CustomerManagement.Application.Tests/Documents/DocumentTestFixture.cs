@@ -117,7 +117,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
             });
         }
 
-        protected Task<KYCClient> CreateKycClient(Customer customer)
+        protected async Task<KYCClient> CreateKycClient(Customer customer)
         {
             var request = new KYCClientRequest
             {
@@ -126,17 +126,25 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
 
             };
 
+            var kycClient = await KycProvider.CreateClientAsync(request);
+
             if(customer.Info != null)
             {
-                request.FirstName = customer.Info.FirstName;
-                request.LastName = customer.Info.LastName;
-                request.Gender = customer.Info.Gender;
-                request.BirthDate = customer.Info.BirthDate;
-                request.NationalIdentityNumber = customer.Info.IdNumber;
-                request.SSN = customer.Info.IdNumber;
+                var kycInfoRequest = new KYCClientInfo
+                {
+                    FirstName = customer.Info.FirstName,
+                    LastName = customer.Info.LastName,
+                    BirthDate = customer.Info.BirthDate,
+                    Gender = customer.Info.Gender,
+                    Nationality = customer.Info.Nationality,
+                    SSN = customer.Info.IdNumber,
+                    Address = customer.Info.Address
+                };
+
+                await KycProvider.UpdateClientInfoAsync(kycClient.Id, kycInfoRequest);
             };
 
-            return KycProvider.CreateClientAsync(request);
+            return kycClient;
         }
 
         protected async Task<KYCDocument> CreateKycDocument(string clientId, DocumentType type)

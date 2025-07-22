@@ -5,6 +5,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerInfo
@@ -14,12 +15,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerI
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
         private readonly ICustomerResponseFactory _customerResponseFactory;
         private readonly ISecurityContext _securityContext;
+        private readonly IKYCProvider _kycProvider;
 
-        public UpdateCustomerInfoCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory, ISecurityContext securityContext)
+        public UpdateCustomerInfoCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerResponseFactory customerResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
         {
             _customerRepository = customerRepository;
             _customerResponseFactory = customerResponseFactory;
             _securityContext = securityContext;
+            _kycProvider = kycProvider;
         }
 
         public async Task<Result<CustomerDto>> Handle(UpdateCustomerInfoCommand request, CancellationToken cancellationToken)
@@ -52,6 +55,20 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerI
                 );
 
             customer.UpdateInfo(info);
+
+
+            var kycInfoRequest = new KYCClientInfo
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                BirthDate = request.BirthDate,
+                Gender = request.Gender,
+                Nationality = request.Nationality,
+                SSN = request.IdNumber,
+                Address = address
+            };
+
+            await _kycProvider.UpdateClientInfoAsync(customer.KycCustomerId!, kycInfoRequest);
 
             await _customerRepository.UpdateAsync(customer);
 
