@@ -14,17 +14,13 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
     public class UploadDocumentAttachmentCommandHandler : IApplicationRequestHandler<UploadDocumentAttachmentCommand, DocumentAttachementDto>
     {
         private readonly ICustomerManagementRepository<Customer> _customerRepository;
-        private readonly ICustomerManagementRepository<Document> _documentRepository;
-        private readonly IApplicationAuthorizationService _applicationAuthorizationService;
         private readonly IDocumentAttachementResponseFactory _documentAttachementResponseFactory;
         private readonly ISecurityContext _securityContext;
         private readonly IKYCProvider _kycProvider;
 
-        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ICustomerManagementRepository<Document> documentRepository, IApplicationAuthorizationService applicationAuthorizationService, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
+        public UploadDocumentAttachmentCommandHandler(ICustomerManagementRepository<Customer> customerRepository, IDocumentAttachementResponseFactory documentAttachementResponseFactory, ISecurityContext securityContext, IKYCProvider kycProvider)
         {
             _customerRepository = customerRepository;
-            _documentRepository = documentRepository;
-            _applicationAuthorizationService = applicationAuthorizationService;
             _documentAttachementResponseFactory = documentAttachementResponseFactory;
             _securityContext = securityContext;
             _kycProvider = kycProvider;

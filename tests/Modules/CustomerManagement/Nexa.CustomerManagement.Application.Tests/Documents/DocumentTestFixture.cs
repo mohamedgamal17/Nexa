@@ -78,15 +78,17 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
         {
             return await WithScopeAsync(async sp =>
             {
-                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+                var repository = sp.GetRequiredService<ICustomerManagementRepository<Document>>();
 
-                var docuemnt = new Document(type);
+                var docuemnt = new Document(customer.Id,type);
 
                 var kycDocument = await CreateKycDocument(customer.KycCustomerId!, type);
 
+                docuemnt.AddKycExternalId(kycDocument.Id);
+
                 customer.AddDocument(docuemnt);
 
-                await repository.UpdateAsync(customer);
+                await repository.InsertAsync(docuemnt);
 
                 return docuemnt;
             });
