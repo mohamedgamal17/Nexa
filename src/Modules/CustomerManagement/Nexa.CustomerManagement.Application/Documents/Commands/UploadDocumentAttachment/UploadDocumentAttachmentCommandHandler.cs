@@ -9,6 +9,7 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment
 {
     public class UploadDocumentAttachmentCommandHandler : IApplicationRequestHandler<UploadDocumentAttachmentCommand, DocumentAttachementDto>
@@ -46,6 +47,12 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
             if(document == null)
             {
                 return new Result<DocumentAttachementDto>(new EntityNotFoundException(typeof(Document)  ,request.DocumentId));
+            }
+
+            if (document.State == VerificationState.InReview 
+                || document.State == VerificationState.Verified)
+            {
+                return new Result<DocumentAttachementDto>(new BusinessLogicException("Invalid document state."));
             }
 
             string extensions = request.Data.FileName.Split(".")[1];

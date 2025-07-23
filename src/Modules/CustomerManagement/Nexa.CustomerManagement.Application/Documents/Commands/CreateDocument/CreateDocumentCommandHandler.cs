@@ -9,6 +9,7 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
 {
     public class CreateDocumentCommandHandler : IApplicationRequestHandler<CreateDocumentCommand, DocumentDto>
@@ -43,9 +44,9 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument
                 return new Result<DocumentDto>(new BusinessLogicException("Current user customer is not exist."));
             }
 
-            if(customer.Info == null)
+            if(customer.InfoVerificationState != VerificationState.Verified)
             {
-                return new Result<DocumentDto>(new BusinessLogicException("Customer should complete peronal information before uploading document"));
+                return new Result<DocumentDto>(new BusinessLogicException("Can not accept documents until the customer peronal info is verified"));
             }
 
             var document = new Document(request.Type);

@@ -34,16 +34,16 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
                 return await repository.InsertAsync(customer);
             });
         }
-        protected async Task<Customer> CreateCustomerAsync(string? userId = null)
+        protected async Task<Customer> CreateCustomerAsync(string? userId = null, VerificationState infoVerificationState = VerificationState.Pending)
         {
 
             return await WithScopeAsync(async (sp) =>
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
 
-                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email);
+                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email, infoVerificationState);
 
-                var address = Address.Create (
+                var address = Address.Create(
                         "US",
                         Faker.Address.City(),
                         Faker.Address.State(),
@@ -72,7 +72,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
             });
         }
 
-   
+
 
         protected async Task<Document> CreateDocumentAsync(Customer customer,   DocumentType type)
         {

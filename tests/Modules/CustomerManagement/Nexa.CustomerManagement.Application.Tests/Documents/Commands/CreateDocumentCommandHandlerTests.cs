@@ -28,8 +28,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId);
-
+            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Verified);
 
             var command = new CreateDocumentCommand
             {
@@ -56,7 +55,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId);
+            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Verified);
 
             var fakeKycDocument = await CreateKycDocument(fakeCustomer.KycCustomerId!, DocumentType.Passport);
 
@@ -125,8 +124,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
             response.ShoulBeFailure(typeof(BusinessLogicException));
         }
 
-        [Test]
-        public async Task Should_failure_while_creating_document_when_customer_info_is_not_completed()
+        [TestCase(VerificationState.Pending)]
+        [TestCase(VerificationState.InReview)]
+        [TestCase(VerificationState.Rejected)]
+
+        public async Task Should_failure_while_creating_document_when_customer_info_state_is_not_verified(VerificationState state)
         {
             AuthenticationService.Login();
 
@@ -151,7 +153,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId);
+            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Verified);
 
             var fakeKycDocument = await CreateKycDocument(Guid.NewGuid().ToString(), DocumentType.Passport);
 
