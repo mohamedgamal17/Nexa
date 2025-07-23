@@ -74,17 +74,15 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents
 
 
 
-        protected async Task<Document> CreateDocumentAsync(Customer customer,   DocumentType type)
+        protected async Task<Document> CreateDocumentAsync(Customer customer,   DocumentType type, VerificationState state = VerificationState.Pending)
         {
             return await WithScopeAsync(async sp =>
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Document>>();
 
-                var docuemnt = new Document(customer.Id,type);
-
                 var kycDocument = await CreateKycDocument(customer.KycCustomerId!, type);
 
-                docuemnt.AddKycExternalId(kycDocument.Id);
+                var docuemnt = new Document(customer.Id,kycDocument.Id , type, state);
 
                 customer.AddDocument(docuemnt);
 
