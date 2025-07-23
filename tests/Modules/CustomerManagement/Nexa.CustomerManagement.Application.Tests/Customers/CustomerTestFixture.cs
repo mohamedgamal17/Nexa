@@ -18,7 +18,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
         }
-        protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null)
+        protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null )
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -33,14 +33,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 return await repository.InsertAsync(customer);
             });
         }
-        protected async Task<Customer> CreateCustomerAsync(string? userId = null)
+        protected async Task<Customer> CreateCustomerAsync(string? userId = null,  VerificationState infoVerificationState = VerificationState.Pending)
         {
 
             return await WithScopeAsync(async (sp) =>
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
 
-                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email);
+                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email, infoVerificationState);
 
                 var address = Address.Create(
                         "US",
