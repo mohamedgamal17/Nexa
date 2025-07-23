@@ -4,6 +4,7 @@
     {
         public string ClientId { get; set; }
         public string DocumentId { get; set; }
+        public string LiveVideoId { get; set; }
         public KYCCheckType Type { get; set; }
 
     }

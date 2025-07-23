@@ -3,6 +3,7 @@
     public enum KYCCheckType
     {
         DocumentCheck,
-        IdentityCheck
+        IdentityCheck,
+        IdNumberCheck
     }
 }

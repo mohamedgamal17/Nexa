@@ -28,6 +28,13 @@ namespace Nexa.CustomerManagement.Domain.Customers
             EmailAddress = emailAddres;
         }
 
+        internal Customer(string userId, string phoneNumber, string emailAddres, VerificationState infoVerificationState)
+        {
+            UserId = userId;
+            PhoneNumber = phoneNumber;
+            EmailAddress = emailAddres;
+            InfoVerificationState = infoVerificationState;
+        }
         public void AddKycCustomerId(string kycCustomerId)
         {
             KycCustomerId = kycCustomerId;
@@ -51,6 +58,15 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public void UpdateInfo(CustomerInfo info)
         {
             Info = info;
+        }
+
+        public void VerifyInfo()
+        {
+            if(InfoVerificationState == VerificationState.Pending 
+                || InfoVerificationState == VerificationState.Rejected)
+            {
+                InfoVerificationState = VerificationState.InReview;
+            }
         }
     }
 }

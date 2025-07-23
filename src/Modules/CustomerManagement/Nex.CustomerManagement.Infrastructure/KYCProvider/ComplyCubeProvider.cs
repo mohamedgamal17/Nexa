@@ -62,7 +62,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             };
 
             var response = await _clientApi.UpdateAsync(clientId, apiRequest);
-
+            
             if(request.Address != null)
             {
                 var addressRequest = new AddressRequest
@@ -168,12 +168,21 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
         public async Task<KYCCheck> CreateCheckAsync(KYCCheckRequest request, CancellationToken cancellationToken = default)
         {
-            var apiRequest = new CheckRequest
+            var apiRequest = new ExtendedCheckRequest
             {
                 clientId = request.ClientId,
                 documentId = request.DocumentId,
-                type = request.Type == KYCCheckType.DocumentCheck ? "document_check" : "identity_check"
+                type = MapCheckType(request.Type)
             };
+
+            if(request.Type == KYCCheckType.IdNumberCheck)
+            {
+                var addresses = await _addressApi.ListAsync(request.ClientId);
+
+                var mainAddress = addresses.items.Single(x => x.type == "main");
+
+                apiRequest.addressId = mainAddress.id;
+            }
 
             var response = await _checkApi.CreateAsync(apiRequest);
 
@@ -187,8 +196,6 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             return PrepareKYCCheck(response);
         }
 
-     
-
         private string MapComplyCupeGender(Gender gender)
         {
             return gender switch
@@ -198,6 +205,15 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             };
         }
 
+        private string MapCheckType(KYCCheckType checkType)
+        {
+            return checkType switch
+            {
+                KYCCheckType.IdNumberCheck => "multi-bureau",
+                KYCCheckType.IdentityCheck => "identity_check",
+                _ => "document_check"
+            };
+        }
         private KYCCheckStatus MapKYCStatus(string status)
         {
             return status switch
@@ -288,5 +304,10 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 return Convert.ToBase64String(imageBytes);
             }
         }
+    }
+
+    public class ExtendedCheckRequest : CheckRequest
+    {
+        public string addressId { get; set; }
     }
 }
