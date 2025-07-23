@@ -68,5 +68,13 @@ namespace Nexa.CustomerManagement.Domain.Customers
                 InfoVerificationState = VerificationState.InReview;
             }
         }
+
+        public void AcceptInfo()
+        {
+            if(InfoVerificationState == VerificationState.InReview)
+            {
+                InfoVerificationState = VerificationState.Verified;
+            }
+        }
     }
 }
