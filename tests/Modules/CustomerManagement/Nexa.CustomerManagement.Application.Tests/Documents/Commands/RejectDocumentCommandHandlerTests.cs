@@ -2,26 +2,25 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
-using Nexa.CustomerManagement.Application.Documents.Commands.AcceptDocument;
+using Nexa.CustomerManagement.Application.Documents.Commands.RejectDocument;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Enums;
-
 namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 {
     [TestFixture]
-    public class AcceptDocumentCommandHandlerTests : DocumentTestFixture
+    public class RejectDocumentCommandHandlerTests : DocumentTestFixture
     {
         public ICustomerManagementRepository<Document> DocumentRepository { get; }
 
-        public AcceptDocumentCommandHandlerTests()
+        public RejectDocumentCommandHandlerTests()
         {
             DocumentRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<Document>>();
         }
 
         [TestCase(DocumentType.Passport)]
         [TestCase(DocumentType.DrivingLicense)]
-        public async Task Should_accept_document_verification(DocumentType documentType)
+        public async Task Should_reject_customer_document(DocumentType documentType)
         {
             var fakeCustomer = await CreateCustomerAsync();
 
@@ -34,7 +33,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
                 await CreateDocumentAttachmentAsync(fakeDocument.Id, DocumentSide.Back);
             }
 
-            var command = new AcceptDocumentCommand
+            var command = new RejectDocumentCommand
             {
                 KycCustomerId = fakeCustomer.KycCustomerId!,
                 KycDocumentId = fakeDocument.KYCExternalId!
@@ -49,7 +48,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
                 .Include(c => c.Attachments)
                 .SingleAsync(c => c.Id == fakeDocument.Id);
 
-            document.State.Should().Be(VerificationState.Verified);
+            document.State.Should().Be(VerificationState.Rejected);
         }
     }
 }
