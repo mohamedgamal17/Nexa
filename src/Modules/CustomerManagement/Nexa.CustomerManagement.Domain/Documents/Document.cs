@@ -9,6 +9,9 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public DocumentType Type { get; set; }
         public VerificationState State { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
+        private bool ShouldHasBothSides => Attachments.Any(x => x.Side == DocumentSide.Front)
+                     && Attachments.Any(x => x.Side == DocumentSide.Back);
+        private bool ShouldHasFrontSideOnly => Attachments.Any(x => x.Side == DocumentSide.Front);
 
         private Document() { }
         public Document(DocumentType type)
@@ -46,6 +49,48 @@ namespace Nexa.CustomerManagement.Domain.Documents
             }
 
             Attachments.Add(attachment);
+        }
+
+        public void Verifiy()
+        {
+            if(State  == VerificationState.Pending 
+                || State == VerificationState.Rejected)
+            {
+                State = VerificationState.InReview;
+            }
+        }
+
+        public void Accept()
+        {
+            if(State == VerificationState.InReview)
+            {
+                State = VerificationState.Verified;
+            }
+        }
+
+        public void Reject()
+        {
+            if(State == VerificationState.InReview)
+            {
+                State = VerificationState.Rejected;
+            }
+        }
+        public bool CanBeVerified()
+        {
+            var bothSidesTypes = RequireBothSidesTypes();
+
+            var requireBothSides = bothSidesTypes.Any(x => x == Type);
+
+            return requireBothSides ? ShouldHasBothSides : ShouldHasFrontSideOnly;
+        }
+
+
+        private IEnumerable<DocumentType> RequireBothSidesTypes()
+        {
+            return new List<DocumentType>()
+            {
+                DocumentType.DrivingLicense
+            };
         }
     }
 }
