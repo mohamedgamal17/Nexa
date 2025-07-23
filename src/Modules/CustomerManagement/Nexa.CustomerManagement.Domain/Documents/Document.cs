@@ -35,6 +35,13 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Type = type;
         }
 
+        internal Document(string customerId, string kycExternalId, DocumentType type , VerificationState state)
+        {
+            CustomerId = customerId;
+            KYCExternalId = kycExternalId;
+            Type = type;
+            State = state;
+        }
 
         public void AddKycExternalId(string id)
         {
