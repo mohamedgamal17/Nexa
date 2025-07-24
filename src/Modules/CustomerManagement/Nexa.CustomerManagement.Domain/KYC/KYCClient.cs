@@ -19,8 +19,7 @@ namespace Nexa.CustomerManagement.Domain.KYC
         public string Nationality { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
-        public string? SSN { get; set; }
-        public string? NationalIdentityNumber { get; set; }
+        public string SSN { get; set; }
         public Address Address { get; set; }
     }
 }

@@ -50,14 +50,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
 
         }
 
-        public Task<KYCClient> UpdateClientInfoAsync(string clientId, KYCClientInfo request, CancellationToken cancellationToken = default)
-        {
-            var client = _kycClients.Single(x => x.Id == clientId);
-
-            client.Info = request;
-
-            return Task.FromResult(client);
-        }
         public Task<KYCDocument> CreateDocumentAsync(KYCDocumentRequest request, CancellationToken cancellationToken = default)
         {
             var response = new KYCDocument

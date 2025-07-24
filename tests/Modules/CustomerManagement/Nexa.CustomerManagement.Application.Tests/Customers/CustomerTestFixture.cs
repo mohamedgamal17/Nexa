@@ -79,11 +79,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
 
             };
 
-            var kycClient = await KycProvider.CreateClientAsync(request);
 
             if (customer.Info != null)
             {
-                var kycInfoRequest = new KYCClientInfo
+                request.Info = new KYCClientInfo
                 {
                     FirstName = customer.Info.FirstName,
                     LastName = customer.Info.LastName,
@@ -94,8 +93,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                     Address = customer.Info.Address
                 };
 
-                await KycProvider.UpdateClientInfoAsync(kycClient.Id, kycInfoRequest);
             };
+
+            var kycClient = await KycProvider.CreateClientAsync( request);
 
             return kycClient;
         }

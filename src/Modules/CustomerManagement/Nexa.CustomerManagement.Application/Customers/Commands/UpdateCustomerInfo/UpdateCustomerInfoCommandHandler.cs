@@ -57,24 +57,45 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerI
             customer.UpdateInfo(info);
 
 
-            var kycInfoRequest = new KYCClientInfo
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                BirthDate = request.BirthDate,
-                Gender = request.Gender,
-                Nationality = request.Nationality,
-                SSN = request.IdNumber,
-                Address = address
-            };
+            var kycRequest = PrepareKycClientRequest(customer);
 
-            await _kycProvider.UpdateClientInfoAsync(customer.KycCustomerId!, kycInfoRequest);
+            if(customer.KycCustomerId == null)
+            {
+                var response = await  _kycProvider.CreateClientAsync(kycRequest);
+
+                customer.AddKycCustomerId(response.Id);
+            }
+            else
+            {
+                await _kycProvider.UpdateClientAsync(customer.KycCustomerId, kycRequest);
+            }
 
             await _customerRepository.UpdateAsync(customer);
 
             var data = await _customerRepository.SingleAsync(x => x.Id == customer.Id);
 
             return await _customerResponseFactory.PrepareDto(data);
+        }
+
+        private KYCClientRequest PrepareKycClientRequest(Customer customer)
+        {
+            var request = new KYCClientRequest
+            {
+                EmailAddress = customer.EmailAddress,
+                PhoneNumber = customer.PhoneNumber,
+                Info = new KYCClientInfo
+                {
+                    FirstName = customer.Info.FirstName,
+                    LastName = customer.Info.LastName,
+                    Nationality = customer.Info.Nationality,
+                    SSN = customer.Info.IdNumber,
+                    BirthDate = customer.Info.BirthDate,
+                    Gender = customer.Info.Gender,
+                    Address = customer.Info.Address
+                }
+            };
+
+            return request;
         }
     }
 }

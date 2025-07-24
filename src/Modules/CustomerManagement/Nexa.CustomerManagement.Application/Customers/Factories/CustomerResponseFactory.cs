@@ -13,6 +13,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 Id = view.Id,
                 EmailAddress = view.EmailAddress,
                 PhoneNumber = view.PhoneNumber,
+                UserId = view.UserId
             };
 
             if(view.Info != null)

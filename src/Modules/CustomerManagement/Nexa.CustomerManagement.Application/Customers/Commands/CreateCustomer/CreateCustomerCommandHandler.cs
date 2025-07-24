@@ -37,16 +37,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 
             var customer = new Customer(userId,request.PhoneNumber,request.EmailAddress);
 
-            var kycRequest = new KYCClientRequest
-            {
-                EmailAddress = customer.EmailAddress,
-                PhoneNumber = customer.PhoneNumber
-            };
-
-            var kycClient = await _kycProvider.CreateClientAsync(kycRequest);
-
-            customer.AddKycCustomerId(kycClient.Id);
-
             await _customerRepository.InsertAsync(customer);
 
             var result = await _customerRepository.SingleAsync(x => x.Id == customer.Id);

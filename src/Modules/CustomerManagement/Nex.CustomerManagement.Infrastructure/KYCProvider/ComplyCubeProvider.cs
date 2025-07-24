@@ -1,4 +1,5 @@
 ﻿using ComplyCube.Net;
+using ComplyCube.Net.Exceptions;
 using ComplyCube.Net.Model;
 using ComplyCube.Net.Resources.Addresses;
 using ComplyCube.Net.Resources.Checks;
@@ -7,6 +8,11 @@ using ComplyCube.Net.Resources.Documents;
 using ComplyCube.Net.Resources.Images;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Enums;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using ComplyCube.Net.Utils;
+using System.Text.Json.Serialization;
+using System.Text;
 
 namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 {
@@ -23,10 +29,12 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
         private readonly DocumentApi _documentApi;
 
         private readonly CheckApi _checkApi;
+
         public ComplyCubeProvider(ComplyCubeConfiguration configuration)
         {
+       
             _configuration = configuration;
-            _client = new ComplyCubeClient(_configuration.ApiKey);
+            _client = new ComplyCubeClient(_configuration.ApiKey, new HttpClient());
             _clientApi = new ClientApi(_client);
             _addressApi = new AddressApi(_client);
             _documentApi = new DocumentApi(_client);
@@ -34,53 +42,91 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
         }
         public async Task<KYCClient> CreateClientAsync(KYCClientRequest request, CancellationToken cancellationToken = default)
         {
-            var apiRequest = new ClientRequest
+
+            var apiRequest = new ExtendedClientRequest
             {
                 email = request.EmailAddress,
-                type = "person",
                 mobile = request.PhoneNumber,
-
-            };
-
-            var response = await _clientApi.CreateAsync(apiRequest);
-
-            return PrepareKYCClient(response);
-        }
-
-        public async Task<KYCClient> UpdateClientInfoAsync(string clientId,KYCClientInfo request, CancellationToken cancellationToken = default)
-        {
-            var apiRequest = new ClientRequest
-            {
-                personDetails = new PersonDetails
+                type="person",
+                personDetails = new ExtendedPersonDetails
                 {
-                    firstName = request.FirstName,
-                    lastName = request.LastName,
-                    nationality = request.Nationality,
-                    gender = MapComplyCupeGender(request.Gender),
-                    dob = request.BirthDate.ToString()
+                    firstName = request.Info.FirstName,
+                    lastName = request.Info.LastName,
+                    dob = request.Info.BirthDate.ToString("yyyy-MM-dd"),
+                    gender = MapComplyCupeGender(request.Info.Gender),
+                    nationality = request.Info.Nationality,
+                    ssn = request.Info.SSN
                 }
             };
 
-            var response = await _clientApi.UpdateAsync(clientId, apiRequest);
-            
-            if(request.Address != null)
+
+            var response = await SendCustomPostRequest<Client>("/clients", apiRequest);
+
+                
+            if (request.Info.Address != null)
+            {
+                var addressRequest = new AddressRequest
+                {
+                    clientId = response.id,
+                    country = request.Info.Address.Country,
+                    city = request.Info.Address.City,
+                    state = request.Info.Address.State,
+                    type = "main",
+                    postalCode = request.Info.Address.PostalCode,
+                    line = request.Info.Address.StreetLine
+                };
+
+                await _addressApi.CreateAsync(addressRequest);
+            }
+
+       
+            return PrepareKYCClient(response, request.Info.Address);
+        }
+
+
+
+        public async Task<KYCClient> UpdateClientAsync(string clientId, KYCClientRequest request, CancellationToken cancellationToken = default)
+        {
+
+            var apiRequest = new ExtendedClientRequest
+            {
+                email = request.EmailAddress,
+                mobile = request.PhoneNumber,
+                personDetails = new ExtendedPersonDetails
+                {
+                    firstName = request.Info.FirstName,
+                    lastName = request.Info.LastName,
+                    dob = request.Info.BirthDate.ToString("yyyy-MM-dd"),
+                    gender = MapComplyCupeGender(request.Info.Gender),
+                    nationality = request.Info.Nationality,
+                    ssn = request.Info.SSN
+                },
+
+            };
+
+
+            var response = await SendCustomPostRequest<Client>($"clients/{clientId}", apiRequest);
+
+
+
+            if (request.Info.Address != null)
             {
                 var addressRequest = new AddressRequest
                 {
                     clientId = clientId,
-                    country = request.Address.Country,
-                    city = request.Address.City,
-                    state = request.Address.State,
+                    country = request.Info.Address.Country,
+                    city = request.Info.Address.City,
+                    state = request.Info.Address.State,
                     type = "main",
-                    postalCode = request.Address.PostalCode,
-                    line = request.Address.StreetLine
+                    postalCode = request.Info.Address.PostalCode,
+                    line = request.Info.Address.StreetLine
                 };
 
                 var clientAddresses = await _addressApi.ListAsync(clientId);
 
-                if(clientAddresses.totalSize > 0)
+                if (clientAddresses.totalSize > 0)
                 {
-                    var mainId =  clientAddresses.items.Single(x => x.type == "main").id;
+                    var mainId = clientAddresses.items.Single(x => x.type == "main").id;
 
                     await _addressApi.UpdateAsync(mainId, addressRequest);
                 }
@@ -90,22 +136,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 }
             }
 
-            return PrepareKYCClient(response, request.Address);
-        }
+            return PrepareKYCClient(response, request.Info.Address);
 
-        public async Task<KYCClient> UpdateClientAsync(string clientId, KYCClientRequest request, CancellationToken cancellationToken = default)
-        {
-            var apiRequest = new ClientRequest
-            {
-                email = request.EmailAddress,
-                type = "person",
-                mobile = request.PhoneNumber,
-
-            };
-
-            var response = await _clientApi.UpdateAsync(clientId, apiRequest);
-
-            return PrepareKYCClient(response);
         }
 
         public async Task<KYCDocument> CreateDocumentAsync(KYCDocumentRequest request, CancellationToken cancellationToken = default)
@@ -117,7 +149,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 issuingCountry = request.IssuingCountry
             };
 
-            var response =  await _documentApi.CreateAsync(apiRequest);
+            var response = await _documentApi.CreateAsync(apiRequest);
 
             return PrepareKYCDocument(response);
         }
@@ -175,7 +207,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 type = MapCheckType(request.Type)
             };
 
-            if(request.Type == KYCCheckType.IdNumberCheck)
+            if (request.Type == KYCCheckType.IdNumberCheck)
             {
                 var addresses = await _addressApi.ListAsync(request.ClientId);
 
@@ -184,7 +216,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 apiRequest.addressId = mainAddress.id;
             }
 
-            var response = await _checkApi.CreateAsync(apiRequest);
+            var response = await SendCustomPostRequest<Check>("/checks", apiRequest);
 
             return PrepareKYCCheck(response);
         }
@@ -232,7 +264,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 PhoneNumber = client.mobile
             };
 
-            if(client.personDetails != null)
+            if (client.personDetails != null)
             {
                 response.Info = new KYCClientInfo
                 {
@@ -244,16 +276,16 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
                 };
 
-                if(address != null)
+                if (address != null)
                 {
                     response.Info.Address = address;
-                }             
+                }
             }
 
             return response;
         }
 
-        private KYCDocument  PrepareKYCDocument(ComplyCube.Net.Model.Document document)
+        private KYCDocument PrepareKYCDocument(ComplyCube.Net.Model.Document document)
         {
             var response = new KYCDocument
             {
@@ -266,9 +298,9 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             return response;
         }
 
-        private KYCDocumentAttachement PrepareKYCDocumentAttachement(Image image )
+        private KYCDocumentAttachement PrepareKYCDocumentAttachement(Image image)
         {
-           
+
             var response = new KYCDocumentAttachement
             {
                 Id = image.id,
@@ -304,10 +336,98 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 return Convert.ToBase64String(imageBytes);
             }
         }
-    }
 
+        private async Task<T> SendCustomPostRequest<T>(string path, object body)
+        {
+            return await SendCustomerRequestAsync<T>(path, HttpMethod.Post, body);
+        }
+
+
+        private async Task<T> SendCustomerRequestAsync<T>(string path , HttpMethod httpMethod, object? data)
+        {
+            var client = CreateHttpClient();
+
+            var httpRequestMessage = new HttpRequestMessage(httpMethod, $"{_client.baseUrl}/{path}");
+
+            string version =_client.GetType().Assembly.GetName().Version?.ToString() ?? "1";
+
+            ProductInfoHeaderValue item = new ProductInfoHeaderValue("complycube-dotnet", version);
+
+            httpRequestMessage.Headers.UserAgent.Add(item);
+
+            httpRequestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            httpRequestMessage.Headers.TryAddWithoutValidation("Authorization", _configuration.ApiKey);
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+            options.Converters.Add(new CustomDateTimeConverter());
+
+            if (httpMethod.Equals(HttpMethod.Post))
+            {
+                string content = JsonSerializer.Serialize(data, options);
+                StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+                httpRequestMessage.Content = stringContent;
+            }
+            
+            var httpResponseMessage = await client.SendAsync(httpRequestMessage);
+            
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new ComplyCubeServerException(httpResponseMessage.ReasonPhrase, httpResponseMessage);
+            }
+            
+            return await SerialzeHttpResponseMessage<T>(httpResponseMessage);
+        }
+
+        private async Task<T> SerialzeHttpResponseMessage<T>(HttpResponseMessage httpResponseMessage)
+        {
+            var json = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<T>(json);
+
+            return result;
+        }
+        private HttpClient CreateHttpClient()
+        {
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", _configuration.ApiKey);
+
+            return httpClient;
+        }
+    }
     public class ExtendedCheckRequest : CheckRequest
     {
         public string addressId { get; set; }
+    }
+
+
+    public class ExtendedClientRequest
+    {
+        public string type { get; set; }
+
+        public string entityName { get; set; }
+
+        public string email { get; set; }
+
+        public string mobile { get; set; }
+
+        public string telephone { get; set; }
+
+        public string externalId { get; set; }
+
+        public string joinedDate { get; set; }
+
+        public ExtendedPersonDetails personDetails { get; set; }
+
+        public CompanyDetails companyDetails { get; set; }
+    }
+    public class ExtendedPersonDetails : PersonDetails
+    {
+        public string ssn { get; set; }
     }
 }
