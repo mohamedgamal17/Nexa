@@ -131,6 +131,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
             return Task.FromResult(kycCheck);
         }
 
-      
+        public Task<bool> VerifiyWebHookSignature(string signature, string body)
+        {
+            return Task.FromResult(true);
+        }
     }
 }

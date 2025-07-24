@@ -117,14 +117,13 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                     country = request.Info.Address.Country,
                     city = request.Info.Address.City,
                     state = request.Info.Address.State,
-                    type = "main",
                     postalCode = request.Info.Address.PostalCode,
                     line = request.Info.Address.StreetLine
                 };
 
                 var clientAddresses = await _addressApi.ListAsync(clientId);
 
-                if (clientAddresses.totalSize > 0)
+                if (clientAddresses.items != null && clientAddresses.items.Count() > 0)
                 {
                     var mainId = clientAddresses.items.Single(x => x.type == "main").id;
 
@@ -132,6 +131,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 }
                 else
                 {
+                    addressRequest.type = "main";
+
                     await _addressApi.CreateAsync(addressRequest);
                 }
             }
@@ -241,7 +242,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
         {
             return checkType switch
             {
-                KYCCheckType.IdNumberCheck => "multi-bureau",
+                KYCCheckType.IdNumberCheck => "multi_bureau_check",
                 KYCCheckType.IdentityCheck => "identity_check",
                 _ => "document_check"
             };
@@ -370,6 +371,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 string content = JsonSerializer.Serialize(data, options);
                 StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
                 httpRequestMessage.Content = stringContent;
+                stringContent.Headers.ContentType.CharSet = "";
             }
             
             var httpResponseMessage = await client.SendAsync(httpRequestMessage);
@@ -398,6 +400,21 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", _configuration.ApiKey);
 
             return httpClient;
+        }
+
+        public Task<bool> VerifiyWebHookSignature(string signature, string body)
+        {
+            var eventVerifier = new EventVerifier(_configuration.WebhookSecret);
+
+            try
+            {
+                var webhookEvent = eventVerifier.ConstructEvent(body, signature);
+
+                return Task.FromResult(webhookEvent != null);
+            }
+            catch (ComplyCube.Net.Exceptions.VerificationException) {
+                return Task.FromResult(false);
+            }
         }
     }
     public class ExtendedCheckRequest : CheckRequest
