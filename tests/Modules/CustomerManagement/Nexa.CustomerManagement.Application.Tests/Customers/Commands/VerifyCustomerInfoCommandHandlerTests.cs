@@ -40,7 +40,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
                 .AsQuerable()
                 .SingleAsync(x => x.Id == fakeCustomer.Id);
 
-            customer.InfoVerificationState.Should().Be(VerificationState.InReview);
+            customer.InfoVerificationState.Should().Be(VerificationState.Processing);
 
             result.Value!.AssertCustomerDto(customer);
         }
@@ -83,7 +83,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             result.ShoulBeFailure(typeof(BusinessLogicException));
         }
 
-        [TestCase(VerificationState.InReview)]
+        [TestCase(VerificationState.Processing)]
         [TestCase(VerificationState.Verified)]
         public async Task Should_failure_while_verifiing_customer_info_verification_state_is_invalid(VerificationState state)
         {

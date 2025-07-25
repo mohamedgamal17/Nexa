@@ -78,7 +78,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
 
             document.Should().NotBeNull();
 
-            document!.KYCExternalId.Should().Be(fakeKycDocument.Id);
+            document!.KycDocumentId.Should().Be(fakeKycDocument.Id);
 
             document.Attachments.Count.Should().Be(1);
 
@@ -125,7 +125,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         }
 
         [TestCase(VerificationState.Pending)]
-        [TestCase(VerificationState.InReview)]
+        [TestCase(VerificationState.Processing)]
         [TestCase(VerificationState.Rejected)]
 
         public async Task Should_failure_while_creating_document_when_customer_info_state_is_not_verified(VerificationState state)

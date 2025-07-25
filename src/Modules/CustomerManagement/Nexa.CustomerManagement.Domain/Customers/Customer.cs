@@ -1,6 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
-using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Customers
 {
     public class Customer : BaseEntity
@@ -11,11 +10,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public CustomerInfo? Info { get; set; }
-        public VerificationState InfoVerificationState { get; set; }
-        public List<Document> Documents { get; set; } = new List<Document>();
-        public bool IsVerified => InfoVerificationState == VerificationState.Verified
-            && Documents.All(x => x.State == VerificationState.Verified);
-
+        public Document Document { get; set; }
         private Customer()
         {
             
@@ -28,53 +23,31 @@ namespace Nexa.CustomerManagement.Domain.Customers
             EmailAddress = emailAddres;
         }
 
-        internal Customer(string userId, string phoneNumber, string emailAddres, VerificationState infoVerificationState)
-        {
-            UserId = userId;
-            PhoneNumber = phoneNumber;
-            EmailAddress = emailAddres;
-            InfoVerificationState = infoVerificationState;
-        }
+  
         public void AddKycCustomerId(string kycCustomerId)
         {
             KycCustomerId = kycCustomerId;
         }
+
         public void Update(string phoneNumber , string emailAddres)
         {
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddres;
         }
 
-        public void AddDocument(Document document)
+        public void UpdateDocument(Document document)
         {
-            Documents.Add(document);
-        }
-
-        public Document? FindDocument(string id)
-        {
-            return Documents.SingleOrDefault(x => x.Id == id);
+            Document = document;
         }
 
         public void UpdateInfo(CustomerInfo info)
         {
             Info = info;
         }
-
-        public void VerifyInfo()
+      
+        public static Customer Create(string userId, string phoneNumber, string emailAddres)
         {
-            if(InfoVerificationState == VerificationState.Pending 
-                || InfoVerificationState == VerificationState.Rejected)
-            {
-                InfoVerificationState = VerificationState.InReview;
-            }
-        }
-
-        public void AcceptInfo()
-        {
-            if(InfoVerificationState == VerificationState.InReview)
-            {
-                InfoVerificationState = VerificationState.Verified;
-            }
+            return new Customer(userId, phoneNumber, emailAddres);
         }
     }
 }

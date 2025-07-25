@@ -9,7 +9,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         public static void AssertDocument(this Document document , CreateDocumentCommand command , string customerId)
         {
             document.Type.Should().Be(command.Type);
-            document.KYCExternalId.Should().NotBeNull();
+            document.KycDocumentId.Should().NotBeNull();
             document.CustomerId.Should().Be(customerId);
         }
 
@@ -17,7 +17,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         {
             dto.Id.Should().Be(document.Id);
             dto.CustomerId.Should().Be(document.CustomerId);
-            dto.KYCExternalId.Should().Be(document.KYCExternalId);
+            dto.KYCExternalId.Should().Be(document.KycDocumentId);
             dto.Type.Should().Be(document.Type);
 
             if(document.Attachments != null)

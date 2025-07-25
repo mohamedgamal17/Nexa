@@ -25,7 +25,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.InReview);
+            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Processing);
 
             var command = new RejectCustomerInfoCommand
             {

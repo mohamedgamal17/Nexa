@@ -15,9 +15,9 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.Property(x => x.CustomerId).HasMaxLength(DocumentTableConsts.CustomerIdLength);
 
-            builder.Property(x => x.KYCExternalId).IsRequired(false).HasMaxLength(DocumentTableConsts.KYCExternalIdLength);
+            builder.Property(x => x.KycDocumentId).IsRequired(false).HasMaxLength(DocumentTableConsts.KYCExternalIdLength);
 
-            builder.HasIndex(x => x.KYCExternalId);
+            builder.HasIndex(x => x.KycDocumentId);
 
             builder.HasMany(x => x.Attachments).WithOne();
 

@@ -24,7 +24,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
         {
             var fakeCustomer = await CreateCustomerAsync();
 
-            var fakeDocument = await CreateDocumentAsync(fakeCustomer, documentType, VerificationState.InReview);
+            var fakeDocument = await CreateDocumentAsync(fakeCustomer, documentType, VerificationState.Processing);
 
             await CreateDocumentAttachmentAsync(fakeDocument.Id, DocumentSide.Front);
 
@@ -36,7 +36,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Documents.Commands
             var command = new RejectDocumentCommand
             {
                 KycCustomerId = fakeCustomer.KycCustomerId!,
-                KycDocumentId = fakeDocument.KYCExternalId!
+                KycDocumentId = fakeDocument.KycDocumentId!
             };
 
             var result = await Mediator.Send(command);

@@ -5,9 +5,10 @@ namespace Nexa.CustomerManagement.Domain.Documents
     public class Document : AggregateRoot
     {
         public string CustomerId { get; set; }
-        public string? KYCExternalId { get; set; }
+        public string? KycDocumentId { get; set; }
         public DocumentType Type { get; set; }
         public VerificationState State { get; set; }
+        public string? KycReviewId { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
         private bool ShouldHasBothSides => Attachments.Any(x => x.Side == DocumentSide.Front)
                      && Attachments.Any(x => x.Side == DocumentSide.Back);
@@ -23,33 +24,12 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Type = type;
         }
 
-        public Document(string customerId, DocumentType documentType)
+        public Document(DocumentType type , string kycDocumentId)
         {
-            CustomerId = customerId;
-            Type = documentType;
-        }
-        public Document(string customerId,  string kycExternalId, DocumentType type)
-        {
-            CustomerId = customerId;
-            KYCExternalId = kycExternalId;
             Type = type;
+            KycDocumentId = kycDocumentId;
         }
 
-        internal Document(string customerId, string kycExternalId, DocumentType type , VerificationState state)
-        {
-            CustomerId = customerId;
-            KYCExternalId = kycExternalId;
-            Type = type;
-            State = state;
-        }
-
-        public void AddKycExternalId(string id)
-        {
-            if(State == VerificationState.Pending)
-            {
-                KYCExternalId = id;
-            }
-        }
         public void AddAttachment(DocumentAttachment attachment)
         {
             var oldAttach = Attachments.SingleOrDefault(x => x.Side == attachment.Side);
@@ -62,39 +42,45 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Attachments.Add(attachment);
         }
 
-        public void Verifiy()
+        public void MarkAsProcessing(string kycReviewId)
         {
             if(State  == VerificationState.Pending 
                 || State == VerificationState.Rejected)
             {
-                State = VerificationState.InReview;
+                KycReviewId = kycReviewId;
+                State = VerificationState.Processing;
             }
         }
 
-        public void Accept()
+        public void MarkAsVerified()
         {
-            if(State == VerificationState.InReview)
+            if(State == VerificationState.Processing)
             {
                 State = VerificationState.Verified;
             }
         }
 
-        public void Reject()
+        public void MarkAsRejected()
         {
-            if(State == VerificationState.InReview)
+            if(State != VerificationState.Rejected)
             {
                 State = VerificationState.Rejected;
             }
         }
+
         public bool CanBeVerified()
         {
             return RequireBothSides() ? ShouldHasBothSides : ShouldHasFrontSideOnly;
         }
 
-
         public bool RequireBothSides()
         {
             return _twoSidedDocumentTypes.Contains(Type);
+        }
+
+        public static Document Create(DocumentType type,string kycDocumentId)
+        {
+            return new Document(type, kycDocumentId);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Nexa.CustomerManagement.Application.Documents.Factories
             {
                 Id = view.Id,
                 CustomerId = view.CustomerId,
-                KYCExternalId = view.KYCExternalId,
+                KYCExternalId = view.KycDocumentId,
                 Type = view.Type,
             };
 
