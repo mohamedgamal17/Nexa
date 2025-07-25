@@ -1,4 +1,4 @@
-﻿namespace Nexa.CustomerManagement.Domain.Review
+﻿namespace Nexa.CustomerManagement.Shared.Enums
 {
     public enum KycReviewOutcome
     {
