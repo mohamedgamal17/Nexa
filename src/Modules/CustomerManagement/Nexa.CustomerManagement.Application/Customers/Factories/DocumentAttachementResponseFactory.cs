@@ -2,7 +2,7 @@
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Dtos;
 
-namespace Nexa.CustomerManagement.Application.Documents.Factories
+namespace Nexa.CustomerManagement.Application.Customers.Factories
 {
     public class DocumentAttachementResponseFactory : ResponseFactory<DocumentAttachment, DocumentAttachementDto>, IDocumentAttachementResponseFactory
     {
