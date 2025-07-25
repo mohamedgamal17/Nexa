@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Documents\Document.cs~RF2232c07d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\Nexa.CustomerManagement.Shared\Nexa.CustomerManagement.Shared.csproj" />
   </ItemGroup>

@@ -5,8 +5,9 @@ namespace Nexa.CustomerManagement.Domain.Documents
     public class Document : AggregateRoot
     {
         public string CustomerId { get; set; }
-        public string? KycDocumentId { get; set; }
+        public string KycDocumentId { get; set; }
         public DocumentType Type { get; set; }
+        public string? IssuingCountry { get; set; }
         public VerificationState State { get; set; }
         public string? KycReviewId { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
@@ -24,9 +25,10 @@ namespace Nexa.CustomerManagement.Domain.Documents
             Type = type;
         }
 
-        public Document(DocumentType type , string kycDocumentId)
+        public Document(DocumentType type , string? issuingCountry  , string kycDocumentId)
         {
             Type = type;
+            IssuingCountry = issuingCountry;
             KycDocumentId = kycDocumentId;
         }
 
@@ -78,9 +80,9 @@ namespace Nexa.CustomerManagement.Domain.Documents
             return _twoSidedDocumentTypes.Contains(Type);
         }
 
-        public static Document Create(DocumentType type,string kycDocumentId)
+        public static Document Create(DocumentType type, string? issuingCountry , string kycDocumentId)
         {
-            return new Document(type, kycDocumentId);
+            return new Document(type, issuingCountry ,kycDocumentId);
         }
     }
 }
