@@ -78,6 +78,8 @@ namespace Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentA
 
             command.Data.CopyTo(imageStream);
 
+            imageStream.Seek(0, SeekOrigin.Begin);
+
             var request = new KYCDocumentAttachmentRequest
             {
                 FileName = fileName,
