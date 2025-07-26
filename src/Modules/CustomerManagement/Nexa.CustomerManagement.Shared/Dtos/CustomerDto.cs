@@ -9,7 +9,8 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public CustomerInfoDto Info { get; set; }
-        public VerificationState InfoVerificationState { get; set; }
+
+        public DocumentDto Document { get; set; }
         public bool IsVerified { get; set; }
     }
 }

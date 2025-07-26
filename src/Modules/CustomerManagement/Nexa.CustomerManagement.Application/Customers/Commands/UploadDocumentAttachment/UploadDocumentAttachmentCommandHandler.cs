@@ -41,12 +41,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentA
 
             if (customer == null)
             {
-                return new Result<CustomerDto>(new BusinessLogicException("Current user customer is not exist."));
-            }
-
-            if (customer.Info == null)
-            {
-                return new Result<CustomerDto>(new BusinessLogicException("Current user must complete customer info first."));
+                return new Result<CustomerDto>(new EntityNotFoundException("Current user customer is not exist."));
             }
 
             if (customer.Document == null)

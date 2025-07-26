@@ -41,7 +41,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
                 return new Result<CustomerDto>(new BusinessLogicException("Current user must complete customer info first."));
             }
 
-            var kycDocument = await CreateOrUpdateKycDocument(customer, request);
+            var kycResult = await CreateOrUpdateKycDocument(customer, request);
+
+            if (kycResult.IsFailure)
+            {
+                return new Result<CustomerDto>(kycResult.Exception!);
+            }
+
+            var kycDocument = kycResult.Value!;
 
             var document = Document.Create(request.Type, request.IssuingCountry, kycDocument.Id);
 
@@ -68,11 +75,18 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
             return await _customerResponseFactory.PrepareDto(customer);
         }
 
-        private async Task<KYCDocument> CreateOrUpdateKycDocument(Customer customer , UpdateDocumentCommand command)
+        private async Task<Result<KYCDocument>> CreateOrUpdateKycDocument(Customer customer , UpdateDocumentCommand command)
         {
             if (command.KycDocumentId != null)
             {
-                return await _kycProvider.GetDocumentAsync(command.KycDocumentId);
+                var kycDocument = await _kycProvider.GetDocumentAsync(command.KycDocumentId);
+
+                if(!IsKycDocumentOwner(kycDocument, customer))
+                {
+                    return new Result<KYCDocument>(new ForbiddenAccessException());
+                }
+
+                return kycDocument;
             }
 
             var kycRequest = PrepareKycDocumentRequest(customer.KycCustomerId!, command);
@@ -98,6 +112,11 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
             };
 
             return request;
+        }
+
+        private bool IsKycDocumentOwner(KYCDocument kycDocument , Customer customer)
+        {
+            return kycDocument.ClientId == customer.KycCustomerId;
         }
     }
 }

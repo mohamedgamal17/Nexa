@@ -6,7 +6,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
 {
     public class CustomerResponseFactory : ResponseFactory<Customer, CustomerDto>, ICustomerResponseFactory
     {
-        public override Task<CustomerDto> PrepareDto(Customer view)
+        private readonly IDocumentResponseFactory _documentResponseFactory;
+
+        public CustomerResponseFactory(IDocumentResponseFactory documentResponseFactory)
+        {
+            _documentResponseFactory = documentResponseFactory;
+        }
+
+        public override async Task<CustomerDto> PrepareDto(Customer view)
         {
             var dto = new CustomerDto
             {
@@ -21,7 +28,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 dto.Info = PrepareCustomerInfoDto(view.Info);
             }
 
-            return Task.FromResult(dto);
+            if(view.Document != null)
+            {
+                dto.Document = await _documentResponseFactory.PrepareDto(view.Document);
+            }
+
+            return dto;
         }
 
 
