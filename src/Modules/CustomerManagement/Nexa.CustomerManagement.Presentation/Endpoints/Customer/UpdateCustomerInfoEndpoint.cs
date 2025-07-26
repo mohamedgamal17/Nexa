@@ -18,7 +18,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
 
         public override void Configure()
         {
-            Put("info");
+            Post("info");
 
             Description(x => x.Produces(StatusCodes.Status200OK, typeof(CustomerDto)));
 

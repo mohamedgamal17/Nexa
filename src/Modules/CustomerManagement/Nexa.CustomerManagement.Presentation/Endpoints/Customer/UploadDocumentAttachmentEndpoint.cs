@@ -2,12 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
-using Nexa.CustomerManagement.Application.Documents.Commands.UploadDocumentAttachment;
+using Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentAttachment;
 using Nexa.CustomerManagement.Shared.Dtos;
 
-namespace Nexa.CustomerManagement.Presentation.Endpoints.Documents
+namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
 {
-    public class UploadDocumentAttachmentEndpoint : Endpoint<UploadDocumentAttachmentCommand, DocumentAttachementDto>
+    public class UploadDocumentAttachmentEndpoint : Endpoint<UploadDocumentAttachmentCommand, CustomerDto>
     {
         private readonly IMediator _mediator;
 
@@ -18,15 +18,15 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Documents
 
         public override void Configure()
         {
-            Post("{documentId}/upload");
+            Post("document/upload");
 
             AllowFileUploads();
 
-            Group<DocumentEndpointGroup>();
-
             Description(x =>
-                 x.Produces(StatusCodes.Status200OK, typeof(DocumentAttachementDto))
+                x.Produces(StatusCodes.Status200OK, typeof(CustomerDto))
             );
+
+            Group<CustomerRoutingGroup>();
         }
 
         public override async Task HandleAsync(UploadDocumentAttachmentCommand req, CancellationToken ct)
