@@ -15,6 +15,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
                 Id = Guid.NewGuid().ToString(),
                 Type = request.Type,
                 DocumentId = request.DocumentId,
+                LiveVideoId = request.LiveVideoId,
                 ClientId = request.ClientId,
                 Status = KYCCheckStatus.Pending
             };
