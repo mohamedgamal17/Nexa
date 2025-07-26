@@ -10,7 +10,7 @@ using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Application.Reviews.Commands
+namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
 {
     public class CreateKycReviewCommandHandler : IApplicationRequestHandler<CreateKycReviewCommand, KycReviewDto>
     {
@@ -35,7 +35,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
 
             var customer = await _customerRepository.SingleOrDefaultAsync(x => x.UserId == userId);
 
-            if(customer == null)
+            if (customer == null)
             {
                 return new Result<KycReviewDto>(new EntityNotFoundException("User customer is not exist."));
             }
@@ -44,7 +44,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
                 return new Result<KycReviewDto>(new BusinessLogicException("Customer should complete information before creating kyc review"));
             }
 
-            var kycReviewResult = request.Type == KycReviewType.Info 
+            var kycReviewResult = request.Type == KycReviewType.Info
                 ? await CreateCustomerInfoKycReview(customer, request)
                 : await CreateDocumentKycReview(customer, request);
 
@@ -59,7 +59,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
         }
 
 
-        private async Task<Result<KycReview>> CreateCustomerInfoKycReview(Customer  customer , CreateKycReviewCommand request)
+        private async Task<Result<KycReview>> CreateCustomerInfoKycReview(Customer customer, CreateKycReviewCommand request)
         {
             if (!customer.Info!.CanBeVerified)
             {
@@ -77,7 +77,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
 
         }
 
-        private async Task<Result<KycReview>> CreateDocumentKycReview(Customer customer , CreateKycReviewCommand request)
+        private async Task<Result<KycReview>> CreateDocumentKycReview(Customer customer, CreateKycReviewCommand request)
         {
             if (customer.Document == null)
             {
@@ -87,7 +87,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
             if (customer.Info!.CanBeVerified)
             {
                 return new Result<KycReview>(new BusinessLogicException("Customer should verifiy info first before verifing documents"));
-            }      
+            }
 
             if (!customer.Document.HasRequireAttachments)
             {
@@ -105,10 +105,10 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
 
             customer.ReviewDocument(kycReview);
 
-            return  await _kycReviewRepository.InsertAsync(kycReview);
+            return await _kycReviewRepository.InsertAsync(kycReview);
 
         }
-        private async Task<KYCCheck> CreateKycCheck(Customer customer , CreateKycReviewCommand command)
+        private async Task<KYCCheck> CreateKycCheck(Customer customer, CreateKycReviewCommand command)
         {
             var kycRequest = new KYCCheckRequest
             {
@@ -116,7 +116,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands
                 Type = command.Type == KycReviewType.Info ? KYCCheckType.IdNumberCheck : KYCCheckType.IdentityCheck
             };
 
-            if(command.Type == KycReviewType.Document)
+            if (command.Type == KycReviewType.Document)
             {
                 kycRequest.Type = KYCCheckType.IdentityCheck;
                 kycRequest.LiveVideoId = command.KycLiveVideoId!;

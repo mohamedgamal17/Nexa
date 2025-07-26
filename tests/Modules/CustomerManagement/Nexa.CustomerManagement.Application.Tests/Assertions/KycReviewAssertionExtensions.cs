@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Nexa.CustomerManagement.Application.Reviews.Commands;
+using Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Dtos;
