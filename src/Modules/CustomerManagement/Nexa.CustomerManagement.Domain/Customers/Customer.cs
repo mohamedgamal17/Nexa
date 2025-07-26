@@ -1,5 +1,7 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.Reviews;
+using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Customers
 {
     public class Customer : BaseEntity
@@ -46,6 +48,22 @@ namespace Nexa.CustomerManagement.Domain.Customers
             Info = info;
         }
       
+
+        public void ReviewCustomerInfo(KycReview kycReview)
+        {
+            if(Info != null)
+            {
+                Info.MarkAsProcessing(kycReview.Id);
+            }
+        }
+
+        public void ReviewDocument(KycReview kycReview)
+        {
+            if(Document  != null)
+            {
+                Document.MarkAsProcessing(kycReview.Id);
+            }
+        }
         public static Customer Create(string userId, string phoneNumber, string emailAddres)
         {
             return new Customer(userId, phoneNumber, emailAddres);

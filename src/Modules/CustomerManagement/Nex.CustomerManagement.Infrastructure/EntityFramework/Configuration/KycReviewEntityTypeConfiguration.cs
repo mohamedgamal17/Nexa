@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Domain.Review;
+using Nexa.CustomerManagement.Domain.Reviews;
 
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 {

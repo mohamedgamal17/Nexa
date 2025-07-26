@@ -1,7 +1,7 @@
 ﻿using Nexa.BuildingBlocks.Domain;
 using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Domain.Review
+namespace Nexa.CustomerManagement.Domain.Reviews
 {
     public class KycReview : BaseEntity
     {
@@ -21,18 +21,18 @@ namespace Nexa.CustomerManagement.Domain.Review
         }
         public void Complete(KycReviewOutcome outcome)
         {
-            if(Status == KycReviewStatus.Pending)
+            if (Status == KycReviewStatus.Pending)
             {
                 Status = KycReviewStatus.Completed;
                 Outcome = outcome;
             }
         }
-        public static KycReview Info(string customerId ,string kycCheckId)
+        public static KycReview Info(string customerId, string kycCheckId)
         {
             return new KycReview(customerId, kycCheckId, null, KycReviewType.Info);
         }
 
-        public static KycReview Document(string customerId , string kycCheckId , string kycLiveVideoId)
+        public static KycReview Document(string customerId, string kycCheckId, string kycLiveVideoId)
         {
             return new KycReview(customerId, kycCheckId, kycLiveVideoId, KycReviewType.Document);
         }

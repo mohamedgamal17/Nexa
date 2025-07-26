@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
-using Nexa.CustomerManagement.Domain.Review;
+using Nexa.CustomerManagement.Domain.Reviews;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 {
     public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>

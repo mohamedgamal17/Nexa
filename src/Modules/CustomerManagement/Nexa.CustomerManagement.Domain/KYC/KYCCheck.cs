@@ -5,6 +5,8 @@
         public string Id { get; set; }
         public string ClientId { get; set; }
         public string DocumentId { get; set; }
+
+        public string LiveVideoId { get; set; }
         public KYCCheckType Type { get; set; }
         public KYCCheckStatus Status { get; set; }
     }

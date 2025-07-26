@@ -13,6 +13,9 @@ namespace Nexa.CustomerManagement.Domain.Documents
         private bool ShouldHasBothSides => Attachments.Any(x => x.Side == DocumentSide.Front)
                      && Attachments.Any(x => x.Side == DocumentSide.Back);
         private bool ShouldHasFrontSideOnly => Attachments.Any(x => x.Side == DocumentSide.Front);
+        public bool HasRequireAttachments => RequireBothSides() ? ShouldHasBothSides : ShouldHasFrontSideOnly;
+        public bool HasValidStateToBeVerified => (State == VerificationState.Pending || State == VerificationState.Rejected);
+        public bool CanBeVerified => HasValidStateToBeVerified  && HasRequireAttachments;
 
         private readonly List<DocumentType> _twoSidedDocumentTypes = new List<DocumentType>
         {
@@ -69,10 +72,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
             }
         }
 
-        public bool CanBeVerified()
-        {
-            return RequireBothSides() ? ShouldHasBothSides : ShouldHasFrontSideOnly;
-        }
+       
 
         public bool RequireBothSides()
         {

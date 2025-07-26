@@ -15,6 +15,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string? KycReviewId { get; private set; }
         public VerificationState State { get; private set; }
 
+        public bool CanBeVerified => State == VerificationState.Pending || State == VerificationState.Rejected;
         private CustomerInfo()
         {
             
@@ -40,20 +41,18 @@ namespace Nexa.CustomerManagement.Domain.Customers
             }
         }
 
-        public void MarkAsVerified(string kycReviewId)
+        public void MarkAsVerified()
         {
             if(State == VerificationState.Processing)
             {
-                KycReviewId = kycReviewId;
                 State = VerificationState.Verified;
             }
         }
 
-        public void MarkAsRejected(string kycReviewId)
+        public void MarkAsRejected()
         {
             if(State != VerificationState.Rejected)
             {
-                KycReviewId = kycReviewId;
                 State = VerificationState.Rejected;
             }          
         }

@@ -322,6 +322,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 Id = check.id,
                 ClientId = check.clientId,
                 DocumentId = check.documentId,
+                LiveVideoId = check.livePhotoId,
+              
                 Status = MapKYCStatus(check.status)
             };
 
