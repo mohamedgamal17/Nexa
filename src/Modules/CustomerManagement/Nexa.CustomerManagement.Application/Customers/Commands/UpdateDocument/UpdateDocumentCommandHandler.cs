@@ -45,6 +45,22 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
             var document = Document.Create(request.Type, request.IssuingCountry, kycDocument.Id);
 
+            if(kycDocument.Attachements != null)
+            {
+                kycDocument.Attachements.ForEach((kycAttachment) =>
+                {
+                    var documentAttachment = new DocumentAttachment(
+                                kycAttachment.Id,
+                                kycAttachment.FileName,
+                                kycAttachment.Size,
+                                kycAttachment.ContentType,
+                                kycAttachment.Side
+                            );
+
+
+                    document.AddAttachment(documentAttachment);
+                });
+            }
             customer.UpdateDocument(document);
 
             await _customerRepository.UpdateAsync(customer);
@@ -54,6 +70,11 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
         private async Task<KYCDocument> CreateOrUpdateKycDocument(Customer customer , UpdateDocumentCommand command)
         {
+            if (command.KycDocumentId != null)
+            {
+                return await _kycProvider.GetDocumentAsync(command.KycDocumentId);
+            }
+
             var kycRequest = PrepareKycDocumentRequest(customer.KycCustomerId!, command);
 
             if(customer.Document != null)
