@@ -135,5 +135,15 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
         {
             return Task.FromResult(true);
         }
+
+        public Task<KYCDocument> UpdateDocumentAsync(string documentId, KYCDocumentRequest request, CancellationToken cancellationToken = default)
+        {
+            var document = _kycDocuments.Single(x => x.Id == documentId);
+
+            document.Type = request.Type;
+            document.IssuingCountry = request.IssuingCountry;
+
+            return Task.FromResult(document);
+        }
     }
 }

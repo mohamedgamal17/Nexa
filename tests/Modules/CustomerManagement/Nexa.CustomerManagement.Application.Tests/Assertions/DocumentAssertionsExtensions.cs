@@ -1,23 +1,22 @@
 ﻿using FluentAssertions;
-using Nexa.CustomerManagement.Application.Documents.Commands.CreateDocument;
+using Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Tests.Assertions
 {
     public static class DocumentAssertionsExtensions
     {
-        public static void AssertDocument(this Document document , CreateDocumentCommand command , string customerId)
+        public static void AssertDocument(this Document document , UpdateDocumentCommand command )
         {
             document.Type.Should().Be(command.Type);
             document.KycDocumentId.Should().NotBeNull();
-            document.CustomerId.Should().Be(customerId);
+            document.IssuingCountry.Should().Be(command.IssuingCountry);
         }
 
         public static void AssertDocumentDto(this DocumentDto dto , Document document)
         {
             dto.Id.Should().Be(document.Id);
-            dto.CustomerId.Should().Be(document.CustomerId);
-            dto.KYCExternalId.Should().Be(document.KycDocumentId);
+            dto.KycDocumentId.Should().Be(document.KycDocumentId);
             dto.Type.Should().Be(document.Type);
 
             if(document.Attachments != null)
@@ -40,7 +39,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         public static void AssertDocumentAttachmentDto(this DocumentAttachementDto dto , DocumentAttachment attachment)
         {
             dto.Id.Should().Be(attachment.Id);
-            dto.KYCExternalId.Should().Be(attachment.KYCExternalId);
+            dto.KYCExternalId.Should().Be(attachment.KycAttachmentId);
             dto.Side.Should().Be(attachment.Side);
             dto.Size.Should().Be(attachment.Size);
             dto.FileName.Should().Be(attachment.FileName);

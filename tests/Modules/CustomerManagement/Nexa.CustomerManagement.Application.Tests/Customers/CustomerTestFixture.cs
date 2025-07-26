@@ -3,6 +3,7 @@ using Bogus.Extensions.UnitedStates;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Enums;
 
@@ -18,7 +19,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
         }
-        protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null )
+        protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null)
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -33,14 +34,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 return await repository.InsertAsync(customer);
             });
         }
-        protected async Task<Customer> CreateCustomerAsync(string? userId = null,  VerificationState infoVerificationState = VerificationState.Pending)
+        protected async Task<Customer> CreateCustomerAsync(string? userId = null, VerificationState infoVerificationState = VerificationState.Pending)
         {
 
             return await WithScopeAsync(async (sp) =>
             {
                 var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
 
-                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email, infoVerificationState);
+                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email);
 
                 var address = Address.Create(
                         "US",
@@ -70,6 +71,51 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 return await repository.InsertAsync(customer);
             });
         }
+
+        protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type , string? issuingCountry = null )
+        {
+            return await WithScopeAsync(async sp =>
+            {
+                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var customer = await repository.SingleAsync(x => x.Id == customerId);
+
+                var kycDocument = await CreateKycDocument(customer.KycCustomerId!, type);
+
+                var docuemnt = Document.Create(type, issuingCountry, kycDocument.Id);
+
+                customer.UpdateDocument(docuemnt);
+
+                await repository.UpdateAsync(customer);
+
+                return customer;
+            });
+        }
+
+        protected async Task<KYCDocument> CreateKycDocument(string clientId, DocumentType type)
+        {
+            var kycDocumentRequest = new KYCDocumentRequest
+            {
+                ClientId = clientId,
+                Type = type,
+                IssuingCountry=  type != DocumentType.Passport ? "US" : null
+            };
+
+            return await KycProvider.CreateDocumentAsync(kycDocumentRequest);
+        }
+
+        protected async Task<KYCDocumentAttachement> CreateKycDocumentAttachment(string kycDocumentId, string fileName, DocumentSide side)
+        {
+
+            var request = new KYCDocumentAttachmentRequest
+            {
+                FileName = fileName,
+                Side = side
+            };
+
+            return await KycProvider.UploadDocumentAttachementAsync(kycDocumentId, request);
+        }
+
         protected async Task<KYCClient> CreateKycClient(Customer customer)
         {
             var request = new KYCClientRequest
@@ -95,7 +141,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
 
             };
 
-            var kycClient = await KycProvider.CreateClientAsync( request);
+            var kycClient = await KycProvider.CreateClientAsync(request);
 
             return kycClient;
         }

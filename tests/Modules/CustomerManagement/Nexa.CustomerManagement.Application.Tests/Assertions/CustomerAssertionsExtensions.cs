@@ -62,6 +62,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
                 dto.Info.AssertCustomerInfoDto(customer.Info);
             }
 
+            if(customer.Document != null)
+            {
+                dto.Document.AssertDocumentDto(customer.Document);
+            }
+
         }
 
         public static void AssertCustomerInfoDto(this CustomerInfoDto dto , CustomerInfo info)
