@@ -4,7 +4,6 @@ namespace Nexa.CustomerManagement.Domain.Documents
 {
     public class Document : AggregateRoot
     {
-        public string CustomerId { get; set; }
         public string KycDocumentId { get; set; }
         public DocumentType Type { get; set; }
         public string? IssuingCountry { get; set; }

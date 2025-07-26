@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.Review;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 {
     public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
@@ -26,10 +28,14 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
             builder.OwnsOne(x => x.Info, navigationBuilder =>
             {
                 navigationBuilder.ToTable(CustomerInfoTableConsts.TableName);
+                navigationBuilder.HasKey(x => x.Id);
+                navigationBuilder.Property(x => x.Id).HasMaxLength(CustomerInfoTableConsts.IdLength);
                 navigationBuilder.Property(x => x.FirstName).HasMaxLength(CustomerInfoTableConsts.FirstNameLength);
                 navigationBuilder.Property(x => x.LastName).HasMaxLength(CustomerInfoTableConsts.LastNameLength);
                 navigationBuilder.Property(x => x.IdNumber).HasMaxLength(CustomerInfoTableConsts.IdNumberLength);
                 navigationBuilder.Property(x => x.Nationality).HasMaxLength(CustomerInfoTableConsts.NationalityLength);
+                navigationBuilder.Property(x => x.KycReviewId).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.KycReviewIdLength);
+                navigationBuilder.HasOne<KycReview>().WithMany().HasForeignKey(x => x.KycReviewId);
 
                 navigationBuilder.OwnsOne(x => x.Address, addressNavigationBuilder =>
                 {
@@ -42,7 +48,37 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
                 });
             });
 
-            builder.HasMany(x => x.Documents).WithOne().HasForeignKey(x => x.CustomerId);
+            builder.OwnsOne(x => x.Document, navigationBuilder =>
+            {
+                navigationBuilder.ToTable(DocumentTableConsts.TableName);
+                navigationBuilder.HasKey(x => x.Id);
+                navigationBuilder.Property(x => x.Id).HasMaxLength(DocumentTableConsts.IdLength);
+                navigationBuilder.Property(x => x.KycDocumentId).HasMaxLength(DocumentTableConsts.KycDocumentId);
+                navigationBuilder.Property(x => x.IssuingCountry).IsRequired(false).HasMaxLength(DocumentTableConsts.IssuingCountryLength);
+                navigationBuilder.Property(x => x.KycReviewId).IsRequired(false).HasMaxLength(DocumentTableConsts.KycReviewIdLength);
+                navigationBuilder.HasOne<KycReview>().WithMany().HasForeignKey(x => x.KycReviewId);
+                navigationBuilder.HasIndex(x => x.KycDocumentId);
+                navigationBuilder.OwnsMany(x => x.Attachments, attachmentNavigationbuilder =>
+                {
+                    attachmentNavigationbuilder.ToTable(DocumentAttachmentTableConsts.TableName);
+
+                    attachmentNavigationbuilder.Property(x => x.Id);
+
+                    attachmentNavigationbuilder.Property(x => x.Id).HasMaxLength(DocumentAttachmentTableConsts.IdLength);
+
+                    attachmentNavigationbuilder.Property(x => x.KycAttachmentId).IsRequired(false).HasMaxLength(DocumentAttachmentTableConsts.KycAttachmentIdLength);
+
+                    attachmentNavigationbuilder.Property(x => x.FileName).HasMaxLength(DocumentAttachmentTableConsts.FileNameLength);
+
+                    attachmentNavigationbuilder.Property(x => x.ContentType).HasMaxLength(DocumentAttachmentTableConsts.ContentTypeLength);
+
+                    attachmentNavigationbuilder.HasIndex(x => x.KycAttachmentId);
+
+                });
+                navigationBuilder.Navigation(x => x.Attachments).AutoInclude();
+
+            });
+
 
             builder.HasIndex(x => x.UserId);
         }

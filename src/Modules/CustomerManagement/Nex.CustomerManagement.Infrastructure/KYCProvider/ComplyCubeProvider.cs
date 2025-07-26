@@ -416,6 +416,11 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 return Task.FromResult(false);
             }
         }
+
+        public Task<KYCDocument> UpdateDocumentAsync(string documentId, KYCDocumentRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class ExtendedCheckRequest : CheckRequest
     {

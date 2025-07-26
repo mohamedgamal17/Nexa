@@ -7,7 +7,7 @@ namespace Nexa.CustomerManagement.Shared.Dtos
     {
         public string CustomerId { get; set; }
         public string UserId { get; set; }
-        public string? KYCExternalId { get; set; }
+        public string? KycDocumentId { get; set; }
         public DocumentType Type { get; set; }
         public List<DocumentAttachementDto> Attachements { get; set; }
     }

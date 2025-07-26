@@ -6,7 +6,7 @@
 
         public const int IdLength = 256;
 
-        public const int KYCExternalIdLength = 256;
+        public const int KycAttachmentIdLength = 256;
 
         public const int FileNameLength = 256;
 

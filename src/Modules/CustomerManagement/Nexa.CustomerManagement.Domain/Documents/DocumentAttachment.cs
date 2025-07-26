@@ -5,7 +5,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
 {
     public class DocumentAttachment : BaseEntity
     {
-        public string KYCExternalId { get; set; }
+        public string KycAttachmentId { get; set; }
         public string FileName { get; set; }
         public long Size { get; set; }
         public string ContentType { get; set; }
@@ -13,7 +13,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
         private DocumentAttachment() { }
         public DocumentAttachment(string externalId, string fileName, long size, string contentType, DocumentSide side)
         {
-            KYCExternalId = externalId;
+            KycAttachmentId = externalId;
             FileName = fileName;
             Size = size;
             ContentType = contentType;
@@ -28,7 +28,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
         }
         public void AddKycExternalId(string id)
         {
-            KYCExternalId = id;
+            KycAttachmentId = id;
         }
 
     }
