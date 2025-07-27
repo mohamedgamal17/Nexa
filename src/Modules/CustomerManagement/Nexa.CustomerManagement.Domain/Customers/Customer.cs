@@ -57,6 +57,50 @@ namespace Nexa.CustomerManagement.Domain.Customers
             }
         }
 
+        public void AcceptCustomerInfo()
+        {
+            if(Info != null)
+            {
+                Info.MarkAsVerified();
+            }
+        }
+
+        public void RejectCustomerInfo()
+        {
+            if(Info != null)
+            {
+                Info.MarkAsRejected();
+
+                if(Document != null && Document.State == VerificationState.Verified)
+                {
+                    RejectDocument();
+                }
+
+            }
+        }
+
+        public void AcceptDocument()
+        {
+            if(Document != null)
+            {
+                if(Info!.State == VerificationState.Rejected)
+                {
+                    RejectDocument();
+                }
+                else
+                {
+                    Document.MarkAsVerified();
+                }
+            }
+        }
+
+        public void RejectDocument()
+        {
+            if(Document != null)
+            {
+                Document.MarkAsRejected();
+            }
+        }
         public void ReviewDocument(KycReview kycReview)
         {
             if(Document  != null)
