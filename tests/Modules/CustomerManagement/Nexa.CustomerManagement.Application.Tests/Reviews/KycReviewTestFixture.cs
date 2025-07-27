@@ -183,9 +183,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
 
                     var reviewOutCome = verificationState == VerificationState.Verified ? KycReviewOutcome.Clear : KycReviewOutcome.Rejected;
 
-                    var review = await CreateInfoReview(customer);
+                    var review = await CreateDocumentReview(customer);
 
-                    customer.Info!.MarkAsProcessing(review.Id);
+                    customer.Document!.MarkAsProcessing(review.Id);
 
                     if (verificationState == VerificationState.Verified)
                     {
