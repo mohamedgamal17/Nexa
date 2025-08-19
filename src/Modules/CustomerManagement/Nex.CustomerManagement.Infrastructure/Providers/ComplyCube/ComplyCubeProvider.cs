@@ -15,7 +15,7 @@ using System.Text.Json.Serialization;
 using System.Text;
 using Nexa.CustomerManagement.Application.Helpers;
 
-namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
+namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 {
     public class ComplyCubeProvider : IKYCProvider
     {
@@ -33,7 +33,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
         public ComplyCubeProvider(ComplyCubeConfiguration configuration)
         {
-       
+
             _configuration = configuration;
             _client = new ComplyCubeClient(_configuration.ApiKey, new HttpClient());
             _clientApi = new ClientApi(_client);
@@ -48,7 +48,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             {
                 email = request.EmailAddress,
                 mobile = request.PhoneNumber,
-                type="person",
+                type = "person",
                 personDetails = new ExtendedPersonDetails
                 {
                     firstName = request.Info.FirstName,
@@ -63,7 +63,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
             var response = await SendCustomPostRequest<Client>("/clients", apiRequest);
 
-                
+
             if (request.Info.Address != null)
             {
                 var addressRequest = new AddressRequest
@@ -80,7 +80,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 await _addressApi.CreateAsync(addressRequest);
             }
 
-       
+
             return PrepareKYCClient(response, request.Info.Address);
         }
 
@@ -195,7 +195,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
             var attachment = document.images.Single(x => x.id == attachmentId);
 
-            var response =  await _documentApi.DownloadImageAsync(document.id, attachment.documentSide);
+            var response = await _documentApi.DownloadImageAsync(document.id, attachment.documentSide);
 
             return Base64ToStream(response.data);
         }
@@ -296,7 +296,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             return response;
         }
 
-        private KYCDocument PrepareKYCDocument(ComplyCube.Net.Model.Document document)
+        private KYCDocument PrepareKYCDocument(Document document)
         {
             var response = new KYCDocument
             {
@@ -333,7 +333,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 ClientId = check.clientId,
                 DocumentId = check.documentId,
                 LiveVideoId = check.livePhotoId,
-              
+
                 Status = MapKYCStatus(check.status)
             };
 
@@ -368,13 +368,13 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
         }
 
 
-        private async Task<T> SendCustomerRequestAsync<T>(string path , HttpMethod httpMethod, object? data)
+        private async Task<T> SendCustomerRequestAsync<T>(string path, HttpMethod httpMethod, object? data)
         {
             var client = CreateHttpClient();
 
             var httpRequestMessage = new HttpRequestMessage(httpMethod, $"{_client.baseUrl}/{path}");
 
-            string version =_client.GetType().Assembly.GetName().Version?.ToString() ?? "1";
+            string version = _client.GetType().Assembly.GetName().Version?.ToString() ?? "1";
 
             ProductInfoHeaderValue item = new ProductInfoHeaderValue("complycube-dotnet", version);
 
@@ -397,15 +397,15 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
                 httpRequestMessage.Content = stringContent;
                 stringContent.Headers.ContentType.CharSet = "";
             }
-            
+
             var httpResponseMessage = await client.SendAsync(httpRequestMessage);
-            
+
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 throw new ComplyCubeServerException(httpResponseMessage.ReasonPhrase, httpResponseMessage);
             }
-            
+
             return await SerialzeHttpResponseMessage<T>(httpResponseMessage);
         }
 
@@ -436,7 +436,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
                 return Task.FromResult(webhookEvent != null);
             }
-            catch (ComplyCube.Net.Exceptions.VerificationException) {
+            catch (VerificationException)
+            {
                 return Task.FromResult(false);
             }
         }
@@ -446,7 +447,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             throw new NotImplementedException();
         }
 
-   
+
     }
     public class ExtendedCheckRequest : CheckRequest
     {

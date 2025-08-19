@@ -1,4 +1,4 @@
-﻿namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
+﻿namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 {
     public class ComplyCubeConfiguration
     {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.CustomerManagement.Domain.KYC;
-using Nexa.CustomerManagement.Infrastructure.KYCProvider;
+using Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube;
 
 namespace Nexa.CustomerManagement.Infrastructure.Installers
 {
