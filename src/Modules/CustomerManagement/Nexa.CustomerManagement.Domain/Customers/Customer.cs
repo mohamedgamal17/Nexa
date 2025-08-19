@@ -13,7 +13,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string EmailAddress { get; set; }
         public CustomerInfo? Info { get; set; }
         public Document? Document { get; set; }
-
+        public VerificationState State { get; private set; }
         private Customer()
         {
             
