@@ -13,6 +13,7 @@ using System.Text.Json;
 using ComplyCube.Net.Utils;
 using System.Text.Json.Serialization;
 using System.Text;
+using Nexa.CustomerManagement.Application.Helpers;
 
 namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 {
@@ -180,7 +181,7 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             return PrepareKYCDocumentAttachement(response);
         }
 
-        public async Task<KYCDocumentAttachement> DownloadDocumentAttachementAsync(string documentId, string attachmentId)
+        public async Task<KYCDocumentAttachement> GetDocumentAttachementAsync(string documentId, string attachmentId)
         {
             var document = await _documentApi.GetAsync(documentId);
 
@@ -188,7 +189,16 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
 
             return PrepareKYCDocumentAttachement(attachment);
         }
+        public async Task<Stream> DowloadDocumentAttachmentAsync(string documentId, string attachmentId, CancellationToken cancellationToken = default)
+        {
+            var document = await _documentApi.GetAsync(documentId);
 
+            var attachment = document.images.Single(x => x.id == attachmentId);
+
+            var response =  await _documentApi.DownloadImageAsync(document.id, attachment.documentSide);
+
+            return Base64ToStream(response.data);
+        }
         public async Task DeleteDocumentAttachementAsync(string documentId, string attachmentId, CancellationToken cancellationToken = default)
         {
             var document = await _documentApi.GetAsync(documentId);
@@ -340,6 +350,18 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
             }
         }
 
+        private Stream Base64ToStream(string base64String)
+        {
+
+            var base64Data = base64String.Contains(",")
+                ? base64String.Substring(base64String.IndexOf(",") + 1)
+                : base64String;
+
+            byte[] bytes = Convert.FromBase64String(base64Data);
+
+            return new MemoryStream(bytes);
+        }
+
         private async Task<T> SendCustomPostRequest<T>(string path, object body)
         {
             return await SendCustomerRequestAsync<T>(path, HttpMethod.Post, body);
@@ -423,6 +445,8 @@ namespace Nexa.CustomerManagement.Infrastructure.KYCProvider
         {
             throw new NotImplementedException();
         }
+
+   
     }
     public class ExtendedCheckRequest : CheckRequest
     {

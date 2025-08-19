@@ -1,4 +1,5 @@
 ﻿using Nexa.CustomerManagement.Domain.KYC;
+
 namespace Nexa.CustomerManagement.Application.Tests.Fakers
 {
     public class FakeKYCServiceProvider : IKYCProvider
@@ -116,7 +117,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
 
             return Task.FromResult(response);
         }
-        public Task<KYCDocumentAttachement> DownloadDocumentAttachementAsync(string documentId, string attachmentId)
+        public Task<KYCDocumentAttachement> GetDocumentAttachementAsync(string documentId, string attachmentId)
         {
             var document = _kycDocuments.Single(x => x.Id == documentId);
 
@@ -145,6 +146,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
             document.IssuingCountry = request.IssuingCountry;
 
             return Task.FromResult(document);
+        }
+
+        public Task<Stream> DowloadDocumentAttachmentAsync(string documentId, string attachmentId, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(Stream.Null);
         }
     }
 }
