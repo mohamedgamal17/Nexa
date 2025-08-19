@@ -1,10 +1,11 @@
 ﻿using Nexa.BuildingBlocks.Domain;
+using Nexa.CustomerManagement.Domain.Customers.Events;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.CustomerManagement.Domain.Customers
 {
-    public class Customer : BaseEntity
+    public class Customer : AggregateRoot
     {
         public string UserId { get; set; }
         public string? KycCustomerId { get; set; }
@@ -62,6 +63,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
             if(Info != null)
             {
                 Info.MarkAsVerified();
+
+                var infoEvent = new CustomerInfoAcceptedEvent(Id);
+
+                AppendEvent(infoEvent);
             }
         }
 
@@ -74,6 +79,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
                 if(Document != null && Document.State == VerificationState.Verified)
                 {
                     RejectDocument();
+
                 }
 
             }
@@ -90,6 +96,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
                 else
                 {
                     Document.MarkAsVerified();
+
+                    var documentEvent = new CustomerInfoAcceptedEvent(Id);
+
+                    AppendEvent(documentEvent);
                 }
             }
         }
