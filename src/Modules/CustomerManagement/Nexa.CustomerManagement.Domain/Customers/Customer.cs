@@ -15,6 +15,9 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public CustomerInfo? Info { get; set; }
         public Document? Document { get; set; }
         public VerificationState State { get; private set; }
+
+        public bool CanBeReviewed => Info?.State == VerificationState.Verified &&
+            Document?.State == VerificationState.Verified;
         private Customer()
         {
             
