@@ -52,6 +52,20 @@ namespace Nexa.CustomerManagement.Domain.Customers
             Info = info;
         }
       
+        public void Review(string? fintechCustomerid = null)
+        {
+            if (!CanBeReviewed)
+            {
+                throw new InvalidOperationException("Both of customer info and document should be verified first.");
+            }
+
+            if (fintechCustomerid != null)
+            {
+                FintechCustomerid = fintechCustomerid;
+            }
+
+            State = VerificationState.Processing;
+        }
 
         public void ReviewCustomerInfo(KycReview kycReview)
         {
