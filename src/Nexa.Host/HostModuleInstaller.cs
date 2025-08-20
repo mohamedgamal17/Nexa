@@ -38,6 +38,8 @@ namespace Nexa.Host
 
             ConfigureFastEndpoint(services);
 
+            Configure3rdPratyProviders(services, configuration);
+
         }
 
         private void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
@@ -66,7 +68,8 @@ namespace Nexa.Host
 
                 busRegisterConfig.AddConsumers(
                     Transactions.Application.AssemblyReference.Assembly,
-                    Accounting.Application.AssemblyReference.Assembly
+                    Accounting.Application.AssemblyReference.Assembly,
+                    CustomerManagement.Application.AssemblyReference.Assembly
                     );
 
                 busRegisterConfig.UsingRabbitMq((ctx, rabbitMqConfig) =>
@@ -117,6 +120,11 @@ namespace Nexa.Host
                 opt.Assemblies = assemblies;
                 opt.IncludeAbstractValidators = true;
             });
+        }
+
+        private void Configure3rdPratyProviders(IServiceCollection services , IConfiguration configuration)
+        {
+            services.AddStripeProvider(configuration);
         }
     }
 }
