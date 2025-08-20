@@ -77,6 +77,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.Baas.Abstractions", "src\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj", "{3FD6EB3B-E906-415E-8B77-846532797597}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.Baas.Stripe", "src\Integrations\Nexa.Integrations.Baas.Stripe\Nexa.Integrations.Baas.Stripe.csproj", "{2B9D4023-835C-4817-8CB7-9C5E50934D0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +185,10 @@ Global
 		{3FD6EB3B-E906-415E-8B77-846532797597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FD6EB3B-E906-415E-8B77-846532797597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FD6EB3B-E906-415E-8B77-846532797597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,6 +229,7 @@ Global
 		{EB444085-546B-47E2-95E6-18F324DAA25B} = {68A3058D-262A-4FE6-9365-0598E9CBB791}
 		{159B8924-8491-4847-B112-937CE2AE0A3B} = {2030EAB6-A932-4DBA-A14A-7EAE825E0E33}
 		{3FD6EB3B-E906-415E-8B77-846532797597} = {159B8924-8491-4847-B112-937CE2AE0A3B}
+		{2B9D4023-835C-4817-8CB7-9C5E50934D0B} = {159B8924-8491-4847-B112-937CE2AE0A3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
