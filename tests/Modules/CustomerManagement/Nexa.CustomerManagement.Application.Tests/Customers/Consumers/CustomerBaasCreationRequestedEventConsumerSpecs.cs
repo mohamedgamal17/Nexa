@@ -43,11 +43,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Consumers
 
             var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
-            var baasClient = await FakeClientService.GetClientAsync(customer.FintechCustomerid!);
+            var baasClient = await FakeClientService.GetClientAsync(customer.FintechCustomerId!);
 
-            customer.FintechCustomerid.Should().NotBeNull();
+            customer.FintechCustomerId.Should().NotBeNull();
 
-            customer.FintechCustomerid.Should().Be(baasClient.Id);
+            customer.FintechCustomerId.Should().Be(baasClient.Id);
 
             customer.State.Should().Be(VerificationState.Processing);
         }

@@ -19,7 +19,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.Property(x => x.KycCustomerId).HasMaxLength(CustomerTableConstants.KycCustomerId);
 
-            builder.Property(x => x.FintechCustomerid).HasMaxLength(CustomerTableConstants.FintechCustomerId);
+            builder.Property(x => x.FintechCustomerId).HasMaxLength(CustomerTableConstants.FintechCustomerId);
 
             builder.Property(x => x.PhoneNumber).HasMaxLength(CustomerTableConstants.PhoneNumberLength);
 

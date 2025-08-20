@@ -9,7 +9,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
     {
         public string UserId { get; set; }
         public string? KycCustomerId { get; set; }
-        public string? FintechCustomerid { get; set; }
+        public string? FintechCustomerId { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public CustomerInfo? Info { get; set; }
@@ -61,7 +61,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
 
             if (fintechCustomerid != null)
             {
-                FintechCustomerid = fintechCustomerid;
+                FintechCustomerId = fintechCustomerid;
             }
 
             State = VerificationState.Processing;
