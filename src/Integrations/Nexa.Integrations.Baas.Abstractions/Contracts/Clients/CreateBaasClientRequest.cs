@@ -1,9 +1,6 @@
-﻿using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Shared.Enums;
-
-namespace Nexa.CustomerManagement.Domain.Baas
+﻿namespace Nexa.Integrations.Baas.Abstractions.Contracts.Clients
 {
-    public class CreateBaasClient
+    public class CreateBaasClientRequest
     {
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

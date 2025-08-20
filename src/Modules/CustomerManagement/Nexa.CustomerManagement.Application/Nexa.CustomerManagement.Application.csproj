@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj" />

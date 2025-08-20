@@ -1,7 +1,4 @@
-﻿using Nexa.CustomerManagement.Domain.Customers;
-using Nexa.CustomerManagement.Shared.Enums;
-
-namespace Nexa.CustomerManagement.Domain.Baas
+﻿namespace Nexa.Integrations.Baas.Abstractions.Contracts.Clients
 {
     public class BaasClient
     {
@@ -12,8 +9,7 @@ namespace Nexa.CustomerManagement.Domain.Baas
         public string LastName { get; set; }
         public string SSN { get; set; }
         public Gender Gender { get; set; }
-        public DateTime DateOfBirth { get; set;}
+        public DateTime DateOfBirth { get; set; }
         public Address Address { get; set; }
-
     }
 }
