@@ -1,10 +1,12 @@
 ﻿using Bogus;
 using Bogus.Extensions.UnitedStates;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers
@@ -12,12 +14,28 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
     public class CustomerTestFixture : CustomerManagementTestFixture
     {
         protected Faker Faker { get; }
-
         protected IKYCProvider KycProvider { get; set; }
+
+        protected ITestHarness TestHarness { get; set; }
         public CustomerTestFixture()
         {
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
+            TestHarness = ServiceProvider.GetRequiredService<ITestHarness>();
+        }
+
+        protected override async Task InitializeAsync(IServiceProvider services)
+        {
+            await base.InitializeAsync(services);
+
+            await TestHarness.Start();
+        }
+
+        protected override async Task ShutdownAsync(IServiceProvider services)
+        {
+            await base.ShutdownAsync(services);
+
+            await TestHarness.Stop();
         }
         protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null)
         {
@@ -87,6 +105,141 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 customer.UpdateDocument(docuemnt);
 
                 await repository.UpdateAsync(customer);
+
+                return customer;
+            });
+        }
+
+        protected async Task<Customer> CreateDocumentWithAttachmentsAsync(string customerId, DocumentType type, string? issuingCountry = null)
+        {
+            return await WithScopeAsync(async sp =>
+            {
+               await CreateDocumentAsync(customerId, type, issuingCountry);
+
+                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var customer = await repository.SingleAsync(x => x.Id == customerId);
+
+                var frontKycAttachment = await CreateKycDocumentAttachment(customer.Document!.KycDocumentId, Guid.NewGuid().ToString(), DocumentSide.Front);
+
+                var frontAttachment = new DocumentAttachment(
+                        frontKycAttachment.FileName,
+                        frontKycAttachment.Size,
+                        frontKycAttachment.ContentType,
+                        DocumentSide.Front
+                    );
+
+                customer.Document.AddAttachment(frontAttachment);
+
+                if (customer.Document.RequireBothSides())
+                {
+                    var backKycAttachment = await CreateKycDocumentAttachment(customer.Document!.KycDocumentId, Guid.NewGuid().ToString(), DocumentSide.Back);
+
+                    var backAttachment = new DocumentAttachment(
+                            frontKycAttachment.FileName,
+                            frontKycAttachment.Size,
+                            frontKycAttachment.ContentType,
+                            DocumentSide.Back
+                        );
+
+                    customer.Document.AddAttachment(backAttachment);
+
+                }
+
+                return await repository.UpdateAsync(customer);                
+            });
+        }
+
+        protected async Task<Customer> ReviewCustomerInfo(string customerId)
+        {
+            return await WithScopeAsync(async sp =>
+            {
+                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
+
+                var kycReview = new KycReview(customerId, Guid.NewGuid().ToString(), null, KycReviewType.Info);
+
+                await kycReviewRepository.InsertAsync(kycReview);
+
+                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
+
+                customer.ReviewCustomerInfo(kycReview);
+
+                await customerRepository.UpdateAsync(customer);
+
+                return customer;
+            });
+        }
+        protected async Task<Customer> AcceptCustomerInfo(string customerId)
+        {
+            return await WithScopeAsync(async sp =>
+            {
+                await ReviewCustomerInfo(customerId);
+
+                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
+
+                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
+
+                var kycReview = await kycReviewRepository.SingleAsync(x => x.Id == customer.Info!.KycReviewId);
+
+                kycReview.Complete(KycReviewOutcome.Clear);
+
+                await kycReviewRepository.UpdateAsync(kycReview);
+
+                customer.AcceptCustomerInfo();
+
+                await customerRepository.UpdateAsync(customer);
+
+                return customer;
+            });
+        }
+
+        protected async Task<Customer> ReviewCustomerDocument(string customerId)
+        {
+            return await WithScopeAsync(async sp =>
+            {
+                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
+
+                var kycReview = new KycReview(customerId, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), KycReviewType.Document);
+
+                await kycReviewRepository.InsertAsync(kycReview);
+
+                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
+
+                customer.ReviewDocument(kycReview);
+
+                await customerRepository.UpdateAsync(customer);
+
+                return customer;
+            });
+        }
+
+        protected async Task<Customer> AcceptCustomerDocument(string customerId)
+        {
+            return await WithScopeAsync(async sp =>
+            {
+                await ReviewCustomerDocument(customerId);
+
+                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
+
+                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
+
+                var kycReview = await kycReviewRepository.SingleAsync(x => x.Id == customer.Document!.KycReviewId);
+
+                kycReview.Complete(KycReviewOutcome.Clear);
+
+                await kycReviewRepository.UpdateAsync(kycReview);
+
+                customer.AcceptDocument();
+
+                await customerRepository.UpdateAsync(customer);
 
                 return customer;
             });

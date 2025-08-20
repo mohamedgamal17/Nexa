@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Bogus.Extensions.UnitedStates;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
@@ -19,6 +20,20 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
         {
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
+        }
+
+        protected override async Task InitializeAsync(IServiceProvider services)
+        {
+            await base.InitializeAsync(services);
+
+            await TestHarness.Start();
+        }
+
+        protected override async Task ShutdownAsync(IServiceProvider services)
+        {
+            await base.InitializeAsync(services);
+
+            await TestHarness.Stop();
         }
 
         protected async Task<KycReview> CreateDocumentReview(Customer customer, KycReviewStatus reviewStatus = KycReviewStatus.Pending, KycReviewOutcome reviewOutcome = KycReviewOutcome.Clear)

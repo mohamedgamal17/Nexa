@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
-using Nexa.BuildingBlocks.Domain.NewFolder;
 using Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;

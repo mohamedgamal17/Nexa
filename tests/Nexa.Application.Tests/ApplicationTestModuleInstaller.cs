@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Nexa.Application.Tests.Providers.Baas;
 using Nexa.Application.Tests.Services;
 using Nexa.Application.Tests.Utilites;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
@@ -9,6 +10,7 @@ using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.Integrations.Baas.Abstractions.Services;
 namespace Nexa.Application.Tests
 {
     public class ApplicationTestModuleInstaller : IModuleInstaller
@@ -28,6 +30,14 @@ namespace Nexa.Application.Tests
                 .RegisterEfCoreInterceptors();
 
             services.AddAuthorizationCore();
+
+            RegisterFakeBaasProvider(services);
+
+        }
+
+        private void RegisterFakeBaasProvider(IServiceCollection services)
+        {
+            services.AddTransient<IBaasClientService, FakeBaasClientService>();
         }
 
     }
