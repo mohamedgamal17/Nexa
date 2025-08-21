@@ -67,6 +67,14 @@ namespace Nexa.CustomerManagement.Domain.Customers
             State = VerificationState.Processing;
         }
 
+        public void Accept()
+        {
+            if(State == VerificationState.Processing)
+            {
+                State = VerificationState.Verified;
+            }
+        }
+
         public void ReviewCustomerInfo(KycReview kycReview)
         {
             if(Info != null)
