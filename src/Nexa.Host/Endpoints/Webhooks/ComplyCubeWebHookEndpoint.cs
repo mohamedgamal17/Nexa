@@ -5,6 +5,7 @@ using Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Enums;
 using System.Text.Json;
+
 namespace Nexa.Host.Endpoints.Webhooks
 {
     public class ComplyCubeWebHookRequest
@@ -23,16 +24,18 @@ namespace Nexa.Host.Endpoints.Webhooks
 
         }
     }
-    public class ComplyCubeWebHookEndpoint : Endpoint<EmptyRequest>
+    public class ComplyCubeWebhookEndpoint : Endpoint<EmptyRequest>
     {
 
         private readonly IKYCProvider _kycProvider;
 
         private readonly IMediator _mediator;
 
+        private readonly ILogger<ComplyCubeWebhookEndpoint> _logger;
+
         private Dictionary<string, Func<ComplyCubeWebHookRequest, Task>> _eventHandlers;
 
-        public ComplyCubeWebHookEndpoint(IKYCProvider kycProvider, IMediator mediator)
+        public ComplyCubeWebhookEndpoint(IKYCProvider kycProvider, IMediator mediator, ILogger<ComplyCubeWebhookEndpoint> logger)
         {
             _kycProvider = kycProvider;
             _mediator = mediator;
@@ -40,13 +43,14 @@ namespace Nexa.Host.Endpoints.Webhooks
             {
                 {"check.completed", HandleCheckCompletedEvent }
             };
+            _logger = logger;
         }
 
         public override void Configure()
         {
-            Post("webhooks/complycube");
-
-            Group<WebHookRoutingGroup>();
+            Post("complycube");
+            Group<WebhookRoutingGroup>();
+            DontAutoTag();
         }
 
 
@@ -74,6 +78,10 @@ namespace Nexa.Host.Endpoints.Webhooks
             }
 
             var request = JsonSerializer.Deserialize<ComplyCubeWebHookRequest>(body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })!;
+
+
+            _logger.LogDebug("Recived complycube webhook event ({eventType}).\n body : {@event}", request.Type, request);
+
 
             if (_eventHandlers.ContainsKey(request.Type))
             {

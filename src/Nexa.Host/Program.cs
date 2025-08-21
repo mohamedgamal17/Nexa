@@ -3,12 +3,30 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.Host;
+using Serilog;
+using Serilog.Events;
+
+Log.Logger = new LoggerConfiguration()
+#if DEBUG
+    .MinimumLevel.Debug()
+#else
+    .MinimumLevel.Information()
+#endif
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Async(c => c.Console())
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.InstallModule<HostModuleInstaller>();
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+
+builder.Host
+    .UseSerilog()
+    .UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 var app = builder.Build();
 
