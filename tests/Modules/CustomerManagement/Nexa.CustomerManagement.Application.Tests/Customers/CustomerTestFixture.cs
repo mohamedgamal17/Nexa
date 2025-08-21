@@ -8,6 +8,7 @@ using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
+using Nexa.Integrations.Baas.Abstractions.Services;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers
 {
@@ -16,11 +17,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
         protected Faker Faker { get; }
         protected IKYCProvider KycProvider { get; set; }
 
+        protected IBaasClientService FakeBaasClientService { get; set; }
         protected ITestHarness TestHarness { get; set; }
         public CustomerTestFixture()
         {
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
+            FakeBaasClientService = ServiceProvider.GetRequiredService<IBaasClientService>();
             TestHarness = ServiceProvider.GetRequiredService<ITestHarness>();
         }
 
@@ -52,7 +55,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 return await repository.InsertAsync(customer);
             });
         }
-        protected async Task<Customer> CreateCustomerAsync(string? userId = null, VerificationState infoVerificationState = VerificationState.Pending)
+        protected async Task<Customer> CreateCustomerAsync(string? userId = null)
         {
 
             return await WithScopeAsync(async (sp) =>
@@ -90,6 +93,52 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
             });
         }
 
+
+        protected async Task<Customer> CreateReviewedCustomer(string? userId = null)
+        {
+            return await WithScopeAsync(async (sp) =>
+            {
+                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
+
+                var fakeCustomer = await CreateCustomerAsync(userId);
+
+                await CreateDocumentWithAttachmentsAsync(fakeCustomer.Id, DocumentType.Passport);
+
+                await AcceptCustomerInfo(fakeCustomer.Id);
+
+                await AcceptCustomerDocument(fakeCustomer.Id);
+
+                var customer = await repository.SingleAsync(x => x.Id == fakeCustomer.Id);
+
+                var request = new Integrations.Baas.Abstractions.Contracts.Clients.CreateBaasClientRequest
+                
+                {
+                    FirstName = customer.Info!.FirstName,
+                    LastName = customer.Info.LastName,
+                    SSN = customer.Info.IdNumber,
+                    PhoneNumber = customer.PhoneNumber,
+                    Email = customer.EmailAddress,
+                    DateOfBirth = customer.Info.BirthDate,
+                    Gender = customer.Info.Gender == Gender.Male ? Integrations.Baas.Abstractions.Contracts.Clients.Gender.Male : Integrations.Baas.Abstractions.Contracts.Clients.Gender.Female,
+                    Address = new Integrations.Baas.Abstractions.Contracts.Clients.Address
+                    {
+                        Country = customer.Info.Address.Country,
+                        State = customer.Info.Address.State,
+                        City = customer.Info.Address.City,
+                        StreetLine = customer.Info.Address.StreetLine,
+                        PostalCode = customer.Info.Address.PostalCode,
+                        ZipCode = customer.Info.Address.ZipCode
+                    }
+
+                };
+
+                var baasClient = await FakeBaasClientService.CreateClientAsync(request);
+
+                customer.Review(baasClient.Id);
+
+                return await repository.UpdateAsync(customer);
+            });
+        }
         protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type , string? issuingCountry = null )
         {
             return await WithScopeAsync(async sp =>
