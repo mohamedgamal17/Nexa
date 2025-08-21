@@ -76,6 +76,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
                 Info!.MarkAsRejected();
 
                 Document!.MarkAsRejected();
+
+                var @event = new CustomerRejectedEvent(Id, UserId, FintechCustomerId!, EmailAddress, PhoneNumber);
+
+                AppendEvent(@event);
             }   
         }
 
@@ -84,6 +88,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
             if(State == VerificationState.Processing)
             {
                 State = VerificationState.Verified;
+
+                var @event = new CustomerAcceptedEvent(Id, UserId, FintechCustomerId!, EmailAddress, PhoneNumber);
+
+                AppendEvent(@event);
             }
         }
 
