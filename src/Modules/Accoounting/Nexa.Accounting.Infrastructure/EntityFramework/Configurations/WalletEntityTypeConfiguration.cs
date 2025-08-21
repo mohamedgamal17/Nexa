@@ -13,6 +13,9 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 
             builder.Property(x => x.CustomerId).HasMaxLength(WalletTableConsts.CustomerIdLength);
 
+            builder.Property(x => x.ProviderWalletId).IsRequired(false)
+                .HasMaxLength(WalletTableConsts.ProviderWalletIdLength);
+
             builder.Property(x => x.Number).HasMaxLength(WalletTableConsts.NumberLength);
 
             builder.Property(x => x.UserId).HasMaxLength(WalletTableConsts.UserIdLength);
@@ -22,6 +25,8 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
             builder.HasIndex(x => x.UserId);
 
             builder.HasIndex(x => x.CustomerId);
+
+            builder.HasIndex(x => x.ProviderWalletId);
 
         }
     }
