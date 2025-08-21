@@ -14,7 +14,7 @@ namespace Nexa.Integrations.Baas.Stripe
 
         public Task<Abstractions.Contracts.Events.Event> ConstructEvent(string body)
         {
-            var stripeEvent = EventUtility.ParseEvent(body);
+            var stripeEvent = EventUtility.ParseEvent(body, false);
 
             var @event = new Abstractions.Contracts.Events.Event
             {
@@ -31,7 +31,7 @@ namespace Nexa.Integrations.Baas.Stripe
            
             try
             {
-                EventUtility.ValidateSignature(body, signature, _configuration.WebHookSecret);
+                EventUtility.ValidateSignature(body, signature, _configuration.WebhookSecret);
 
                 return Task.FromResult(true);
 

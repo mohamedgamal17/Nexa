@@ -95,9 +95,9 @@ namespace Nexa.Integrations.Baas.Stripe
                     {
                         Document = new AccountIndividualVerificationDocumentOptions
                         {
-                            Front = (await _fileService.CreateAsync(new FileCreateOptions() { File = request.Front })).Id,
+                            Front = (await _fileService.CreateAsync(new FileCreateOptions() { File = request.Front , Purpose = "identity_document" } )).Id,
                             Back = request.Back != null ?
-                                (await _fileService.CreateAsync(new FileCreateOptions() { File = request.Back })).Id
+                                (await _fileService.CreateAsync(new FileCreateOptions() { File = request.Back ,Purpose = "identity_document" })).Id
                                 : null
                         }
                     }
