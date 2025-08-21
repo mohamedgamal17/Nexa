@@ -28,7 +28,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Verified);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
 
             var command = new UpdateDocumentCommand
@@ -58,7 +58,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerAsync(userId, VerificationState.Verified);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
             var fakeKycDocument = await CreateKycDocument(fakeCustomer.KycCustomerId!, documentType);
 
