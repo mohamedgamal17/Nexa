@@ -5,6 +5,6 @@
         public static string SectionName = "Baas";
         public string ApiKey { get; set; }
 
-        public string WebHookSecret { get; set; }
+        public string WebhookSecret { get; set; }
     }
 }
