@@ -5,6 +5,9 @@ using Nexa.CustomerManagement.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
 using Nexa.CustomerManagement.Shared.Enums;
+using MassTransit.Testing;
+using Nexa.CustomerManagement.Shared.Events;
+using Nexa.CustomerManagement.Domain.Customers.Events;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
@@ -21,11 +24,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
         [Test]
         public async Task Should_accept_customer()
         {
+
             AuthenticationService.Login();
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
             var fakeCustomer = await CreateReviewedCustomer(userId);
+
+            await TestHarness.Start();
 
             var command = new AcceptCustomerCommand
             {
@@ -39,6 +45,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var customer = await  CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
             customer.State.Should().Be(VerificationState.Verified);
+
+            Assert.That(await TestHarness.Published.Any<CustomerAcceptedIntegrationEvent>());
+
+            await TestHarness.Stop();
         }
 
     }

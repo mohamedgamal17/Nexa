@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using FluentAssertions;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
@@ -7,6 +8,7 @@ using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Events;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]
@@ -22,6 +24,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
         [Test]
         public async Task Should_create_user_customer()
         {
+            await TestHarness.Start();
+
             AuthenticationService.Login();
 
             var command = PrepareCreateCustomerCommand();
@@ -37,6 +41,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             entity!.AssertCustomer(AuthenticationService.GetCurrentUser()!.Id,command);
 
             result.Value!.AssertCustomerDto(entity!);
+
+            Assert.That(await TestHarness.Published.Any<CustomerCreatedIntegrationEvent>());
+
+            await TestHarness.Stop();
+
         }
 
         [Test]

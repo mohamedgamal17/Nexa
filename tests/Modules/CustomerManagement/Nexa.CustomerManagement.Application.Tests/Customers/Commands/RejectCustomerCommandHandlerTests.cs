@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
 using Nexa.CustomerManagement.Application.Customers.Commands.RejectCustomer;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Enums;
+using Nexa.CustomerManagement.Shared.Events;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
@@ -27,6 +29,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var fakeCustomer = await CreateReviewedCustomer(userId);
 
+            await TestHarness.Start();
+
             var command = new RejectCustomerCommand
             {
                 FintechCustomerId = fakeCustomer.FintechCustomerId!
@@ -43,6 +47,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             customer.Info!.State.Should().Be(VerificationState.Rejected);
 
             customer.Document!.State.Should().Be(VerificationState.Rejected);
+
+            Assert.That(await TestHarness.Published.Any<CustomerRejectedIntegrationEvent>());
+
+            await TestHarness.Stop();
         }
     }
 }
