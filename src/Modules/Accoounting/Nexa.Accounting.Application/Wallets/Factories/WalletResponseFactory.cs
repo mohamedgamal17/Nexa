@@ -19,7 +19,8 @@ namespace Nexa.Accounting.Application.Wallets.Factories
             {
                 Id = wallet.Id,
                 Number = wallet.Number,
-                UserId = wallet.UserId
+                UserId = wallet.UserId,
+                CustomerId = wallet.CustomerId
             };
 
             return Task.FromResult(dto);
@@ -29,9 +30,11 @@ namespace Nexa.Accounting.Application.Wallets.Factories
             var dto = new WalletDto
             {
                 Id = view.Id,
-                Number = view.Number,
                 UserId = view.UserId,
-                Balance = view.Balance
+                CustomerId = view.
+                Number = view.Number,             
+                Balance = view.Balance,
+                State = view.State
             };
 
             return Task.FromResult(dto);

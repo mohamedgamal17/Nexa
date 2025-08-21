@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Nexa.Accounting.Application.Wallets.Factories;
 using Nexa.Accounting.Application.Wallets.Services;
-using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
@@ -12,14 +11,12 @@ namespace Nexa.Accounting.Application.Wallets.Commands.CreateWallet
 {
     public class CreateWalletCommandHandler : IApplicationRequestHandler<CreateWalletCommand, WalletDto>
     {
-        private readonly ISecurityContext _securityContext;
         private readonly IWalletRepository _walletRepository;
         private readonly IWalletNumberGeneratorService _walletNumberGeneratorService;
         private readonly IWalletResponseFactory _walletResponseFactory;
 
-        public CreateWalletCommandHandler(ISecurityContext securityContext, IWalletRepository walletRepository, IWalletNumberGeneratorService walletNumberGeneratorService, IWalletResponseFactory walletResponseFactory)
+        public CreateWalletCommandHandler(IWalletRepository walletRepository, IWalletNumberGeneratorService walletNumberGeneratorService, IWalletResponseFactory walletResponseFactory)
         {
-            _securityContext = securityContext;
             _walletRepository = walletRepository;
             _walletNumberGeneratorService = walletNumberGeneratorService;
             _walletResponseFactory = walletResponseFactory;
@@ -27,18 +24,9 @@ namespace Nexa.Accounting.Application.Wallets.Commands.CreateWallet
 
         public async Task<Result<WalletDto>> Handle(CreateWalletCommand request, CancellationToken cancellationToken)
         {
-            string userId = _securityContext.User!.Id;
-
-            bool hasWallet = await _walletRepository.AnyAsync(x => x.UserId == userId);
-
-            if (hasWallet)
-            {
-                return new Result<WalletDto>(new BusinessLogicException("Current user has already wallet"));
-            }
-
             string walletNumber = _walletNumberGeneratorService.Generate();
 
-            var wallet = new Wallet(walletNumber, userId);
+            var wallet = new Wallet(request.CustomerId, request.UserId,walletNumber);
 
             await _walletRepository.InsertAsync(wallet);
 

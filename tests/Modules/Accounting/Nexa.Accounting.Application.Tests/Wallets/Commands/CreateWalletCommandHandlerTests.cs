@@ -4,6 +4,7 @@ using Nexa.Accounting.Application.Tests.Fakers;
 using Nexa.Accounting.Application.Wallets.Commands.CreateWallet;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Enums;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 namespace Nexa.Accounting.Application.Tests.Wallets.Commands
@@ -20,46 +21,23 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Commands
         [Test]
         public async Task Should_create_user_wallet()
         {
-            AuthenticationService.Login();
 
-            var command = new CreateWalletCommand();
+            var command = new CreateWalletCommand()
+            {
+                UserId = Guid.NewGuid().ToString(),
+                CustomerId = Guid.NewGuid().ToString()
+            };
 
             var result = await Mediator.Send(command);
 
             result.ShouldBeSuccess();
 
-            var wallet = WalletRepository.FindByIdAsync(result.Value!.Id);
+            var wallet = await WalletRepository.FindByIdAsync(result.Value!.Id);
 
             wallet.Should().NotBeNull();
+
+            wallet!.State.Should().Be(WalletState.Frozen);
         }
 
-
-        [Test]
-        public async Task Should_failure_while_creating_user_wallet_when_user_is_not_authenticated()
-        {
-            var command = new CreateWalletCommand();
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
-        }
-
-        [Test]
-        public async Task Should_failure_while_creating_user_wallet_when_user_is_already_has_wallet()
-        {
-            AuthenticationService.Login();
-
-            var fakeWallet = new WalletFaker(AuthenticationService.GetCurrentUser()!.Id)
-                .Generate(1)
-                .First();
-
-            await WalletRepository.InsertAsync(fakeWallet);
-
-            var command = new CreateWalletCommand();
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException));
-        }
     }
 }

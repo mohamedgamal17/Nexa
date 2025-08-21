@@ -1,28 +1,34 @@
 ﻿using Ardalis.GuardClauses;
+using Nexa.Accounting.Shared.Enums;
 using Nexa.BuildingBlocks.Domain;
 
 namespace Nexa.Accounting.Domain.Wallets
 {
     public class Wallet : BaseEntity
     {
-        public string Number { get; private set; }
+        public string CustomerId { get; private set; }
         public string UserId { get; private set; }
+        public string Number { get; private set; }
         public decimal Balance { get; private set; }
         public decimal ReservedBalance { get; private set; }
+        public WalletState State { get; private set; }
 
         //Constructor for efcore
         private Wallet() { }
-        public Wallet(string number, string userId)
+        public Wallet(string customerId, string userId,string number)
         {
-            Number = number;
+            CustomerId = customerId;
             UserId = userId;
+            Number = number;
+           
         }
 
         //internal constructor for testing purpose only
-        internal Wallet(string number , string userId, decimal balance) 
+        internal Wallet(string customerId, string userId,string number , decimal balance) 
         {
-            Number = number;
+            CustomerId = customerId;
             UserId = userId;
+            Number = number;        
             Balance = balance;
         }
 

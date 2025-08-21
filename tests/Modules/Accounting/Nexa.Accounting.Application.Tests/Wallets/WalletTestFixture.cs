@@ -49,7 +49,10 @@ namespace Nexa.Accounting.Application.Tests.Wallets
             {
                 var repository = sp.GetRequiredService<IWalletRepository>();
 
-                var wallet = new Wallet(Guid.NewGuid().ToString(), userId ?? Guid.NewGuid().ToString(), balance);
+                var wallet = new Wallet(Guid.NewGuid().ToString(), 
+                    userId ?? Guid.NewGuid().ToString(), 
+                    Guid.NewGuid().ToString(),
+                    balance);
 
                 return await repository.InsertAsync(wallet);
             });

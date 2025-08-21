@@ -8,8 +8,9 @@ namespace Nexa.Accounting.Application.Tests.Fakers
         public WalletFaker(string? userId = null ,decimal? balance = null,IWalletNumberGeneratorService? numberGeneratorService= null)
         {
             CustomInstantiator(f => new Wallet(
-                    numberGeneratorService?.Generate() ?? Ulid.NewUlid().ToString(),
-                    userId ?? Guid.NewGuid().ToString() ,
+                    Guid.NewGuid().ToString(),
+                    userId ?? Guid.NewGuid().ToString(),
+                    numberGeneratorService?.Generate() ?? Ulid.NewUlid().ToString(),               
                     balance ?? f.Random.Decimal(0, 5000)
                ));
         }

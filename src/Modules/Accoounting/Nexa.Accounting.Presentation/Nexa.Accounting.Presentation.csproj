@@ -13,4 +13,7 @@
 	  <ProjectReference Include="..\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj" />
 
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Endpoint\" />
+	</ItemGroup>
 </Project>
