@@ -8,6 +8,7 @@ namespace Nexa.Accounting.Domain.Wallets
     {
         public string CustomerId { get; private set; }
         public string UserId { get; private set; }
+        public string ProviderWalletId { get; private set; }
         public string Number { get; private set; }
         public decimal Balance { get; private set; }
         public decimal ReservedBalance { get; private set; }
@@ -32,6 +33,20 @@ namespace Nexa.Accounting.Domain.Wallets
             Balance = balance;
         }
 
+        public void Activate(string? providerWalletId = null)
+        {
+            if (State == WalletState.Active)
+                return;
+
+            if(providerWalletId != null)
+            {
+                ProviderWalletId = providerWalletId;
+            }
+
+            Guard.Against.Null(ProviderWalletId);
+
+            State = WalletState.Active;
+        }
 
         public void Depit(decimal amount)
         {
