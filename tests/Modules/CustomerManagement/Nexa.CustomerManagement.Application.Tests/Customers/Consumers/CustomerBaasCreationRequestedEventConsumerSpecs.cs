@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
@@ -23,6 +24,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Consumers
         [Test]
         public async Task Should_create_customer_in_baas_api()
         {
+            await TestHarness.Start();
+
             AuthenticationService.Login();
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
@@ -50,6 +53,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Consumers
             customer.FintechCustomerId.Should().Be(baasClient.Id);
 
             customer.State.Should().Be(VerificationState.Processing);
+
+            await TestHarness.Stop();
         }
     }
 }

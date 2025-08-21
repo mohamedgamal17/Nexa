@@ -27,19 +27,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
             TestHarness = ServiceProvider.GetRequiredService<ITestHarness>();
         }
 
-        protected override async Task InitializeAsync(IServiceProvider services)
-        {
-            await base.InitializeAsync(services);
-
-            await TestHarness.Start();
-        }
-
-        protected override async Task ShutdownAsync(IServiceProvider services)
-        {
-            await base.ShutdownAsync(services);
-
-            await TestHarness.Stop();
-        }
         protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null)
         {
             return await WithScopeAsync(async (sp) =>
