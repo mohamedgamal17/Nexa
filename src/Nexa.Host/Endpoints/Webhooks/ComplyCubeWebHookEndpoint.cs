@@ -5,7 +5,7 @@ using Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Enums;
 using System.Text.Json;
-namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
+namespace Nexa.Host.Endpoints.Webhooks
 {
     public class ComplyCubeWebHookRequest
     {
@@ -44,7 +44,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
 
         public override void Configure()
         {
-            Post("complycube");
+            Post("webhooks/complycube");
 
             Group<WebHookRoutingGroup>();
         }
@@ -77,7 +77,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
 
             if (_eventHandlers.ContainsKey(request.Type))
             {
-                 await _eventHandlers[request.Type].Invoke(request);
+                await _eventHandlers[request.Type].Invoke(request);
             }
 
             await SendOkAsync();
@@ -91,7 +91,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
                 Outcome = MapKycReviewOutcome(request.Payload.Outcome)
             };
 
-            return await _mediator.Send(command);      
+            return await _mediator.Send(command);
         }
 
         private KycReviewOutcome MapKycReviewOutcome(string outcome)

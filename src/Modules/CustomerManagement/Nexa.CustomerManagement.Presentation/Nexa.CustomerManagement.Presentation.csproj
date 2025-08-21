@@ -12,4 +12,7 @@
 	  <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Nexa.CustomerManagement.Application\Nexa.CustomerManagement.Application.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Endpoints\WebHooks\" />
+	</ItemGroup>
 </Project>

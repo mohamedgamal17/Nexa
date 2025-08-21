@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
+namespace Nexa.Host.Endpoints.Webhooks
 {
     public class WebHookRoutingGroup : Group
     {
@@ -21,5 +21,5 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.WebHooks
         }
     }
 
-   
+
 }
