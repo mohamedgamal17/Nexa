@@ -67,6 +67,18 @@ namespace Nexa.CustomerManagement.Domain.Customers
             State = VerificationState.Processing;
         }
 
+        public void Reject()
+        {
+            if(State == VerificationState.Processing)
+            {
+                State = VerificationState.Rejected;
+
+                Info!.MarkAsRejected();
+
+                Document!.MarkAsRejected();
+            }   
+        }
+
         public void Accept()
         {
             if(State == VerificationState.Processing)
