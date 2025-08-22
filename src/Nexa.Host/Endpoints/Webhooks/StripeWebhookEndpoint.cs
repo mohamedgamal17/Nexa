@@ -38,9 +38,7 @@ namespace Nexa.Host.Endpoints.Webhooks
             {             
                 var stripeEvent = await _baasWebhookService.ConstructEvent(json);
 
-
                 _logger.LogDebug("Recived stripe webhook event ({eventType}).\n body : {@event}", stripeEvent.Type, stripeEvent);
-
 
                 if (stripeEvent.Type == Stripe.EventTypes.AccountUpdated)
                 {
@@ -58,13 +56,11 @@ namespace Nexa.Host.Endpoints.Webhooks
 
         private async Task HandleAccountUpdateEvent(Event stripeEvent)
         {
-
-            _logger.LogInformation("{stripeEvent}", stripeEvent);
-
             var stripeEntity = (Stripe.Account)stripeEvent.Data;
 
             if (stripeEntity.Individual?.Verification?.Status == "verified")
             {
+
                 var command = new AcceptCustomerCommand { FintechCustomerId = stripeEntity.Id };
 
                 await _mediator.Send(command);
