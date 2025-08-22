@@ -25,7 +25,7 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Commands
 
             var command = new ActivateWalletCommand
             {
-                FintechId = Guid.NewGuid().ToString(),
+                FintechCustomerId = Guid.NewGuid().ToString(),
                 CustomerId = fakeWallet.CustomerId
             };
 

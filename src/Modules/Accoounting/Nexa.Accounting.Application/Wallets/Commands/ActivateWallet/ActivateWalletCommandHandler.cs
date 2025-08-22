@@ -26,7 +26,7 @@ namespace Nexa.Accounting.Application.Wallets.Commands.ActivateWallet
 
             if(providerWalletId == null)
             {
-                var baasWallet = await _baasWalletService.CreateWalletAsync(request.FintechId ,cancellationToken);
+                var baasWallet = await _baasWalletService.CreateWalletAsync(request.FintechCustomerId ,cancellationToken);
 
                 providerWalletId = baasWallet.Id;
             }

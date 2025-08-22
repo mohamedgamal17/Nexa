@@ -5,6 +5,6 @@ namespace Nexa.Accounting.Application.Wallets.Commands.ActivateWallet
     public class ActivateWalletCommand : ICommand
     {
         public string CustomerId { get; set; }
-        public string FintechId { get; set; }
+        public string FintechCustomerId { get; set; }
     }
 }
