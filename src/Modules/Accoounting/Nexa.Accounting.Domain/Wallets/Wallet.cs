@@ -48,6 +48,13 @@ namespace Nexa.Accounting.Domain.Wallets
             State = WalletState.Active;
         }
 
+        public void Freeze()
+        {
+            if (State == WalletState.Frozen)
+                return;
+
+            State = WalletState.Frozen;
+        }
         public void Depit(decimal amount)
         {
             Guard.Against.NegativeOrZero(amount);
