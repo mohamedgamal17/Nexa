@@ -1,5 +1,6 @@
 ﻿using Nexa.Integrations.Baas.Abstractions.Contracts.Wallets;
 using Nexa.Integrations.Baas.Abstractions.Services;
+using Stripe;
 using Stripe.Treasury;
 namespace Nexa.Integrations.Baas.Stripe
 {
@@ -16,6 +17,7 @@ namespace Nexa.Integrations.Baas.Stripe
 
             var request = new FinancialAccountCreateOptions
             {
+                
                 SupportedCurrencies = new List<string>
                 {
                     "usd"
@@ -46,7 +48,12 @@ namespace Nexa.Integrations.Baas.Stripe
                 },
             };
 
-            var response = await _financialAccountService.CreateAsync(request);
+            var options = new RequestOptions
+            {
+                StripeAccount = clientId
+            };
+
+            var response = await _financialAccountService.CreateAsync(request, options);
 
             var baasWallet = new BaasWallet
             {
