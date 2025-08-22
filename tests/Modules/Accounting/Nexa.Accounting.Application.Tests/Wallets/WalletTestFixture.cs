@@ -2,18 +2,20 @@
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Integrations.Baas.Abstractions.Services;
 
 namespace Nexa.Accounting.Application.Tests.Wallets
 {
     public class WalletTestFixture : AccountingTestFixture
     {
         protected IWalletRepository WalletRepository { get; }
-
+        protected IBaasWalletService BaasWalletService { get; }
         protected IAccountingRepository<LedgerEntry> LedgerEntryRepository { get; }
         public WalletTestFixture()
         {
             WalletRepository = ServiceProvider.GetRequiredService<IWalletRepository>();
             LedgerEntryRepository = ServiceProvider.GetRequiredService<IAccountingRepository<LedgerEntry>>();
+            BaasWalletService = ServiceProvider.GetRequiredService<IBaasWalletService>();
         }
 
         protected override async Task InitializeAsync(IServiceProvider services)
@@ -55,6 +57,26 @@ namespace Nexa.Accounting.Application.Tests.Wallets
                     balance);
 
                 return await repository.InsertAsync(wallet);
+            });
+        }
+
+        public async Task<Wallet> CreateActiveWallet(string? userId = null, decimal balance = 0)
+        {
+            return await WithScopeAsync(async (sp) =>
+            {
+                var wallet = await CreateWalletAsync(userId, balance);
+
+                var repository = sp.GetRequiredService<IWalletRepository>();
+
+                wallet = await repository.SingleAsync(x => x.Id == wallet.Id);
+
+                var baasWallet = await BaasWalletService.CreateWalletAsync(Guid.NewGuid().ToString());
+
+                wallet.Activate(baasWallet.Id);
+
+                await repository.UpdateAsync(wallet);
+
+                return wallet;
             });
         }
     }
