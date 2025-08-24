@@ -75,9 +75,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Presentat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{159B8924-8491-4847-B112-937CE2AE0A3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.Baas.Abstractions", "src\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj", "{3FD6EB3B-E906-415E-8B77-846532797597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.Baas.Abstractions", "src\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj", "{3FD6EB3B-E906-415E-8B77-846532797597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.Baas.Stripe", "src\Integrations\Nexa.Integrations.Baas.Stripe\Nexa.Integrations.Baas.Stripe.csproj", "{2B9D4023-835C-4817-8CB7-9C5E50934D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.Baas.Stripe", "src\Integrations\Nexa.Integrations.Baas.Stripe\Nexa.Integrations.Baas.Stripe.csproj", "{2B9D4023-835C-4817-8CB7-9C5E50934D0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Abstractions", "src\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj", "{F6507D24-FDBA-4722-B821-89B5D5E76603}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Plaid", "Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj", "{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,6 +193,14 @@ Global
 		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B9D4023-835C-4817-8CB7-9C5E50934D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6507D24-FDBA-4722-B821-89B5D5E76603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6507D24-FDBA-4722-B821-89B5D5E76603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6507D24-FDBA-4722-B821-89B5D5E76603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6507D24-FDBA-4722-B821-89B5D5E76603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +242,8 @@ Global
 		{159B8924-8491-4847-B112-937CE2AE0A3B} = {2030EAB6-A932-4DBA-A14A-7EAE825E0E33}
 		{3FD6EB3B-E906-415E-8B77-846532797597} = {159B8924-8491-4847-B112-937CE2AE0A3B}
 		{2B9D4023-835C-4817-8CB7-9C5E50934D0B} = {159B8924-8491-4847-B112-937CE2AE0A3B}
+		{F6507D24-FDBA-4722-B821-89B5D5E76603} = {159B8924-8491-4847-B112-937CE2AE0A3B}
+		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1} = {159B8924-8491-4847-B112-937CE2AE0A3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
