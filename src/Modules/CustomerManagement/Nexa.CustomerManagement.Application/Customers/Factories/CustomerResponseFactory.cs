@@ -20,7 +20,10 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 Id = view.Id,
                 EmailAddress = view.EmailAddress,
                 PhoneNumber = view.PhoneNumber,
-                UserId = view.UserId
+                UserId = view.UserId,
+                FintechCustomerId = view.FintechCustomerId,
+                KycCustomerId = view.KycCustomerId,
+                State = view.State
             };
 
             if(view.Info != null)
