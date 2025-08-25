@@ -8,7 +8,6 @@
         public string ClientSecret { get; set; }
         public OpenBankingConfiguration()
         {
-            IsoNames.LanguageNames.
         }
     }
 }

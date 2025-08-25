@@ -33,6 +33,7 @@
 		</PackageReference>
 	</ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj" />
     <ProjectReference Include="..\Integrations\Nexa.Integrations.Baas.Stripe\Nexa.Integrations.Baas.Stripe.csproj" />
     <ProjectReference Include="..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Accoounting\Nexa.Accounting.Infrastructure\Nexa.Accounting.Infrastructure.csproj" />
