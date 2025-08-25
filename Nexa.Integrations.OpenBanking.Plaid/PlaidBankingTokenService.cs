@@ -22,6 +22,7 @@ namespace Nexa.Integrations.OpenBanking.Plaid
                 ClientName = request.ClinetName,
                 CountryCodes = request.CountryCodes.Select(MapCountry).ToList(),
                 Language = MapLanguage(request.Language),
+                Products = new List<Products> { Products.Transactions},
                 AccountFilters = new LinkTokenAccountFilters
                 {
                     Depository = new DepositoryFilter
