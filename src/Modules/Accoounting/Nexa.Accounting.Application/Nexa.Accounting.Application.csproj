@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Application\Nexa.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\CustomerManagement\Nexa.CustomerManagement.Shared\Nexa.CustomerManagement.Shared.csproj" />
     <ProjectReference Include="..\Nexa.Accounting.Domain\Nexa.Accounting.Domain.csproj" />
