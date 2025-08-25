@@ -8,11 +8,14 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceColllectionExtensions
     {
-        public static IServiceCollection AddStripeProvider(this IServiceCollection services , IConfiguration configuration)
+        public static IServiceCollection AddStripeProvider(this IServiceCollection services 
+            , IConfiguration configuration , bool isDevlopment = true) 
         {
             var stripeConfig = new BaasConfiguration();
 
             configuration.Bind(BaasConfiguration.SectionName, stripeConfig);
+
+            stripeConfig.SetIsDevlopment(isDevlopment);
 
             services.AddSingleton(stripeConfig);
 
@@ -27,7 +30,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.AddTransient<IBaasClientService, StripeClientService>()
                 .AddTransient<IBaasWebHookService, StripeWebhookService>()
-                .AddTransient<IBaasWalletService, StripeWalletService>();
+                .AddTransient<IBaasWalletService, StripeWalletService>()
+                .AddTransient<IBaasFundingResourceService, StripeFundingResourceService>();
         }
     }
 }
