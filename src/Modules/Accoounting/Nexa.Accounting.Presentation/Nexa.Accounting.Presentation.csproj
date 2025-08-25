@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Endpoint\**" />
+    <EmbeddedResource Remove="Endpoint\**" />
+    <None Remove="Endpoint\**" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FastEndpoints" Version="5.28.0" />
 	</ItemGroup>
@@ -12,8 +18,5 @@
 	  <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Nexa.Accounting.Application\Nexa.Accounting.Application.csproj" />
 
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Endpoint\" />
 	</ItemGroup>
 </Project>
