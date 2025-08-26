@@ -63,9 +63,14 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
 
             var response = await _bankingTokenService.CreateLinkTokenAsync(apiRequest);
 
+            if (response.IsFailure)
+            {
+                return new Result<BankingTokenDto>(new BusinessLogicException(response.Exception!.Message));
+            }
+
             var dto = new BankingTokenDto
             {
-                Token = response.Token
+                Token = response.Value!.Token
             };
 
             return dto;

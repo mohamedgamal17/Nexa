@@ -6,6 +6,8 @@ using Nexa.Integrations.OpenBanking.Abstractions.enums;
 using Going.Plaid.Item;
 using Going.Plaid.Processor;
 using Going.Plaid.Accounts;
+using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.Integrations.OpenBanking.Abstractions.Exceptions;
 namespace Nexa.Integrations.OpenBanking.Plaid
 {
     public class PlaidBankingTokenService : IBankingTokenService
@@ -15,7 +17,7 @@ namespace Nexa.Integrations.OpenBanking.Plaid
         { 
             _plaidClient = plaidClient;
         }
-        public async Task<LinkToken> CreateLinkTokenAsync(LinkTokenCreateRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<LinkToken>> CreateLinkTokenAsync(LinkTokenCreateRequest request, CancellationToken cancellationToken = default)
         {
             var apiRequest = new Going.Plaid.Link.LinkTokenCreateRequest
             {
@@ -53,6 +55,11 @@ namespace Nexa.Integrations.OpenBanking.Plaid
 
             var response = await  _plaidClient.LinkTokenCreateAsync(apiRequest);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return new Result<LinkToken>(new OpenBankingExcetpion(response.Error!.ErrorMessage));
+            }
+
             var linkToken = new LinkToken
             {
                 Token = response.LinkToken,
@@ -63,7 +70,7 @@ namespace Nexa.Integrations.OpenBanking.Plaid
         }
 
 
-        public async Task<TokenExchange> ExchangeTokenAsync(string publicToken, CancellationToken cancellationToken)
+        public async Task<Result<TokenExchange>> ExchangeTokenAsync(string publicToken, CancellationToken cancellationToken)
         {
             var apiRequest = new ItemPublicTokenExchangeRequest
             {
@@ -71,6 +78,11 @@ namespace Nexa.Integrations.OpenBanking.Plaid
             };
 
             var response = await _plaidClient.ItemPublicTokenExchangeAsync(apiRequest);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new Result<TokenExchange>(new OpenBankingExcetpion(response.Error!.ErrorMessage));
+            }
 
             var exchange = new TokenExchange
             {
@@ -80,11 +92,17 @@ namespace Nexa.Integrations.OpenBanking.Plaid
             return exchange;
         }
 
-        public async Task<ProcessorToken> CreateProcessorToken(ProcessorTokenCreateReqeust reqeust, CancellationToken cancellationToken = default)
+        public async Task<Result<ProcessorToken>> CreateProcessorToken(ProcessorTokenCreateReqeust reqeust, CancellationToken cancellationToken = default)
         {
             var accountsResposnse = await _plaidClient
                 .AccountsGetAsync(new AccountsGetRequest { AccessToken = reqeust.AccessToken});
 
+
+            if (!accountsResposnse.IsSuccessStatusCode)
+            {
+                return new Result<ProcessorToken>(new OpenBankingExcetpion(accountsResposnse.Error!.ErrorMessage));
+
+            }
 
             var depositoryOrCreditAccounts = accountsResposnse.Accounts
                 .Where(x => x.Type == AccountType.Depository || x.Type == AccountType.Credit)
@@ -107,6 +125,11 @@ namespace Nexa.Integrations.OpenBanking.Plaid
 
                 var response = await _plaidClient.ProcessorStripeBankAccountTokenCreateAsync(apiRequest);
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Result<ProcessorToken>(new OpenBankingExcetpion(response.Error!.ErrorMessage));
+                }
+
                 var token = new ProcessorToken
                 {
                     Token = response.StripeBankAccountToken
@@ -125,6 +148,11 @@ namespace Nexa.Integrations.OpenBanking.Plaid
                 };
 
                 var response = await _plaidClient.ProcessorTokenCreateAsync(apiRequest);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Result<ProcessorToken>(new OpenBankingExcetpion(response.Error!.ErrorMessage));
+                }
 
                 var token = new ProcessorToken
                 {
