@@ -20,9 +20,13 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Configurations
 
             builder.Property(x => x.ProviderBankAccountId).HasMaxLength(BankAccountTableConsts.ProviderBankAccountIdLength);
 
-            builder.Property(x => x.HolderName).HasMaxLength(BankAccountTableConsts.HolderNameLength);
+            builder.Property(x => x.HolderName)
+                .HasMaxLength(BankAccountTableConsts.HolderNameLength)
+                .IsRequired(false);
 
-            builder.Property(x => x.BankName).HasMaxLength(BankAccountTableConsts.BankNameLength);
+            builder.Property(x => x.BankName)
+                .HasMaxLength(BankAccountTableConsts.BankNameLength)
+                .IsRequired(false);
 
             builder.Property(x => x.Country).HasMaxLength(BankAccountTableConsts.CountryLength);
 
