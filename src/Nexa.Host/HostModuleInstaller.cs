@@ -128,7 +128,7 @@ namespace Nexa.Host
         {
             var env =  services.GetSinglatonOrNull<IWebHostEnvironment>();
 
-            services.AddStripeProvider(configuration)
+            services.AddStripeProvider(configuration, env!.IsDevelopment())
                 .AddPlaidProvider(configuration, !env!.IsDevelopment());
         }
     }
