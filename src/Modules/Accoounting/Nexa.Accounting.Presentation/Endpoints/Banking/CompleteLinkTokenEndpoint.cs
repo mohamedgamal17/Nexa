@@ -1,11 +1,11 @@
 ﻿using FastEndpoints;
 using MediatR;
+using Nexa.Accounting.Application.FundingResources.Dtos;
 using Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken;
-using Nexa.Accounting.Application.Tokens.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 namespace Nexa.Accounting.Presentation.Endpoints.Banking
 {
-    public class CompleteLinkTokenEndpoint : Endpoint<CompleteLinkTokenCommand, BankingTokenDto>
+    public class CompleteLinkTokenEndpoint : Endpoint<CompleteLinkTokenCommand, BankAccountDto>
     {
         private readonly IMediator _mediator;
         public CompleteLinkTokenEndpoint(IMediator mediator)
