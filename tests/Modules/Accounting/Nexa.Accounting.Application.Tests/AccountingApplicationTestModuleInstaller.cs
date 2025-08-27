@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nexa.Accounting.Application.Tests.Fakers;
 using Nexa.Accounting.Infrastructure;
 using Nexa.Application.Tests;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.CustomerManagement.Shared.Services;
 namespace Nexa.Accounting.Application.Tests
 {
     public class AccountingApplicationTestModuleInstaller : IModuleInstaller
@@ -25,6 +27,15 @@ namespace Nexa.Accounting.Application.Tests
                     inMemoryBusConfig.ConfigureEndpoints(context);
                 });
             });
+
+            RegisterFakeServices(services);
+        }
+
+        private void RegisterFakeServices(IServiceCollection services)
+        {
+            services
+                .AddTransient<ICustomerService, FakeCustomerService>()
+                .AddTransient<FakeCustomerService>();
         }
     }
 }
