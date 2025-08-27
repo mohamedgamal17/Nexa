@@ -14,6 +14,8 @@ namespace Nexa.Application.Tests.Providers.Baas
                 Balance = 0
             };
 
+            _wallets.Add(wallet);
+
             return Task.FromResult(wallet);
         }
     }

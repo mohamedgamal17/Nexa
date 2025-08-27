@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Integrations\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\..\src\Libraries\Nexa.BuildingBlocks.Infrastructure\Nexa.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Libraries\Vogel.BuildingBlocks.EntityFramework\Vogel.BuildingBlocks.EntityFramework.csproj" />

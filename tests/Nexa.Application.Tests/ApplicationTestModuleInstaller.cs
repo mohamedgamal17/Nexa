@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nexa.Application.Tests.Providers.Baas;
+using Nexa.Application.Tests.Providers.OpenBanking;
 using Nexa.Application.Tests.Services;
 using Nexa.Application.Tests.Utilites;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
@@ -11,6 +12,7 @@ using Nexa.BuildingBlocks.Infrastructure;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.Integrations.Baas.Abstractions.Services;
+using Nexa.Integrations.OpenBanking.Abstractions;
 namespace Nexa.Application.Tests
 {
     public class ApplicationTestModuleInstaller : IModuleInstaller
@@ -33,12 +35,20 @@ namespace Nexa.Application.Tests
 
             RegisterFakeBaasProvider(services);
 
+            RegisterFakeOpenBanking(services);
+
         }
 
         private void RegisterFakeBaasProvider(IServiceCollection services)
         {
             services.AddTransient<IBaasClientService, FakeBaasClientService>()
-                .AddTransient<IBaasWalletService, FakeBaasWalletProvider>();
+                .AddTransient<IBaasWalletService, FakeBaasWalletProvider>()
+                .AddTransient<IBaasFundingResourceService, FakeBaasFundingResurceService>();
+        }
+
+        private void RegisterFakeOpenBanking(IServiceCollection services)
+        {
+            services.AddTransient<IBankingTokenService, FakeBankingTokenService>();
         }
 
     }
