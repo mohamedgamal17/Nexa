@@ -52,22 +52,13 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
                 return new Result<BankAccountDto>(new BusinessLogicException("Customer should be verified first before linking bank account."));
             }
 
-            var exchangedTokenResult = await _bankingTokenService.ExchangeTokenAsync(request.Token);
-
-            if (exchangedTokenResult.IsFailure)
+            var processorTokenRequest = new TokenProcessReqeust
             {
-                return new Result<BankAccountDto>(new BusinessLogicException(exchangedTokenResult.Exception!.Message));
-            }
-
-            var exchangedToken = exchangedTokenResult.Value!;
-
-            var processorTokenRequest = new ProcessorTokenCreateReqeust
-            {
-                AccessToken = exchangedToken.AccessToken,
+                Token = request.Token,
                 Provider = ProcessorProvider.Stripe
             };
 
-            var processorTokenResult = await _bankingTokenService.CreateProcessorToken(processorTokenRequest);
+            var processorTokenResult = await _bankingTokenService.ProcessTokenAsync(processorTokenRequest);
 
             if (processorTokenResult.IsFailure)
             {

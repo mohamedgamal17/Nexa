@@ -7,6 +7,6 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
     [Authorize]
     public class CreateLinkTokenCommand : ICommand<BankingTokenDto>
     {
-        public string RedirectUri { get; set; }
+        public string? RedirectUri { get; set; }
     }
 }

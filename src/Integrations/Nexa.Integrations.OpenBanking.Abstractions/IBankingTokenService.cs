@@ -5,10 +5,8 @@ namespace Nexa.Integrations.OpenBanking.Abstractions
 {
     public interface IBankingTokenService
     {
-        Task<Result<LinkToken>> CreateLinkTokenAsync(LinkTokenCreateRequest request, CancellationToken cancellationToken = default);
+        Task<Result<LinkToken>> CreateTokenAsync(TokenCreateRequest request, CancellationToken cancellationToken = default);
 
-        Task<Result<TokenExchange>> ExchangeTokenAsync(string publicToken, CancellationToken cancellationToken =default);
-
-        Task<Result<ProcessorToken>> CreateProcessorToken(ProcessorTokenCreateReqeust reqeust, CancellationToken cancellationToken = default);
+        Task<Result<ProcessorToken>> ProcessTokenAsync(TokenProcessReqeust reqeust, CancellationToken cancellationToken = default);
     }
 }

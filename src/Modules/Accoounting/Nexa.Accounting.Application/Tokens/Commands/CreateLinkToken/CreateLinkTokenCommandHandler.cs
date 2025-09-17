@@ -46,22 +46,18 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
                 return new Result<BankingTokenDto>(new BusinessLogicException("Customer should be verified first before linking bank account."));
             }
 
-            var apiRequest = new LinkTokenCreateRequest
+            var apiRequest = new TokenCreateRequest
             {
-                ClinetName = "Nexa Wallet",
-                User = new LinkTokenUser
-                {
-                    ClinetUserId = userId,
-                },
+                ClientUserId = customer.FintechCustomerId!,
+    
                 CountryCodes = new List<CountryIsoCode>
                 {
                     CountryIsoCode.Us
                 },
-                Language = LanguageIsoCode.en,
                 RedirectUri = request.RedirectUri
             };
 
-            var response = await _bankingTokenService.CreateLinkTokenAsync(apiRequest);
+            var response = await _bankingTokenService.CreateTokenAsync(apiRequest);
 
             if (response.IsFailure)
             {
