@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nexa.Integrations.Baas.Abstractions\Nexa.Integrations.Baas.Abstractions.csproj" />
+    <ProjectReference Include="..\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

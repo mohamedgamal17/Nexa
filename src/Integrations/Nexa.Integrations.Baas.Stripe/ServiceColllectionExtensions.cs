@@ -2,6 +2,7 @@
 using Nexa.Integrations.Baas.Abstractions.Configuration;
 using Nexa.Integrations.Baas.Abstractions.Services;
 using Nexa.Integrations.Baas.Stripe;
+using Nexa.Integrations.OpenBanking.Abstractions;
 using Stripe;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -31,7 +32,8 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.AddTransient<IBaasClientService, StripeClientService>()
                 .AddTransient<IBaasWebHookService, StripeWebhookService>()
                 .AddTransient<IBaasWalletService, StripeWalletService>()
-                .AddTransient<IBaasFundingResourceService, StripeFundingResourceService>();
+                .AddTransient<IBaasFundingResourceService, StripeFundingResourceService>()
+                .AddTransient<IBankingTokenService, StripeBankingService>();
         }
     }
 }
