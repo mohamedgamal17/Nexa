@@ -32,7 +32,11 @@ namespace Nexa.Integrations.Baas.Stripe
                 {
                     CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
                     Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
-                    Treasury = new AccountCapabilitiesTreasuryOptions { Requested = true }
+                    Treasury = new AccountCapabilitiesTreasuryOptions { Requested = true },
+                    BankTransferPayments = new AccountCapabilitiesBankTransferPaymentsOptions { Requested = true},
+                    UsBankTransferPayments = new AccountCapabilitiesUsBankTransferPaymentsOptions { Requested = true},
+                    UsBankAccountAchPayments = new AccountCapabilitiesUsBankAccountAchPaymentsOptions { Requested =true},
+                   
                 },
 
                 Settings = new AccountSettingsOptions
