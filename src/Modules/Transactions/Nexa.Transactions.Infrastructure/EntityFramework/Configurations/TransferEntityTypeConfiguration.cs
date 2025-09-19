@@ -14,6 +14,8 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
 
             builder.Property(x => x.Id).HasMaxLength(TransferTableConsts.IdLength);
 
+            builder.Property(x => x.UserId).HasMaxLength(TransferTableConsts.UserIdLength);
+
             builder.Property(x => x.Number).HasMaxLength(TransferTableConsts.NumberLength);
 
             builder.Property(x => x.WalletId).HasMaxLength(TransferTableConsts.WalletIdLength);
@@ -24,6 +26,8 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
 
 
             builder.HasIndex(x => x.Number).IsUnique();
+
+            builder.HasIndex(x => x.UserId);
 
             builder.Ignore(x => x.Events);
 
@@ -44,9 +48,9 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<BankTransfer> builder)
         {
-            builder.Property(x => x.CounterPartyId).HasMaxLength(TransferTableConsts.CounterPartyIdLength);
+            builder.Property(x => x.FundingResourceId).HasMaxLength(TransferTableConsts.CounterPartyIdLength);
 
-            builder.HasIndex(x => x.CounterPartyId);
+            builder.HasIndex(x => x.FundingResourceId);
         }
     }
 

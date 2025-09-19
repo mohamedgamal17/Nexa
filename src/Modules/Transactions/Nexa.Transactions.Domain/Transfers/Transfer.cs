@@ -6,6 +6,7 @@ namespace Nexa.Transactions.Domain.Transfers
 {
     public abstract class Transfer : AggregateRoot
     {
+        public string UserId { get; protected set; }
         public string WalletId { get; protected set; }
         public string Number { get; protected set; }
         public decimal Amount { get; protected set; }
@@ -13,6 +14,14 @@ namespace Nexa.Transactions.Domain.Transfers
         public DateTime? CompletedAt { get;protected set; }
         public TransferType Type { get; protected set; }
         protected Transfer() { }
+
+        protected Transfer(string userId, string walletId, string number, decimal amount)
+        {
+            UserId = userId;
+            WalletId = walletId;
+            Number = number;
+            Amount = amount;
+        }
         protected Transfer(string walletId, string number, decimal amount)
         {
             WalletId = walletId;
@@ -29,8 +38,6 @@ namespace Nexa.Transactions.Domain.Transfers
             Amount = amount;
             Status = status;
         }
-
-
         public void Process()
         {
             if (Status != TransferStatus.Pending)

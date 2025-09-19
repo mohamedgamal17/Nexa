@@ -6,6 +6,8 @@
 
         public static int IdLength = 256;
 
+        public static int UserIdLength = 256;
+
         public static int WalletIdLength = 256;
 
         public static int NumberLength = 256;
