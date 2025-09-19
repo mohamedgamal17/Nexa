@@ -54,6 +54,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
 
             var processorTokenRequest = new TokenProcessReqeust
             {
+                ClientUserId = customer.FintechCustomerId!,
                 Token = request.Token,
                 Provider = ProcessorProvider.Stripe
             };

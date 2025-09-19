@@ -30,6 +30,7 @@ namespace Nexa.Integrations.Baas.Stripe
 
                 Capabilities = new AccountCapabilitiesOptions
                 {
+                   LinkPayments = new AccountCapabilitiesLinkPaymentsOptions() { Requested =true},
                     CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
                     Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
                     Treasury = new AccountCapabilitiesTreasuryOptions { Requested = true },

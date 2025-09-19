@@ -4,16 +4,18 @@ using Nexa.Integrations.OpenBanking.Abstractions.Contracts;
 using Nexa.Integrations.OpenBanking.Abstractions.Exceptions;
 using Stripe;
 using Stripe.FinancialConnections;
+using Stripe.Forwarding;
 
 namespace Nexa.Integrations.Baas.Stripe
 {
     public class StripeBankingService : IBankingTokenService
     {
         private SessionService _sessionService;
-
+        private TokenService _tokenService;
         public StripeBankingService()
         {
             _sessionService = new SessionService();
+            _tokenService = new TokenService();
         }
         public async Task<Result<LinkToken>> CreateTokenAsync(TokenCreateRequest request, CancellationToken cancellationToken = default)
         {
@@ -29,7 +31,9 @@ namespace Nexa.Integrations.Baas.Stripe
                 Permissions = new List<string>
                 {
                     "payment_method",
-                    "balances"
+                    "balances",
+                    "transactions",
+                    "ownership"
                 },
 
                 Filters = new SessionFiltersOptions
@@ -44,36 +48,43 @@ namespace Nexa.Integrations.Baas.Stripe
                 },
 
                 ReturnUrl = request.RedirectUri,
+                
             };
 
+
             var response = await _sessionService.CreateAsync(apiRequest);
+
 
             var linkToken = new LinkToken { Token = response.ClientSecret };
 
             return linkToken;
         }
 
-        public async Task<Result<ProcessorToken>> ProcessTokenAsync(TokenProcessReqeust reqeust, CancellationToken cancellationToken = default)
+        public async Task<Result<ProcessorToken>> ProcessTokenAsync(TokenProcessReqeust request, CancellationToken cancellationToken = default)
         {
             try
             {
-                var session = await _sessionService.GetAsync(reqeust.Token);
+                var requestOptions = new RequestOptions { StripeAccount = request.ClientUserId };
 
-                if (session.Accounts.Count() <= 0)
+                var bankToken = await _tokenService.GetAsync(request.Token);
+
+                if (bankToken.Used)
                 {
-                    return new Result<ProcessorToken>(new OpenBankingExcetpion("Current session is incomplete"));
+                    return new Result<ProcessorToken>(new OpenBankingExcetpion("invalid_bank_token"));
                 }
 
-                var account = session.Accounts.First();
+                var result = new ProcessorToken
+                {
+                    Token = bankToken.Id
+                };
 
-                var token = new ProcessorToken { Token = account.Id };
 
-                return token;
+                return result;
 
             }
-            catch(StripeException exception) when(exception.StripeResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+            catch(StripeException exception)
             {
-                return new Result<ProcessorToken>(new OpenBankingExcetpion("session is not exist"));
+                return new Result<ProcessorToken>(new OpenBankingExcetpion("invalid_bank_token"));
             }
             
         }
