@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.Baas.Stri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Abstractions", "src\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj", "{F6507D24-FDBA-4722-B821-89B5D5E76603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Plaid", "Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj", "{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Plaid", "src\Integrations\Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj", "{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
