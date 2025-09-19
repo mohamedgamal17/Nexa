@@ -8,19 +8,19 @@ namespace Nexa.Transactions.Infrastructure.EntityFramework.Repositories
         {
         }
 
-        public async Task<TransferView?> FindByNumberAsync(string walletId, string transferNumber)
+        public async Task<TransferView?> FindByNumberAsync( string transferNumber)
         {
-            return await QueryView().SingleOrDefaultAsync(x => x.WalletId == walletId && x.Number == transferNumber);
+            return await QueryView().SingleOrDefaultAsync(x =>  x.Number == transferNumber);
         }
 
-        public async Task<TransferView> GetByNumberAsync(string walletId, string transferNumber)
+        public async Task<TransferView> GetByNumberAsync( string transferNumber)
         {
-            return await QueryView().SingleAsync(x => x.WalletId == walletId && x.Number == transferNumber);
+            return await QueryView().SingleAsync(x =>  x.Number == transferNumber);
         }
 
-        public async Task<TransferView> GetViewByIdAsync(string walletId, string transferId, CancellationToken cancellationToken = default)
+        public async Task<TransferView> GetViewByIdAsync(string transferId, CancellationToken cancellationToken = default)
         {
-            return await QueryView().SingleAsync(x => x.WalletId == walletId && x.Id == transferId);
+            return await QueryView().SingleAsync(x =>  x.Id == transferId);
         }
 
         public override IQueryable<TransferView> QueryView()

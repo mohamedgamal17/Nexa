@@ -57,7 +57,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateNetworkTransfer
             await _transferRepository.InsertAsync(transfer);
 
 
-            var response = await _transferRepository.GetViewByIdAsync(senderWallet.Id, transfer.Id);
+            var response = await _transferRepository.GetViewByIdAsync( transfer.Id);
 
             return await _transferResponseFactory.PrepareDto(response);
         }
