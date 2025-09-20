@@ -6,6 +6,7 @@ namespace Nexa.Transactions.Domain.Transfers
     {
         public string UserId { get; set; }
         public string WalletId { get; set; }
+        public string? ExternalTransferId { get; protected set; }
         public string Number { get; set; }
         public decimal Amount { get; set; }
         public string? ReciverId { get; set; }

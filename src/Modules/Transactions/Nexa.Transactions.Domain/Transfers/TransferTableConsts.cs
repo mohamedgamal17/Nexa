@@ -10,6 +10,8 @@
 
         public static int WalletIdLength = 256;
 
+        public static int ExternalTransferIdLength = 256;
+
         public static int NumberLength = 256;
 
         public static int CounterPartyIdLength = 256;
