@@ -4,6 +4,8 @@ using Nexa.CustomerManagement.Application.Customers.Commands.AcceptCustomer;
 using Nexa.CustomerManagement.Application.Customers.Commands.RejectCustomer;
 using Nexa.Integrations.Baas.Abstractions.Contracts.Events;
 using Nexa.Integrations.Baas.Abstractions.Services;
+using Nexa.Transactions.Shared.Events;
+using Stripe.Treasury;
 
 namespace Nexa.Host.Endpoints.Webhooks
 {
@@ -11,12 +13,14 @@ namespace Nexa.Host.Endpoints.Webhooks
     {
         private readonly IBaasWebHookService _baasWebhookService;
         private readonly IMediator _mediator;
+        private readonly MassTransit.IPublishEndpoint _publishEndpoint;
         private readonly ILogger<StripeWebhookEndpoint> _logger;
-        public StripeWebhookEndpoint(IBaasWebHookService baasWebhookService, IMediator mediator, ILogger<StripeWebhookEndpoint> logger)
+        public StripeWebhookEndpoint(IBaasWebHookService baasWebhookService, IMediator mediator, ILogger<StripeWebhookEndpoint> logger, MassTransit.IPublishEndpoint publishEndpoint)
         {
             _baasWebhookService = baasWebhookService;
             _mediator = mediator;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
 
@@ -45,6 +49,13 @@ namespace Nexa.Host.Endpoints.Webhooks
                     await HandleAccountUpdateEvent(stripeEvent);
                 }
 
+                if (stripeEvent.Type == Stripe.EventTypes.TreasuryInboundTransferSucceeded)
+                {
+                    _logger.LogDebug("Handling stripe inbound transfer success.");
+
+                    await HandleInboundTransferSuccess(stripeEvent);
+                }
+
                 await SendOkAsync();
             }
             else
@@ -54,6 +65,8 @@ namespace Nexa.Host.Endpoints.Webhooks
             }        
         }
 
+
+  
         private async Task HandleAccountUpdateEvent(Event stripeEvent)
         {
             var stripeEntity = (Stripe.Account)stripeEvent.Data;
@@ -75,6 +88,21 @@ namespace Nexa.Host.Endpoints.Webhooks
                     await _mediator.Send(command);
                 }
             }
+        }
+
+
+        private async Task HandleInboundTransferSuccess(Event stripeEvent)
+        {
+            var stripeEntity = (InboundTransfer)stripeEvent.Data;
+
+            var @event = new ExternalTransferCompletedIntegrationEvent
+            {
+                TransferId = stripeEntity.Metadata["ClinetTransferId"],
+                ExternalTransferId = stripeEntity.Id
+
+            };
+
+            await _publishEndpoint.Publish(@event);
         }
     }
 }
