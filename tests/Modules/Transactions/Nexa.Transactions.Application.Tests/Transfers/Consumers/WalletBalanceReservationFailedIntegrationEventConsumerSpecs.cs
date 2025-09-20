@@ -10,7 +10,15 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_cancel_transfer()
         {
-            var networkTransfer = await CreateRandomNetworkTransfer();
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
             var message = new WalletBalanceReservationFailedIntegrationEvent()
             {

@@ -10,7 +10,15 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_update_transfer_status_to_complete()
         {
-            var networkTransfer = await CreateRandomNetworkTransfer(TransferStatus.Processing);
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateProcessNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
             var message = new NetworkFundsTransferredIntegrationEvent(networkTransfer.Id, networkTransfer.WalletId, networkTransfer.ReciverId, networkTransfer.Amount);
 

@@ -9,9 +9,17 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
     {
 
         [Test]
-        public async Task Should_publish_transfer_network__funds_integraiton_event()
+        public async Task Should_publish_transfer_network_funds_integraiton_event()
         {
-            var networkTransfer = await CreateRandomNetworkTransfer(TransferStatus.Processing);
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
             var message = new ProcessNetworkTransferIntegrationEvent(networkTransfer.Id, networkTransfer.Number, networkTransfer.WalletId, networkTransfer.ReciverId, networkTransfer.Amount);
 

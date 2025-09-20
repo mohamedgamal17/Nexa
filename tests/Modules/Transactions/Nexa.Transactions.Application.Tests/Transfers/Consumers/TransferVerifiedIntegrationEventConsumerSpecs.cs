@@ -10,7 +10,15 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_update_transfer_state_from_pending_to_processing()
         {
-            var networkTransfer = await CreateRandomNetworkTransfer();
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
             var message = new TransferVerifiedIntegrationEvent(networkTransfer.Id, networkTransfer.Number, networkTransfer.WalletId, networkTransfer.Amount, networkTransfer.Type);
 

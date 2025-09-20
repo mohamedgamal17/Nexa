@@ -9,13 +9,21 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_publish_transaction_verified_integration_event()
         {
-            var transfer = await CreateRandomNetworkTransfer();
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
             var message = new WalletBalanceReservedIntegrationEvent()
             {
-                TransferId = transfer.Id,
-                WalletId = transfer.WalletId,
-                Amount = transfer.Amount
+                TransferId = networkTransfer.Id,
+                WalletId = networkTransfer.WalletId,
+                Amount = networkTransfer.Amount
             };
 
             await TestHarness.Bus.Publish(message);

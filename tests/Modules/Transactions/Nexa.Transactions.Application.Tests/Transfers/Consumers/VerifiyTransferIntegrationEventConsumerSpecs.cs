@@ -9,9 +9,18 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_publish_reserve_wallet_balance_message_when_current_transfer_is_network_transfer()
         {
-            var transfer = await CreateRandomNetworkTransfer();
 
-            var message = new VerifiyTransferIntegrationEvent(transfer.Id, transfer.Number, transfer.WalletId, transfer.Amount, TransferType.Network);
+            AuthenticationService.Login();
+
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var senderWallet = await CreateWalletAsync(userId, 1000);
+
+            var reciverWallet = await CreateWalletAsync(userId, 1000);
+
+            var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
+
+            var message = new VerifiyTransferIntegrationEvent(networkTransfer.Id, networkTransfer.Number, networkTransfer.WalletId, networkTransfer.Amount, TransferType.Network);
 
             await TestHarness.Bus.Publish(message);
 
@@ -23,10 +32,17 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_publish_reserve_wallet_balance_message_when_current_transfer_is_bank_transfer_and_direction_is_depit()
         {
-            var transfer = await CreateRandomBankTransferAsync(BankTransferType.Ach,TransferDirection.Depit);
+            AuthenticationService.Login();
 
-            var message = new VerifiyTransferIntegrationEvent(transfer.Id, transfer.Number, transfer.WalletId, transfer.Amount, transfer.Type);
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
 
+            var fakeFundingResoruce = await CreateFundingResourceAsync(userId);
+
+            var fakeWallet = await CreateWalletAsync(userId, 500);
+
+            var fakeTransfer = await CreateBankTransferAsync(userId, fakeWallet.Id, fakeFundingResoruce.Id, 100, TransferDirection.Depit);
+
+            var message = new VerifiyTransferIntegrationEvent(fakeTransfer.Id, fakeTransfer.Number, fakeTransfer.WalletId, fakeTransfer.Amount, fakeTransfer.Type);
 
             await TestHarness.Bus.Publish(message);
 
@@ -38,9 +54,17 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
         [Test]
         public async Task Should_publish_transfer_verified_message_when_current_transfer_is_bank_transfer_and_direction_is_credit()
         {
-            var transfer = await CreateRandomBankTransferAsync(BankTransferType.Ach, TransferDirection.Credit);
+            AuthenticationService.Login();
 
-            var message = new VerifiyTransferIntegrationEvent(transfer.Id, transfer.Number, transfer.WalletId, transfer.Amount, transfer.Type);
+            string userId = AuthenticationService.GetCurrentUser()!.Id;
+
+            var fakeFundingResoruce = await CreateFundingResourceAsync(userId);
+
+            var fakeWallet = await CreateWalletAsync(userId, 500);
+
+            var fakeTransfer = await CreateBankTransferAsync(userId, fakeWallet.Id, fakeFundingResoruce.Id, 100, TransferDirection.Credit);
+
+            var message = new VerifiyTransferIntegrationEvent(fakeTransfer.Id, fakeTransfer.Number, fakeTransfer.WalletId, fakeTransfer.Amount, fakeTransfer.Type);
 
             await TestHarness.Bus.Publish(message);
 
