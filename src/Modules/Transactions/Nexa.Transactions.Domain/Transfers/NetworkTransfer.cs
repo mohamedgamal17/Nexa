@@ -9,8 +9,8 @@ namespace Nexa.Transactions.Domain.Transfers
 
         private NetworkTransfer() { }
      
-        public NetworkTransfer(string walletId, string reciverId ,string number, decimal amount) 
-            : base(walletId, number, amount)
+        public NetworkTransfer(string userId,string walletId, string reciverId ,string number, decimal amount) 
+            : base(userId,walletId, number, amount)
         {
             ReciverId = reciverId;
 

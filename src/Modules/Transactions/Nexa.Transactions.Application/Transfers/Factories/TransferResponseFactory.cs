@@ -65,7 +65,7 @@ namespace Nexa.Transactions.Application.Transfers.Factories
                 Amount = view.Amount,
                 ReciverId = view.ReciverId,
                 Reciver = reciverWallet,
-                CounterPartyId = view.CounterPartyId,
+                FundingResourceId = view.FundingResourceId,
                 Direction = view.Direction,
                 BankTransferType= view.BankTransferType,
                 Status = view.Status,

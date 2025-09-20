@@ -51,7 +51,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateNetworkTransfer
             var transferNumber = _transferNumberGeneratorService.Generate();
 
 
-            var transfer = new NetworkTransfer(senderWallet.Id, reciverWallet.Id, transferNumber, request.Amount);
+            var transfer = new NetworkTransfer(userId,senderWallet.Id, reciverWallet.Id, transferNumber, request.Amount);
 
 
             await _transferRepository.InsertAsync(transfer);

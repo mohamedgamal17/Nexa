@@ -8,7 +8,7 @@ namespace Nexa.Transactions.Domain.Transfers
         public string Number { get; set; }
         public decimal Amount { get; set; }
         public string? ReciverId { get; set; }
-        public string? CounterPartyId { get; set; }
+        public string? FundingResourceId { get; set; }
         public TransferDirection? Direction { get; set; }
         public BankTransferType? BankTransferType { get; set; }
         public TransferStatus Status { get; set; }
