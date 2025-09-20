@@ -4,20 +4,20 @@ namespace Nexa.Transactions.Shared.Events
 {
     public class ProcessBankTransferIntegrationEvent
     {
-   
-
+        public string  UserId { get; set; }
         public string TransferId { get; set; }
         public string WalletId { get; set; }
-        public string CounterPartyId { get; set; }
+        public string FundingResourceId { get; set; }
         public decimal Amount { get; set; }
         public TransferDirection Direction { get; set; }
         public BankTransferType BankTransferType { get; set; }
 
-        public ProcessBankTransferIntegrationEvent(string transferId, string walletId, string counterPartyId, decimal amount, TransferDirection direction, BankTransferType bankTransferType)
+        public ProcessBankTransferIntegrationEvent(string userId,string transferId, string walletId, string fundingResourceId, decimal amount, TransferDirection direction, BankTransferType bankTransferType)
         {
+            UserId = userId;
             TransferId = transferId;
             WalletId = walletId;
-            CounterPartyId = counterPartyId;
+            FundingResourceId = fundingResourceId;
             Amount = amount;
             Direction = direction;
             BankTransferType = bankTransferType;
