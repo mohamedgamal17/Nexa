@@ -4,6 +4,7 @@ namespace Nexa.Transactions.Domain.Transfers
 {
     public class TransferView : EntityView
     {
+        public string UserId { get; set; }
         public string WalletId { get; set; }
         public string Number { get; set; }
         public decimal Amount { get; set; }

@@ -59,6 +59,7 @@ namespace Nexa.Transactions.Application.Transfers.Factories
             var dto = new TransferDto
             {
                 Id = view.Id,
+                UserId = view.UserId,
                 WalletId = view.WalletId,
                 Wallet = wallet,
                 Number = view.Number,

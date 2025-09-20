@@ -6,6 +6,7 @@ namespace Nexa.Transactions.Application.Transfers.Dtos
 {
     public class TransferDto : EntityDto
     {
+        public string UserId { get; set; }
         public string WalletId { get; set; }
         public WalletListDto Wallet { get; set; }
         public string Number { get; set; }
