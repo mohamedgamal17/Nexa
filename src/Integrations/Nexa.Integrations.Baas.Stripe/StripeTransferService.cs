@@ -17,6 +17,8 @@ namespace Nexa.Integrations.Baas.Stripe
         }
         public async Task<BaasDepositTransfer> Deposit(DepositTransferRequest request, CancellationToken cancellationToken = default)
         {
+            var requestOptions = new RequestOptions { StripeAccount = request.AccountId };
+
             var setupIntentRequest = new SetupIntentCreateOptions
             {
                 PaymentMethod = request.FundingResourceId,
@@ -31,7 +33,7 @@ namespace Nexa.Integrations.Baas.Stripe
                 AutomaticPaymentMethods = new SetupIntentAutomaticPaymentMethodsOptions { Enabled = true, AllowRedirects = "never" }
             };
 
-            await _setupIntentService.CreateAsync(setupIntentRequest);
+            await _setupIntentService.CreateAsync(setupIntentRequest, requestOptions);
 
             var inboundTransferRequest = new InboundTransferCreateOptions
             {
@@ -45,7 +47,7 @@ namespace Nexa.Integrations.Baas.Stripe
                 }
             };
 
-            var response = await _inboundTransferService.CreateAsync(inboundTransferRequest, new RequestOptions { StripeAccount = request.AccountId});
+            var response = await _inboundTransferService.CreateAsync(inboundTransferRequest, requestOptions);
 
             var result = new BaasDepositTransfer
             {
