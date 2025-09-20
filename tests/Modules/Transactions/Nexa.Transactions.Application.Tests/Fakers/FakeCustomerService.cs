@@ -14,7 +14,7 @@ namespace Nexa.Transactions.Application.Tests.Fakers
 
         public Task<CustomerDto?> GetCustomerByUserId(string userId, CancellationToken cancellationToken = default)
         {
-            var customer = _db.SingleOrDefault(x => x.Id == userId);
+            var customer = _db.SingleOrDefault(x => x.UserId == userId);
 
             return Task.FromResult(customer);
         }
