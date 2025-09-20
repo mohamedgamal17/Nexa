@@ -19,10 +19,6 @@ namespace Nexa.Transactions.Domain.Transfers
             AppendEvent(@event);
         }
 
-        internal NetworkTransfer(string walletId, string reciverId, string number, decimal amount , TransferStatus status)
-              : base(walletId, number, amount , status)
-        {
-            ReciverId = reciverId;
-        }
+      
     }
 }

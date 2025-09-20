@@ -8,6 +8,7 @@ namespace Nexa.Transactions.Domain.Transfers
     {
         public string UserId { get; protected set; }
         public string WalletId { get; protected set; }
+        public string? ExternalTransferId { get; protected set; }
         public string Number { get; protected set; }
         public decimal Amount { get; protected set; }
         public TransferStatus Status { get; protected set; }
@@ -21,22 +22,9 @@ namespace Nexa.Transactions.Domain.Transfers
             WalletId = walletId;
             Number = number;
             Amount = amount;
-        }
-        protected Transfer(string walletId, string number, decimal amount)
-        {
-            WalletId = walletId;
-            Number = number;
-            Amount = amount;
-            var @event = new TransferPendingEvent(Id, WalletId, Number, Amount, Type);
+            var @event = new TransferPendingEvent(Id, userId,WalletId, Number, Amount, Type);
             AppendEvent(@event);
-        }
 
-        internal Transfer(string walletId, string number, decimal amount, TransferStatus status)
-        {
-            WalletId = walletId;
-            Number = number;
-            Amount = amount;
-            Status = status;
         }
         public void Process()
         {
@@ -51,6 +39,14 @@ namespace Nexa.Transactions.Domain.Transfers
             var @event = new TransferProcessingEvent(Id, WalletId, Number, Type);
 
             AppendEvent(@event);
+        }
+
+        public void AssignExternalTransferId(string externalTransferId)
+        {
+            if(Status == TransferStatus.Processing)
+            {
+                ExternalTransferId = externalTransferId;
+            }
         }
 
 
