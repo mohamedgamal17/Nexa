@@ -45,13 +45,10 @@ namespace Nexa.Transactions.Application.Transfers.Handlers
         {
             var bankTransfer = (BankTransfer)transfer;
 
-            var message = new ProcessBankTransferIntegrationEvent(bankTransfer.Id, bankTransfer.WalletId, bankTransfer.FundingResourceId,
+            var message = new ProcessBankTransferIntegrationEvent(transfer.UserId,bankTransfer.Id, bankTransfer.WalletId, bankTransfer.FundingResourceId,
                 bankTransfer.Amount, bankTransfer.Direction, bankTransfer.BankTransferType);
 
             await _publishEndpoint.Publish(message);
         }
-
-
-
     }
 }
