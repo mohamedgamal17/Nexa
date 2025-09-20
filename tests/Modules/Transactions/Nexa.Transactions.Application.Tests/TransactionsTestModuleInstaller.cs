@@ -29,8 +29,11 @@ namespace Nexa.Transactions.Application.Tests
 
 
             services.AddTransient<IWalletService, FakeWalletService>();
+            services.AddTransient<IFundingResourceService, FakeFundingResourceService>();
 
             services.AddTransient<FakeWalletService>();
+            services.AddTransient<FakeFundingResourceService>();
+
         }
     }
 }
