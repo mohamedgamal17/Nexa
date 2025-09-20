@@ -31,20 +31,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers
             FakeCustomerService = ServiceProvider.GetRequiredService<FakeCustomerService>();
             Faker = new Faker();
         }
-
-        protected override async Task InitializeAsync(IServiceProvider services)
-        {
-            await base.InitializeAsync(services);
-
-            await TestHarness.Start();
-        }
-
-        protected override async Task ShutdownAsync(IServiceProvider services)
-        {
-            await base.ShutdownAsync(services);
-
-            await TestHarness.Stop();
-        }
   
         public async Task<NetworkTransfer> CreateNetworkTransferAsync(string userId,string walletId , string reciverId , decimal amount)
         {
@@ -167,6 +153,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
                 Balance = balance,
                 UserId = userId ?? Guid.NewGuid().ToString(),
                 Number = Guid.NewGuid().ToString(),
+                ProviderWalletId = Guid.NewGuid().ToString(),
                 CustomerId = Guid.NewGuid().ToString(),
                 State = walletState
             };

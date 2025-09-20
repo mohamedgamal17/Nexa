@@ -1,4 +1,5 @@
-﻿using Nexa.Accounting.Shared.Events;
+﻿using MassTransit.Testing;
+using Nexa.Accounting.Shared.Events;
 using Nexa.Transactions.Shared.Events;
 
 namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
@@ -19,6 +20,8 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
+            await TestHarness.Start();
+
             var message = new WalletBalanceReservedIntegrationEvent()
             {
                 TransferId = networkTransfer.Id,
@@ -31,6 +34,9 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
             Assert.That(await TestHarness.Consumed.Any<WalletBalanceReservedIntegrationEvent>());
 
             Assert.That(await TestHarness.Published.Any<TransferVerifiedIntegrationEvent>());
+
+            await TestHarness.Stop();
+
         }
     }
 }

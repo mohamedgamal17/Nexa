@@ -1,4 +1,5 @@
-﻿using Nexa.Accounting.Shared.Events;
+﻿using MassTransit.Testing;
+using Nexa.Accounting.Shared.Events;
 using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
 namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
@@ -42,6 +43,8 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeTransfer = await CreateBankTransferAsync(userId, fakeWallet.Id, fakeFundingResoruce.Id, 100, TransferDirection.Depit);
 
+            await TestHarness.Start();
+
             var message = new VerifiyTransferIntegrationEvent(fakeTransfer.Id, fakeTransfer.Number, fakeTransfer.WalletId, fakeTransfer.Amount, fakeTransfer.Type);
 
             await TestHarness.Bus.Publish(message);
@@ -49,6 +52,9 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
             Assert.That(await TestHarness.Consumed.Any<VerifiyTransferIntegrationEvent>());
 
             Assert.That(await TestHarness.Published.Any<ReserveWalletBalanceIntegrationEvent>());
+
+            await TestHarness.Stop();
+
         }
 
         [Test]
@@ -64,6 +70,8 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeTransfer = await CreateBankTransferAsync(userId, fakeWallet.Id, fakeFundingResoruce.Id, 100, TransferDirection.Credit);
 
+            await TestHarness.Start();
+
             var message = new VerifiyTransferIntegrationEvent(fakeTransfer.Id, fakeTransfer.Number, fakeTransfer.WalletId, fakeTransfer.Amount, fakeTransfer.Type);
 
             await TestHarness.Bus.Publish(message);
@@ -71,6 +79,9 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
             Assert.That(await TestHarness.Consumed.Any<VerifiyTransferIntegrationEvent>());
 
             Assert.That(await TestHarness.Published.Any<TransferVerifiedIntegrationEvent>());
+
+            await TestHarness.Stop();
+
         }
 
 

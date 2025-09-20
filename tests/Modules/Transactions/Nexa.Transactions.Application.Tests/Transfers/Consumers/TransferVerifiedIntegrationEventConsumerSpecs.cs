@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MassTransit.Testing;
 using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
 
@@ -20,6 +21,8 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var networkTransfer = await CreateNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
+            await TestHarness.Start();
+
             var message = new TransferVerifiedIntegrationEvent(networkTransfer.Id, networkTransfer.Number, networkTransfer.WalletId, networkTransfer.Amount, networkTransfer.Type);
 
             await TestHarness.Bus.Publish(message);
@@ -29,6 +32,9 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
             var transfer = await TransferRepository.SingleAsync(x => x.Id == networkTransfer.Id);
 
             transfer.Status.Should().Be(TransferStatus.Processing);
+
+            await TestHarness.Stop();
+
 
         }
     }
