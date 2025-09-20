@@ -1,0 +1,33 @@
+﻿using FastEndpoints;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Nexa.BuildingBlocks.Infrastructure.Extensions;
+using Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer;
+using Nexa.Transactions.Application.Transfers.Dtos;
+namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers
+{
+    public class CreateBankTrasnferEndpoint : Endpoint<CreateBankTransferCommand, TransferDto>
+    {
+        private readonly IMediator _mediator;
+        public CreateBankTrasnferEndpoint(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public override void Configure()
+        {
+            Post("bank");
+            Group<TransferRoutingGroup>();
+            Description(x => x.Produces(StatusCodes.Status200OK, typeof(TransferDto)));
+        }
+
+        public override async Task HandleAsync(CreateBankTransferCommand req, CancellationToken ct)
+        {
+            var result = await _mediator.Send(req);
+
+            var response = result.ToOk();
+
+            await SendResultAsync(response);
+        }
+    }
+}
