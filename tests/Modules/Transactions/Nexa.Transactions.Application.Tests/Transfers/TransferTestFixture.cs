@@ -147,12 +147,12 @@ namespace Nexa.Transactions.Application.Tests.Transfers
 
             return await FakeWalletService.AddWalletAsync(dto);
         }
-        public async Task<BankAccountDto> CreateFundingResourceAsync(string userId )
+        public async Task<BankAccountDto> CreateFundingResourceAsync(string? userId = null )
         {
             var dto = new BankAccountDto
             {
                 Id = Guid.NewGuid().ToString(),
-                UserId = userId,
+                UserId = userId ?? Guid.NewGuid().ToString(),
                 BankName = Guid.NewGuid().ToString(),
                 AccountNumberLast4 = "4444",
                 RoutingNumber = "4444444444",

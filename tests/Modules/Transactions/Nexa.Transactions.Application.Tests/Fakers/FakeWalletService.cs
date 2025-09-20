@@ -9,7 +9,7 @@ namespace Nexa.Transactions.Application.Tests.Fakers
 
         public Task<WalletDto> GetWalletById(string walletId, CancellationToken cancellationToken = default)
         {
-            var wallet = _inMemoryWalletDb.Single(x => x.Id == walletId);
+            var wallet = _inMemoryWalletDb.SingleOrDefault(x => x.Id == walletId);
 
             return Task.FromResult(wallet);
         }
