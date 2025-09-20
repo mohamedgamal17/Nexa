@@ -30,8 +30,9 @@ namespace Nexa.Accounting.Application.Wallets.Factories
             var dto = new WalletDto
             {
                 Id = view.Id,
+                ProviderWalletId = view.ProviderWalletId,
                 UserId = view.UserId,
-                CustomerId = view.
+                CustomerId = view.CustomerId,
                 Number = view.Number,             
                 Balance = view.Balance,
                 State = view.State

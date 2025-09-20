@@ -16,7 +16,10 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
                     Id = x.Id,
                     UserId = x.UserId,
                     Balance = x.Balance,
-                    Number = x.Number
+                    Number = x.Number,
+                    ProviderWalletId = x.ProviderWalletId,
+                    CustomerId = x.CustomerId,
+                    State = x.State
                 });
 
             return query;

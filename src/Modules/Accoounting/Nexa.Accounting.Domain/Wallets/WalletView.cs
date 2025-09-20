@@ -5,6 +5,7 @@ namespace Nexa.Accounting.Domain.Wallets
 {
     public class WalletView : EntityView
     {
+        public string ProviderWalletId { get;  set; }
         public string CustomerId { get; set; }
         public string UserId { get; set; }
         public string Number { get;  set; }    
