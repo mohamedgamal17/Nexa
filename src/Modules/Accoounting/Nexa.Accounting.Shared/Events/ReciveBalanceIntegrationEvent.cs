@@ -9,10 +9,4 @@
         public string FundingResourceId { get; set; }
         public DateTime CompletedAt { get; set; }
     }
-
-    public class ReciveBalanceCompletedIntegrationEvent
-    {
-        public string WalletId { get; set; }
-        public string TransferId { get; set; }
-    }
 }
