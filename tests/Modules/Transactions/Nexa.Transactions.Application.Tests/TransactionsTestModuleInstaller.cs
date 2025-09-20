@@ -5,6 +5,7 @@ using Nexa.Accounting.Shared.Services;
 using Nexa.Application.Tests;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.CustomerManagement.Shared.Services;
 using Nexa.Transactions.Application.Tests.Fakers;
 using Nexa.Transactions.Infrastructure;
 namespace Nexa.Transactions.Application.Tests
@@ -30,9 +31,11 @@ namespace Nexa.Transactions.Application.Tests
 
             services.AddTransient<IWalletService, FakeWalletService>();
             services.AddTransient<IFundingResourceService, FakeFundingResourceService>();
+            services.AddTransient<ICustomerService, FakeCustomerService>();
 
             services.AddTransient<FakeWalletService>();
             services.AddTransient<FakeFundingResourceService>();
+            services.AddTransient<FakeCustomerService>();
 
         }
     }
