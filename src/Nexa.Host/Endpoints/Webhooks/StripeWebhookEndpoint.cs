@@ -21,7 +21,7 @@ namespace Nexa.Host.Endpoints.Webhooks
             _baasWebhookService = baasWebhookService;
             _mediator = mediator;
             _logger = logger;
-            _publishEndpoint = publishEndpoint;
+            _publishEndpoint = publishEndpoint;  
         }
 
 
@@ -50,18 +50,25 @@ namespace Nexa.Host.Endpoints.Webhooks
                     await HandleAccountUpdateEvent(stripeEvent);
                 }
 
-                if (stripeEvent.Type == Stripe.EventTypes.TreasuryInboundTransferSucceeded)
+                if (stripeEvent.Type.Contains("inbound_transfer"))
                 {
-                    _logger.LogDebug("Handling stripe inbound transfer success.");
+                    _logger.LogDebug("Handling stripe inbound transfer");
 
-                    await HandleInboundTransferSuccess(stripeEvent);
+                    await HandleInboundTransfer(stripeEvent);
                 }
 
-                if(stripeEvent.Type == Stripe.EventTypes.TreasuryOutboundPaymentPosted)
+                if (stripeEvent.Type.Contains("outbound_transfer"))
                 {
-                    _logger.LogDebug("Handling stripe outbound payment success.");
+                    _logger.LogDebug("Handling stripe outbound transfer");
 
-                    await HandleOutboundPaymentSuccess(stripeEvent);
+                    await HandleOutboundTransfer(stripeEvent);
+                }
+
+                if (stripeEvent.Type.Contains("outbound_payment"))
+                {
+                    _logger.LogDebug("Handling stripe outbound payment");
+
+                    await HandleOutboundPayment(stripeEvent);
                 }
 
                 await SendOkAsync();
@@ -99,31 +106,55 @@ namespace Nexa.Host.Endpoints.Webhooks
         }
 
 
-        private async Task HandleInboundTransferSuccess(Event stripeEvent)
+        private async Task HandleInboundTransfer(Event stripeEvent)
         {
             var stripeEntity = (InboundTransfer)stripeEvent.Data;
 
-            var @event = new ExternalTransferCompletedIntegrationEvent
+            if(stripeEvent.Type == Stripe.EventTypes.TreasuryInboundTransferSucceeded)
             {
-                TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
-                ExternalTransferId = stripeEntity.Id
+                var @event = new ExternalTransferCompletedIntegrationEvent
+                {
+                    TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
+                    ExternalTransferId = stripeEntity.Id
 
-            };
+                };
 
-            await _publishEndpoint.Publish(@event);
+                await _publishEndpoint.Publish(@event);
+            }         
         }
 
-        private async  Task HandleOutboundPaymentSuccess(Event stripeEvent)
+        private async Task HandleOutboundTransfer(Event stripeEvent)
+        {
+            var stripeEntity = (OutboundTransfer)stripeEvent.Data;
+
+            if (stripeEvent.Type == Stripe.EventTypes.TreasuryOutboundTransferPosted)
+            {
+                var @event = new ExternalTransferCompletedIntegrationEvent
+                {
+                    TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
+                    ExternalTransferId = stripeEntity.Id
+
+                };
+
+                await _publishEndpoint.Publish(@event);
+            }
+
+        }
+
+        private async  Task HandleOutboundPayment(Event stripeEvent)
         {
             var stripeEntity = (OutboundPayment)stripeEvent.Data;
 
-            var @event = new ExternalTransferCompletedIntegrationEvent
+            if(stripeEvent.Type == Stripe.EventTypes.TreasuryOutboundPaymentPosted)
             {
-                TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
-                ExternalTransferId = stripeEntity.Id
-            };
+                var @event = new ExternalTransferCompletedIntegrationEvent
+                {
+                    TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
+                    ExternalTransferId = stripeEntity.Id
+                };
 
-            await _publishEndpoint.Publish(@event);
+                await _publishEndpoint.Publish(@event);
+            }
         }
     }
 }
