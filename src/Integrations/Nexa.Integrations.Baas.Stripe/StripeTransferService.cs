@@ -44,7 +44,7 @@ namespace Nexa.Integrations.Baas.Stripe
                 FinancialAccount = request.WalletId,
                 Currency = "usd",
                 OriginPaymentMethod = request.FundingResourceId,
-                Amount = (long)request.Amount * 100,
+                Amount = (long)(request.Amount * 100),
                 Metadata = new Dictionary<string, string>
                 {
                     { StripeMetaDataConsts.ClientTransferId , request.ClinetTransferId }
@@ -78,7 +78,7 @@ namespace Nexa.Integrations.Baas.Stripe
                     Type = "financial_account",
                     FinancialAccount = request.ReciverWalletId
                 },
-                Amount = (long)request.Amount * 100,
+                Amount = (long)(request.Amount * 100),
                 Metadata = new Dictionary<string, string>
                 {
                     { StripeMetaDataConsts.ClientTransferId , request.ClientTransferId }
@@ -102,7 +102,7 @@ namespace Nexa.Integrations.Baas.Stripe
         {
             var options = new OutboundTransferCreateOptions
             {
-                Amount = 5 * 100,
+                Amount = (long)(request.Amount * 100),
                 Currency = "usd",
                 FinancialAccount = request.WalletId,
                 DestinationPaymentMethod = request.FundingResourceId,
