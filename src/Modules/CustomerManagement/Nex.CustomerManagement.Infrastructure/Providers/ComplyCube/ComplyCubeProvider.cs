@@ -14,6 +14,7 @@ using ComplyCube.Net.Utils;
 using System.Text.Json.Serialization;
 using System.Text;
 using Nexa.CustomerManagement.Application.Helpers;
+using ComplyCube.Net.Resources.SDKTokens;
 
 namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 {
@@ -31,6 +32,8 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 
         private readonly CheckApi _checkApi;
 
+        private readonly SDKTokenApi _tokenApi;
+
         public ComplyCubeProvider(ComplyCubeConfiguration configuration)
         {
 
@@ -40,6 +43,8 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
             _addressApi = new AddressApi(_client);
             _documentApi = new DocumentApi(_client);
             _checkApi = new CheckApi(_client);
+            _tokenApi = new SDKTokenApi(_client);
+            
         }
         public async Task<KYCClient> CreateClientAsync(KYCClientRequest request, CancellationToken cancellationToken = default)
         {
@@ -239,6 +244,19 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
             return PrepareKYCCheck(response);
         }
 
+        public async Task<string> CreateSdkToken(KYCSdkTokenRequest request, CancellationToken cancellationToken = default)
+        {
+            var apiRequest = new SDKTokenRequest
+            {
+                clientId = request.ClientId,
+                referrer = request.Referrer
+            };
+
+            var response = await _tokenApi.GenerateToken(apiRequest);
+
+            return response.token;
+
+        }
         private string MapComplyCupeGender(Gender gender)
         {
             return gender switch
@@ -303,7 +321,8 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
                 Id = document.id,
                 ClientId = document.clientId,
                 IssuingCountry = document.issuingCountry,
-                Type = document.type == "passport" ? DocumentType.Passport : DocumentType.DrivingLicense
+                Type = document.type == "passport" ? DocumentType.Passport : DocumentType.DrivingLicense,
+                Attachements = document.images.Select(PrepareKYCDocumentAttachement).ToList()
             };
 
             return response;
