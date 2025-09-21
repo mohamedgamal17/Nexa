@@ -37,6 +37,20 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
                     await _publishEndpoint.Publish(@event);
                 }
             }
+
+            if(transfer is NetworkTransfer networkTransfer)
+            {
+                var @event = new TransferNetworkFundsIntegrationEvent
+                    (
+                        networkTransfer.UserId,
+                        networkTransfer.Id,
+                        networkTransfer.WalletId,
+                        networkTransfer.ReciverId,
+                        networkTransfer.Amount
+                    );
+
+                await _publishEndpoint.Publish(@event);
+            }
         }
     }
 }
