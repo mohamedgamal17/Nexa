@@ -2,9 +2,9 @@
 {
     public enum TransferStatus
     {
-        Pending,
-        Processing,
-        Completed,
-        Faild
+        Pending = 0,
+        Processing = 5, 
+        Completed = 10,
+        Faild = 15
     }
 }
