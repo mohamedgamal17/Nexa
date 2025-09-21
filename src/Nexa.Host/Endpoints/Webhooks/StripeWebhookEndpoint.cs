@@ -57,6 +57,13 @@ namespace Nexa.Host.Endpoints.Webhooks
                     await HandleInboundTransferSuccess(stripeEvent);
                 }
 
+                if(stripeEvent.Type == Stripe.EventTypes.TreasuryOutboundPaymentPosted)
+                {
+                    _logger.LogDebug("Handling stripe outbound payment success.");
+
+                    await HandleOutboundPaymentSuccess(stripeEvent);
+                }
+
                 await SendOkAsync();
             }
             else
@@ -101,6 +108,19 @@ namespace Nexa.Host.Endpoints.Webhooks
                 TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
                 ExternalTransferId = stripeEntity.Id
 
+            };
+
+            await _publishEndpoint.Publish(@event);
+        }
+
+        private async  Task HandleOutboundPaymentSuccess(Event stripeEvent)
+        {
+            var stripeEntity = (OutboundPayment)stripeEvent.Data;
+
+            var @event = new ExternalTransferCompletedIntegrationEvent
+            {
+                TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
+                ExternalTransferId = stripeEntity.Id
             };
 
             await _publishEndpoint.Publish(@event);
