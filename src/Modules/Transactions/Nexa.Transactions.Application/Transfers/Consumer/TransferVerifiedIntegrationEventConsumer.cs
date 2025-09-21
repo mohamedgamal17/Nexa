@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Nexa.Accounting.Shared.Events;
 using Nexa.Transactions.Domain.Transfers;
 using Nexa.Transactions.Shared.Events;
 namespace Nexa.Transactions.Application.Transfers.Consumer

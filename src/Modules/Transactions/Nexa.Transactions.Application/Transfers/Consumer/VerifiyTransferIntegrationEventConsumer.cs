@@ -57,8 +57,12 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
             }
             else
             {
-                var message = new TransferVerifiedIntegrationEvent(bankTransfer.Id, bankTransfer.Number,
-                    bankTransfer.WalletId, bankTransfer.Amount, bankTransfer.Type);
+                var message = new TransferVerifiedIntegrationEvent
+                {
+                    TransferId = bankTransfer.Id,
+                    WalletId = bankTransfer.WalletId,
+                    Amount= bankTransfer.Amount
+                };
 
                 await _publishEndpoint.Publish(message);
             }

@@ -42,22 +42,20 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
 
             var transfer = await _bankTransferRepository.SingleAsync(x => x.Id == context.Message.TransferId);
 
-            if(context.Message.Direction == TransferDirection.Credit)
+            var bankTransferRequest = new BankTransferRequest
             {
+                WalletId = wallet.ProviderWalletId,
+                AccountId = customer!.FintechCustomerId!,
+                FundingResourceId = fundingResource!.ProviderBankAccountId,
+                Amount = context.Message.Amount,
+                ClinetTransferId = context.Message.TransferId
+            };
 
-                var depositRequest = new BankTransferRequest
-                {
-                    WalletId = wallet.ProviderWalletId,
-                    AccountId = customer!.FintechCustomerId!,
-                    FundingResourceId = fundingResource!.ProviderBankAccountId,
-                    Amount = context.Message.Amount,
-                    ClinetTransferId = context.Message.TransferId
-                };
+            var externalTransfer = transfer.Direction == TransferDirection.Credit
+                ? await _baasTransferService.Deposit(bankTransferRequest)
+                : await _baasTransferService.Withdraw(bankTransferRequest);
 
-                var externalTransfer = await _baasTransferService.Deposit(depositRequest);
-
-                transfer.AssignExternalTransferId(externalTransfer.Id);
-            }
+            transfer.AssignExternalTransferId(externalTransfer.Id);
 
             await _bankTransferRepository.UpdateAsync(transfer);
         }

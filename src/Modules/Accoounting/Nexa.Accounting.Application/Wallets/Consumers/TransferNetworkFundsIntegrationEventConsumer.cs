@@ -41,9 +41,12 @@ namespace Nexa.Accounting.Application.Wallets.Consumers
 
             await _ledgerEntryRepository.InsertAsync(reciverLedgerEntry);
 
+            var message = new TransferCompletedIntegrationEvent
+            {
+                TransferId = context.Message.TransferId,
+                WalletId = context.Message.WalletId
 
-            var message = new NetworkFundsTransferredIntegrationEvent(context.Message.TransferId, context.Message.WalletId,
-                context.Message.ReciverId, context.Message.Amount);
+            };
 
             await _publishEndpoint.Publish(message);
         }

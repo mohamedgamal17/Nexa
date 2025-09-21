@@ -33,7 +33,7 @@ namespace Nexa.Accounting.Application.Wallets.Consumers
             await _ledgerEntryRepository.InsertAsync(ledgerEntry);
 
 
-            var integrationEvent = new ReciveBalanceCompletedIntegrationEvent
+            var integrationEvent = new TransferCompletedIntegrationEvent
             {
                 TransferId = context.Message.TransferId,
                 WalletId = context.Message.WalletId

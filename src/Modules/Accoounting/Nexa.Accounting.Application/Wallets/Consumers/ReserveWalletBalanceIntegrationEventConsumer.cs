@@ -35,7 +35,7 @@ namespace Nexa.Accounting.Application.Wallets.Consumers
 
                 await _walletRepository.UpdateAsync(wallet);
 
-                var message = new WalletBalanceReservedIntegrationEvent
+                var message = new TransferVerifiedIntegrationEvent
                 {
                     TransferId = context.Message.TransferId,
                     WalletId = context.Message.WalletId,
