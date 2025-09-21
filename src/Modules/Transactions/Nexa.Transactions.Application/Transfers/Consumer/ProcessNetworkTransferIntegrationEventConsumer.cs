@@ -40,7 +40,7 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
                 ClientTransferId = transfer.Id,
                 SenderAccountId = senderCustomer!.FintechCustomerId!,
                 SenderWalletId = senderWallet!.ProviderWalletId!,
-                ReciverWalletId = reciverWallet!.Id,
+                ReciverWalletId = reciverWallet!.ProviderWalletId,
                 Amount = context.Message.Amount
             };
 
