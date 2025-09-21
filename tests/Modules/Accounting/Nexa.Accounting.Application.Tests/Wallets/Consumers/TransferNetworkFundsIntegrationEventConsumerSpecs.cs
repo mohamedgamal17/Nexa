@@ -14,12 +14,12 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
             var fakeSenderWallet = await CreateWalletWithReservedBalanceAsync(balance: 1000, reservedBalance: 300);
             var fakeReciverWallet = await CreateWalletAsync();
 
-            var message = new TransferNetworkFundsIntegrationEvent(Guid.NewGuid().ToString(), fakeSenderWallet.Id, fakeReciverWallet.Id, 300);
+            var message = new TransferNetworkFundsIntegrationEvent(fakeSenderWallet.UserId,Guid.NewGuid().ToString(), fakeSenderWallet.Id, fakeReciverWallet.Id, 300);
 
             await TestHarness.Bus.Publish(message);
 
             Assert.That(await TestHarness.Consumed.Any<TransferNetworkFundsIntegrationEvent>());
-            Assert.That(await TestHarness.Published.Any<NetworkFundsTransferredIntegrationEvent>());
+            Assert.That(await TestHarness.Published.Any<TransferCompletedIntegrationEvent>());
 
             var senderWallet = await WalletRepository.SingleAsync(x => x.Id == fakeSenderWallet.Id);
             var reciverWallet = await  WalletRepository.SingleAsync(x => x.Id == fakeReciverWallet.Id);

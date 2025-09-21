@@ -31,7 +31,7 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
 
             Assert.That(await TestHarness.Consumed.Any<ReciveBalanceIntegrationEvent>());
 
-            Assert.That(await TestHarness.Published.Any<ReciveBalanceCompletedIntegrationEvent>());
+            Assert.That(await TestHarness.Published.Any<TransferCompletedIntegrationEvent>());
 
             var wallet = await WalletRepository.SingleAsync(x => x.Id == fakeWallet.Id);
 

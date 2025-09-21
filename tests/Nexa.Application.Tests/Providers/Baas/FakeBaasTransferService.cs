@@ -5,13 +5,39 @@ namespace Nexa.Application.Tests.Providers.Baas
 {
     public class FakeBaasTransferService : IBaasTransferService
     {
-        public Task<BaasDepositTransfer> Deposit(DepositTransferRequest request, CancellationToken cancellationToken = default)
+        public Task<BaasBankTransfer> Deposit(BankTransferRequest request, CancellationToken cancellationToken = default)
         {
-            var response = new BaasDepositTransfer
+            var response = new BaasBankTransfer
             {
                 Id = Guid.NewGuid().ToString(),
                 WalletId = request.WalletId,
-                FundingResource = request.FundingResourceId,
+                FundingResourceId = request.FundingResourceId,
+                Amount = request.Amount
+            };
+
+            return Task.FromResult(response);
+        }
+
+        public Task<BaasNetworkTransfer> NetworkTransfer(NetworkTransferRequest request, CancellationToken cancellationToken = default)
+        {
+            var response = new BaasNetworkTransfer
+            {
+                Id = Guid.NewGuid().ToString(),
+                SenderWalletId = request.SenderWalletId,
+                ReciverWalletId = request.ReciverWalletId,
+                Amount = request.Amount
+            };
+
+            return Task.FromResult(response);
+        }
+
+        public Task<BaasBankTransfer> Withdraw(BankTransferRequest request, CancellationToken cancellationToken = default)
+        {
+            var response = new BaasBankTransfer
+            {
+                Id = Guid.NewGuid().ToString(),
+                WalletId = request.WalletId,
+                FundingResourceId = request.FundingResourceId,
                 Amount = request.Amount
             };
 

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MassTransit.Testing;
+using Nexa.Accounting.Shared.Events;
 using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
 
@@ -23,7 +24,12 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             await TestHarness.Start();
 
-            var message = new TransferVerifiedIntegrationEvent(networkTransfer.Id, networkTransfer.Number, networkTransfer.WalletId, networkTransfer.Amount, networkTransfer.Type);
+            var message = new TransferVerifiedIntegrationEvent
+            {
+                TransferId = networkTransfer.Id,
+                WalletId = networkTransfer.WalletId,
+                Amount = networkTransfer.Amount
+            };
 
             await TestHarness.Bus.Publish(message);
 

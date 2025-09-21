@@ -6,7 +6,7 @@ using Nexa.Transactions.Shared.Enums;
 namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 {
     [TestFixture]
-    public class When_network_funds_transferred_integration_event_consumed : TransferTestFixture
+    public class When_transfer_completed_integration_event_consumed : TransferTestFixture
     {
         [Test]
         public async Task Should_update_transfer_status_to_complete()
@@ -24,11 +24,15 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             await TestHarness.Start();
 
-            var message = new NetworkFundsTransferredIntegrationEvent(networkTransfer.Id, networkTransfer.WalletId, networkTransfer.ReciverId, networkTransfer.Amount);
+            var message = new TransferCompletedIntegrationEvent
+            {
+                TransferId = networkTransfer.Id,
+                WalletId = networkTransfer.WalletId
+            };
 
             await TestHarness.Bus.Publish(message);
 
-            Assert.That(await TestHarness.Consumed.Any<NetworkFundsTransferredIntegrationEvent>());
+            Assert.That(await TestHarness.Consumed.Any<TransferCompletedIntegrationEvent>());
 
             var transfer = await TransferRepository.SingleAsync(x => x.Id == networkTransfer.Id);
 
