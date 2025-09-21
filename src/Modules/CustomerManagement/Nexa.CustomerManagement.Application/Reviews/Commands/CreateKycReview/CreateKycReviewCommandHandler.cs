@@ -118,8 +118,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
 
             if (command.Type == KycReviewType.Document)
             {
-                kycRequest.Type = KYCCheckType.IdentityCheck;
-                kycRequest.LiveVideoId = command.KycLiveVideoId!;
+                kycRequest.Type = KYCCheckType.DocumentCheck;
                 kycRequest.DocumentId = customer.Document!.KycDocumentId;
             }
 
