@@ -2,7 +2,7 @@
 {
     public enum TransferDirection
     {
-        Credit,
-        Depit
+        Credit = 0,
+        Depit = 5
     }
 }
