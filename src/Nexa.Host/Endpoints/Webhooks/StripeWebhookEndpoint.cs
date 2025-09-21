@@ -4,6 +4,7 @@ using Nexa.CustomerManagement.Application.Customers.Commands.AcceptCustomer;
 using Nexa.CustomerManagement.Application.Customers.Commands.RejectCustomer;
 using Nexa.Integrations.Baas.Abstractions.Contracts.Events;
 using Nexa.Integrations.Baas.Abstractions.Services;
+using Nexa.Integrations.Baas.Stripe;
 using Nexa.Transactions.Shared.Events;
 using Stripe.Treasury;
 
@@ -97,7 +98,7 @@ namespace Nexa.Host.Endpoints.Webhooks
 
             var @event = new ExternalTransferCompletedIntegrationEvent
             {
-                TransferId = stripeEntity.Metadata["ClinetTransferId"],
+                TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
                 ExternalTransferId = stripeEntity.Id
 
             };

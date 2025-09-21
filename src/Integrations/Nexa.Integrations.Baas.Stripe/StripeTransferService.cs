@@ -43,7 +43,7 @@ namespace Nexa.Integrations.Baas.Stripe
                 Amount = (long)request.Amount * 100,
                 Metadata = new Dictionary<string, string>
                 {
-                    { "ClinetTransferId" , request.ClinetTransferId }
+                    { StripeMetaDataConsts.ClientTransferId , request.ClinetTransferId }
                 }
             };
 
