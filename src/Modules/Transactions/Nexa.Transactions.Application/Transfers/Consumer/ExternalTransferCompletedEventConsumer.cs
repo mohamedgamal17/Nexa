@@ -36,6 +36,21 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
 
                     await _publishEndpoint.Publish(@event);
                 }
+                else
+                {
+
+                    var @event = new TransferFundsIntegrationEvent
+                    {
+                        WalletId = bankTransfer.WalletId,
+                        TransferId = bankTransfer.Id,
+                        TransferNumber = bankTransfer.Number,
+                        FundingResourceId = bankTransfer.FundingResourceId,
+                        Amount = bankTransfer.Amount,
+                        CompletedAt = DateTime.UtcNow
+                    };
+
+                    await _publishEndpoint.Publish(@event);
+                }
             }
 
             if(transfer is NetworkTransfer networkTransfer)
