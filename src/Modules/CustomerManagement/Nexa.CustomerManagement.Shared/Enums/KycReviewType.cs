@@ -3,6 +3,6 @@
     public enum KycReviewType
     {
         Info,
-        Document
+        Document = 5
     }
 }
