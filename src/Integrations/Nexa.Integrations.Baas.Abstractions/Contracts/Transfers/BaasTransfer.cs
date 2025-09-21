@@ -7,8 +7,8 @@
         public decimal Amount { get; set; }
     }
 
-    public class BaasDepositTransfer : BaasTransfer
+    public class BaasBankTransfer : BaasTransfer
     {
-        public string FundingResource { get; set; }
+        public string FundingResourceId { get; set; }
     }
 }

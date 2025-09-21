@@ -1,6 +1,6 @@
 ﻿namespace Nexa.Integrations.Baas.Abstractions.Contracts.Transfers
 {
-    public class DepositTransferRequest
+    public class BankTransferRequest
     {
         public string ClinetTransferId { get; set; }
         public string AccountId { get; set; }

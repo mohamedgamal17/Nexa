@@ -45,7 +45,7 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
             if(context.Message.Direction == TransferDirection.Credit)
             {
 
-                var depositRequest = new DepositTransferRequest
+                var depositRequest = new BankTransferRequest
                 {
                     WalletId = wallet.ProviderWalletId,
                     AccountId = customer!.FintechCustomerId!,

@@ -11,13 +11,15 @@ namespace Nexa.Integrations.Baas.Stripe
         private readonly InboundTransferService _inboundTransferService;
         private readonly SetupIntentService _setupIntentService;
         private readonly OutboundPaymentService _outboundPaymentService;
+        private readonly OutboundTransferService _outboundTransferService;
         public StripeTransferService()
         {
             _inboundTransferService = new InboundTransferService();
             _setupIntentService = new SetupIntentService();
             _outboundPaymentService = new OutboundPaymentService();
+            _outboundTransferService = new OutboundTransferService();
         }
-        public async Task<BaasDepositTransfer> Deposit(DepositTransferRequest request, CancellationToken cancellationToken = default)
+        public async Task<BaasBankTransfer> Deposit(BankTransferRequest request, CancellationToken cancellationToken = default)
         {
             var requestOptions = new RequestOptions { StripeAccount = request.AccountId };
 
@@ -51,12 +53,12 @@ namespace Nexa.Integrations.Baas.Stripe
 
             var response = await _inboundTransferService.CreateAsync(inboundTransferRequest, requestOptions);
 
-            var result = new BaasDepositTransfer
+            var result = new BaasBankTransfer
             {
                 Id = response.Id,
                 WalletId = response.FinancialAccount,
                 Amount = response.Amount / 100,
-                FundingResource = response.OriginPaymentMethod
+                FundingResourceId = response.OriginPaymentMethod
             };
 
 
@@ -91,6 +93,35 @@ namespace Nexa.Integrations.Baas.Stripe
                 SenderWalletId = response.FinancialAccount,
                 ReciverWalletId = response.DestinationPaymentMethodDetails!.FinancialAccount.Id,
                 Amount = response.Amount / 100
+            };
+
+            return result;
+        }
+
+        public async Task<BaasBankTransfer> Withdraw(BankTransferRequest request, CancellationToken cancellationToken = default)
+        {
+            var options = new OutboundTransferCreateOptions
+            {
+                Amount = 5 * 100,
+                Currency = "usd",
+                FinancialAccount = request.WalletId,
+                DestinationPaymentMethod = request.FundingResourceId,
+                Metadata = new Dictionary<string, string>
+                {
+                    {StripeMetaDataConsts.ClientTransferId , request.ClinetTransferId }
+                }
+            };
+
+            var requestOptions = new RequestOptions { StripeAccount = request.AccountId };
+
+            var response = await _outboundTransferService.CreateAsync(options, requestOptions);
+
+            var result = new BaasBankTransfer
+            {
+                Id = response.Id,
+                WalletId = response.FinancialAccount,
+                Amount = response.Amount / 100,
+                FundingResourceId = response.DestinationPaymentMethod
             };
 
             return result;
