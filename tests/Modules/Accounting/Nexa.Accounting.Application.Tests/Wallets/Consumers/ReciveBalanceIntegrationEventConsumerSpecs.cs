@@ -17,11 +17,13 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
 
             var fakeWallet = await CreateWalletAsync(userId);
 
+            var fakeBankAccount = await CreateBankAccountAsync(userId);
+
             var message = new ReciveBalanceIntegrationEvent
             {
                 TransferId = Guid.NewGuid().ToString(),
                 TransferNumber = Guid.NewGuid().ToString(),
-                FundingResourceId = Guid.NewGuid().ToString(),
+                FundingResourceId = fakeBankAccount.Id,
                 WalletId = fakeWallet.Id,
                 Amount = 50,
                 CompletedAt = DateTime.UtcNow
