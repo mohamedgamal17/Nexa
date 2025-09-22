@@ -2,7 +2,7 @@
 {
     public class PagingInfo
     {
-        public int Lenght { get; set; }
+        public int Length { get; set; }
         public int Skip { get; set; }
         public long TotalCount { get; set; }
     }
