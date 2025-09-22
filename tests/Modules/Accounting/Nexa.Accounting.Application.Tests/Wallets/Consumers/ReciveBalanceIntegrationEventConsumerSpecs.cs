@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Nexa.Accounting.Application.Tests.Assertions;
-using Nexa.Accounting.Domain.Enums;
+using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Events;
 
 namespace Nexa.Accounting.Application.Tests.Wallets.Consumers

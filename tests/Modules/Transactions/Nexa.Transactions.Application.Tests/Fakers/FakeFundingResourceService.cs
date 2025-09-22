@@ -1,4 +1,4 @@
-﻿using Nexa.Accounting.Application.FundingResources.Dtos;
+﻿using Nexa.Accounting.Shared.Dtos;
 using Nexa.Accounting.Shared.Services;
 
 namespace Nexa.Transactions.Application.Tests.Fakers

@@ -2,7 +2,6 @@
 using Bogus.Extensions.UnitedStates;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using Nexa.Accounting.Application.FundingResources.Dtos;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.Accounting.Shared.Enums;
 using Nexa.CustomerManagement.Shared.Dtos;

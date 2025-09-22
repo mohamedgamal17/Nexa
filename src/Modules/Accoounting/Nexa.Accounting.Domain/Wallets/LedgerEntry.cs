@@ -1,4 +1,4 @@
-﻿using Nexa.Accounting.Domain.Enums;
+﻿using Nexa.Accounting.Shared.Enums;
 using Nexa.BuildingBlocks.Domain;
 namespace Nexa.Accounting.Domain.Wallets
 {

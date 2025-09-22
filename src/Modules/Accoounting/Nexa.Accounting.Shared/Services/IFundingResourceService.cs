@@ -1,4 +1,4 @@
-﻿using Nexa.Accounting.Application.FundingResources.Dtos;
+﻿using Nexa.Accounting.Shared.Dtos;
 
 namespace Nexa.Accounting.Shared.Services
 {

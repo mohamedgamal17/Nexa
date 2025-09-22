@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Enums;
 
 namespace Nexa.Accounting.Application.Tests.Assertions
 {

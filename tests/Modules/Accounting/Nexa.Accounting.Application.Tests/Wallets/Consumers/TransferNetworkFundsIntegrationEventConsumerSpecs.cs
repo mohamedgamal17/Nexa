@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Nexa.Accounting.Application.Tests.Assertions;
+using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Events;
 
 namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
@@ -35,8 +36,8 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
                     senderWallet.Id,
                     message.TransferId,
                     message.Amount,
-                    Domain.Enums.TransferType.Network,
-                    Domain.Enums.TransferDirection.Depit
+                    TransferType.Network,
+                    TransferDirection.Depit
                 );
 
             reciverLedgerEntry.Should().NotBeNull();
@@ -44,8 +45,8 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Consumers
                     reciverWallet.Id,
                     message.TransferId,
                     message.Amount,
-                    Domain.Enums.TransferType.Network,
-                    Domain.Enums.TransferDirection.Credit
+                    TransferType.Network,
+                    TransferDirection.Credit
                 );
         }
 

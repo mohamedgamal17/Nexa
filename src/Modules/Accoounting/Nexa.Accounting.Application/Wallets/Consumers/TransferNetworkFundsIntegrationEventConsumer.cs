@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Nexa.Accounting.Domain;
-using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Domain.Wallets;
+using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Events;
 namespace Nexa.Accounting.Application.Wallets.Consumers
 {

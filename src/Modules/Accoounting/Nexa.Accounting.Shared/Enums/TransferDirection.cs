@@ -1,4 +1,4 @@
-﻿namespace Nexa.Accounting.Domain.Enums
+﻿namespace Nexa.Accounting.Shared.Enums
 {
     public enum TransferDirection
     {

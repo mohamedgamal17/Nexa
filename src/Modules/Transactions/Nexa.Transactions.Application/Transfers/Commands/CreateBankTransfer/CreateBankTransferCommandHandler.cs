@@ -1,5 +1,4 @@
-﻿using Nexa.Accounting.Application.FundingResources.Dtos;
-using Nexa.Accounting.Shared.Dtos;
+﻿using Nexa.Accounting.Shared.Dtos;
 using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
@@ -70,7 +69,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
 
             BankTransfer transfer;
 
-            if(request.Direction == TransferDirection.Credit)
+            if(request.Direction == Shared.Enums.TransferDirection.Credit)
             {
                 transfer = BankTransfer.Deposit(userId, request.WalletId, transferNumber, request.Amount, request.FundingResourceId);
             }

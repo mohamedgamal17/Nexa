@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using MediatR;
-using Nexa.Accounting.Application.FundingResources.Dtos;
 using Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 namespace Nexa.Accounting.Presentation.Endpoints.Banking
 {

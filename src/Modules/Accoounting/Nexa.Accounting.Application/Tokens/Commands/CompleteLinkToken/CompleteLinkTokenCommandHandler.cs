@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Nexa.Accounting.Application.FundingResources.Dtos;
 using Nexa.Accounting.Application.FundingResources.Factories;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.FundingResources;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
