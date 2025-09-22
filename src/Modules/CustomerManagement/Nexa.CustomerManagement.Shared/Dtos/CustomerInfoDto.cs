@@ -11,5 +11,7 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string Nationality { get;  set; }
         public string IdNumber { get;  set; }
         public AddressDto Address { get;  set; }
+        public string? KycReviewId { get;  set; }
+        public VerificationState State { get;  set; }
     }
 }

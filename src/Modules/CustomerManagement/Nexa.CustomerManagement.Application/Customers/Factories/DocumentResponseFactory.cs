@@ -19,6 +19,9 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
             {
                 Id = view.Id,
                 KycDocumentId = view.KycDocumentId,
+                State = view.State,
+                KycReviewId = view.KycReviewId,
+                IssuingCountry = view.IssuingCountry,
                 Type = view.Type,
             };
 

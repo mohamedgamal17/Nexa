@@ -8,7 +8,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
     {
         public CustomerRoutingGroup()
         {
-            Configure("user/customers", ep =>
+            Configure("user/customer", ep =>
             {
       
                 ep.Description(x =>

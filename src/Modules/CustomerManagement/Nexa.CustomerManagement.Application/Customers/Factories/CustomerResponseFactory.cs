@@ -58,7 +58,9 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                     StreetLine = info.Address.StreetLine,
                     PostalCode = info.Address.PostalCode,
                     ZipCode = info.Address.ZipCode
-                }
+                },
+                State = info.State,
+                KycReviewId = info.KycReviewId
 
             };
 
