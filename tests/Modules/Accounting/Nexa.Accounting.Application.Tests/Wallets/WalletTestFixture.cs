@@ -1,6 +1,7 @@
 ﻿using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Accounting.Domain;
+using Nexa.Accounting.Domain.FundingResources;
 using Nexa.Accounting.Domain.Wallets;
 using Nexa.Integrations.Baas.Abstractions.Services;
 
@@ -77,6 +78,27 @@ namespace Nexa.Accounting.Application.Tests.Wallets
                 await repository.UpdateAsync(wallet);
 
                 return wallet;
+            });
+        }
+
+        public async Task<BankAccount> CreateBankAccountAsync(string? userId = null)
+        {
+            return await WithScopeAsync(async (sp) =>
+            {
+                var repository = sp.GetRequiredService<IAccountingRepository<BankAccount>>();
+
+                var bankAccount = new BankAccount(
+                        userId ?? Guid.NewGuid().ToString(),
+                        Guid.NewGuid().ToString(),
+                        Guid.NewGuid().ToString(),
+                        "us",
+                        "usd",
+                        "4444",
+                        "444444444"
+                    );
+
+
+                return await repository.InsertAsync(bankAccount);
             });
         }
     }
