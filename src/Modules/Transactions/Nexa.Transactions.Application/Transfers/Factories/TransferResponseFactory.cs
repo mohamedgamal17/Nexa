@@ -30,12 +30,17 @@ namespace Nexa.Transactions.Application.Transfers.Factories
             var walletsDictionary = wallets.ToDictionary(x => x.Id);
 
 
-            var dtos = views.Select(transaction =>
-                PrepareDto(transaction,
-                    walletsDictionary[transaction.WalletId],
-                    walletsDictionary!.GetValueOrDefault(transaction.ReciverId)
-                )
-              ).ToList();
+            var dtos = views.Select((transaction) =>
+            {
+                var wallet = walletsDictionary[transaction.WalletId];
+
+                var reciverWallet = transaction.ReciverId != null
+                ? walletsDictionary[transaction.ReciverId]
+                : default;
+
+                return PrepareDto(transaction, wallet, reciverWallet);
+
+            }).ToList();
 
             return dtos;
         }
