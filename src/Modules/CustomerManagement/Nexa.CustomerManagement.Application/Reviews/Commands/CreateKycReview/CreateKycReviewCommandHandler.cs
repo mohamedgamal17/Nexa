@@ -7,6 +7,7 @@ using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Domain.Reviews;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
 
@@ -37,11 +38,11 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
 
             if (customer == null)
             {
-                return new Result<KycReviewDto>(new EntityNotFoundException("User customer is not exist."));
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
             if (customer.Info == null)
             {
-                return new Result<KycReviewDto>(new BusinessLogicException("Customer should complete information before creating kyc review"));
+                return new BusinessLogicException(CustomerErrorConsts.IncompleteCustomerInfo);
             }
 
             var kycReviewResult = request.Type == KycReviewType.Info
@@ -63,7 +64,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
         {
             if (!customer.Info!.CanBeVerified)
             {
-                return new Result<KycReview>(new BusinessLogicException($"Customer info verification state is invalid state should be in ({VerificationState.Pending} or {VerificationState.Rejected}) to start kyc review"));
+                return new BusinessLogicException(CustomerErrorConsts.InvalidCustomerInfoVerificationState);
             }
 
 
@@ -81,22 +82,18 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
         {
             if (customer.Document == null)
             {
-                return new Result<KycReview>(new BusinessLogicException("Customer should created document first"));
+                return new BusinessLogicException(CustomerErrorConsts.DocumentNotExist);
             }
 
-            if (customer.Info!.CanBeVerified)
-            {
-                return new Result<KycReview>(new BusinessLogicException("Customer should verifiy info first before verifing documents"));
-            }
 
             if (!customer.Document.HasRequireAttachments)
             {
-                return new Result<KycReview>(new BusinessLogicException("Customer document must upload required attachments before review operation"));
+                return new BusinessLogicException(CustomerErrorConsts.IncompleteDocument);
             }
 
             if (!customer.Document.HasValidStateToBeVerified)
             {
-                return new Result<KycReview>(new BusinessLogicException($"Document verification state is invalid state should be in ({VerificationState.Pending} or {VerificationState.Rejected}) to start kyc review"));
+                return new BusinessLogicException(CustomerErrorConsts.InvalidDocumentVerificationState);
             }
 
             var kycCheck = await CreateKycCheck(customer, request);
