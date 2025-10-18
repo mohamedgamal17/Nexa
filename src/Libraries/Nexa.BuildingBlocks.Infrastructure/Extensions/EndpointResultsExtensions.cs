@@ -52,12 +52,13 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
         {
             Exception exception = result.Exception!;
 
-            if (exception is ForbiddenAccessException)
+            if (exception is ForbiddenAccessException forbiddenAccessException)
             {
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status403Forbidden,
-                    Title = "Forbidden",
+                    Title = forbiddenAccessException.Code,
+                    Detail = forbiddenAccessException.Message,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
                 };
 
@@ -74,13 +75,25 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 
                 return Results.Problem(problemDetails);
             }
+            else if (exception is NexaUnauthorizedAccessException  unauthorizedAccess)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status401Unauthorized,
+                    Title = unauthorizedAccess.Code,
+                    Detail = unauthorizedAccess.Message,
+                    Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+                };
+
+                return Results.Problem(problemDetails);
+            }
             else if (exception is EntityNotFoundException notFoundException)
             {
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status404NotFound,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = "The specified resource was not found.",
+                    Title = notFoundException.Code,
                     Detail = notFoundException.Message
                 };
 
@@ -92,7 +105,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
                 {
                     Status = StatusCodes.Status400BadRequest,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = "Invalid entity state.",
+                    Title = businessLogicException.Code,
                     Detail = businessLogicException.Message
                 };
 
