@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Nexa.Accounting.Shared.Consts;
 using Nexa.Accounting.Shared.Enums;
 using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.Transactions.Application.Tests.Assertions;
 using Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer;
@@ -65,7 +67,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
         [Test]
@@ -83,7 +85,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), WalletErrorConsts.WalletNotExist);
         }
 
         [Test]
@@ -103,7 +105,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(ForbiddenAccessException));
+            result.ShoulBeFailure(typeof(ForbiddenAccessException), WalletErrorConsts.WalletNotOwned);
         }
 
         [Test]
@@ -124,7 +126,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), WalletErrorConsts.WalletFrozen);
         }
 
 
@@ -146,7 +148,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), BankAccountErrorConsts.BankAccountNotExist);
         }
 
         [Test]
@@ -169,7 +171,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(ForbiddenAccessException));
+            result.ShoulBeFailure(typeof(ForbiddenAccessException), BankAccountErrorConsts.BankAccountNotOwned);
         }
     }
 }
