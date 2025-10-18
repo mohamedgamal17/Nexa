@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Nexa.Accounting.Application.FundingResources.Dtos;
 using Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer;
 using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Domain.Transfers;

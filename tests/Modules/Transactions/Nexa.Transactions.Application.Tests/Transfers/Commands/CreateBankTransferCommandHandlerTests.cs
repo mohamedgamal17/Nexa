@@ -7,7 +7,6 @@ using Nexa.Transactions.Application.Tests.Assertions;
 using Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer;
 using Nexa.Transactions.Domain;
 using Nexa.Transactions.Domain.Transfers;
-using Nexa.Transactions.Shared.Enums;
 namespace Nexa.Transactions.Application.Tests.Transfers.Commands
 {
     [TestFixture]
@@ -20,9 +19,9 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
             BankTransferRepository = ServiceProvider.GetRequiredService<ITransactionRepository<BankTransfer>>();
         }
 
-        [TestCase(TransferDirection.Depit)]
-        [TestCase(TransferDirection.Credit)]
-        public async Task Should_create_bank_transfer(TransferDirection direction)
+        [TestCase(Shared.Enums.TransferDirection.Depit)]
+        [TestCase(Shared.Enums.TransferDirection.Credit)]
+        public async Task Should_create_bank_transfer(Shared.Enums.TransferDirection direction)
         {
             AuthenticationService.Login();
 
@@ -61,7 +60,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = Guid.NewGuid().ToString(),
                 FundingResourceId = Guid.NewGuid().ToString(),
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);
@@ -79,7 +78,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = Guid.NewGuid().ToString(),
                 FundingResourceId = Guid.NewGuid().ToString(),
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);
@@ -99,7 +98,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = fakeWallet.Id,
                 FundingResourceId = Guid.NewGuid().ToString(),
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);
@@ -120,7 +119,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = fakeWallet.Id,
                 FundingResourceId = Guid.NewGuid().ToString(),
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);
@@ -142,7 +141,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = fakeWallet.Id,
                 FundingResourceId = Guid.NewGuid().ToString(),
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);
@@ -165,7 +164,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
                 WalletId = fakeWallet.Id,
                 FundingResourceId = fakeFundingResource.Id,
                 Amount = 100,
-                Direction = TransferDirection.Credit
+                Direction = Shared.Enums.TransferDirection.Credit
             };
 
             var result = await Mediator.Send(command);

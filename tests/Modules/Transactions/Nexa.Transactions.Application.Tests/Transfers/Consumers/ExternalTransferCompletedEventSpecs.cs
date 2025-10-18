@@ -21,7 +21,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeFundingResource = await CreateFundingResourceAsync(userId);
 
-            var fakeTransfer = await CreateProcessBankTransferAsync(userId, fakeWallet.Id, fakeFundingResource.Id, 50, TransferDirection.Credit);
+            var fakeTransfer = await CreateProcessBankTransferAsync(userId, fakeWallet.Id, fakeFundingResource.Id, 50, Shared.Enums.TransferDirection.Credit);
 
             await TestHarness.Start();
 
@@ -53,7 +53,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeFundingResource = await CreateFundingResourceAsync(userId);
 
-            var fakeTransfer = await CreateProcessBankTransferAsync(userId, fakeWallet.Id, fakeFundingResource.Id, 50, TransferDirection.Depit);
+            var fakeTransfer = await CreateProcessBankTransferAsync(userId, fakeWallet.Id, fakeFundingResource.Id, 50, Shared.Enums.TransferDirection.Depit);
 
             await TestHarness.Start();
 

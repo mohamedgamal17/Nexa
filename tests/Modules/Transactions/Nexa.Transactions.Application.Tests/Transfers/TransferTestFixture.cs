@@ -77,7 +77,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
                 return await transferRepository.UpdateAsync(networkTransfer);
             });
         }
-        public async Task<BankTransfer> CreateBankTransferAsync(string userId , string walletId , string fundingResourceId  ,decimal amount , TransferDirection direction)
+        public async Task<BankTransfer> CreateBankTransferAsync(string userId , string walletId , string fundingResourceId  ,decimal amount , Shared.Enums.TransferDirection direction)
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -90,7 +90,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
         }
 
 
-        public async Task<BankTransfer> CreateProcessBankTransferAsync(string userId, string walletId, string fundingResourceId, decimal amount, TransferDirection direction)
+        public async Task<BankTransfer> CreateProcessBankTransferAsync(string userId, string walletId, string fundingResourceId, decimal amount, Shared.Enums.TransferDirection direction)
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -108,7 +108,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
             });
         }
 
-        public async Task<BankTransfer> CreateProcessBankTransferWithExternalIdAsync(string userId, string walletId, string fundingResourceId, decimal amount, TransferDirection direction)
+        public async Task<BankTransfer> CreateProcessBankTransferWithExternalIdAsync(string userId, string walletId, string fundingResourceId, decimal amount, Shared.Enums.TransferDirection direction)
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -126,7 +126,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
             });
         }
 
-        public async Task<BankTransfer> CreateCompleteBankTransferAsync(string userId, string walletId, string fundingResourceId, decimal amount, TransferDirection direction)
+        public async Task<BankTransfer> CreateCompleteBankTransferAsync(string userId, string walletId, string fundingResourceId, decimal amount, Shared.Enums.TransferDirection direction)
         {
             return await WithScopeAsync(async (sp) =>
             {

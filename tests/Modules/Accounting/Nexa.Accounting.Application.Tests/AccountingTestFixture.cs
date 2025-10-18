@@ -8,7 +8,6 @@ using Nexa.Application.Tests;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Respawn.Graph;
-using Nexa.Accounting.Domain.Enums;
 using Nexa.Accounting.Application.Tests.Fakers;
 using MassTransit.Testing;
 namespace Nexa.Accounting.Application.Tests

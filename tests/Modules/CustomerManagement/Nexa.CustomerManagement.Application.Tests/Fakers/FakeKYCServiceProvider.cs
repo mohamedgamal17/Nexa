@@ -152,5 +152,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
         {
             return Task.FromResult(Stream.Null);
         }
+
+        public Task<string> CreateSdkToken(KYCSdkTokenRequest request, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(Guid.NewGuid().ToString());
+        }
     }
 }
