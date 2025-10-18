@@ -58,7 +58,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
 
             if (response.IsFailure)
             {
-                return new Result<BankingTokenDto>(new BusinessLogicException(response.Exception!.Message));
+                return response.Exception!;
             }
 
             var dto = new BankingTokenDto

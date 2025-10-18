@@ -1,11 +1,10 @@
-﻿using Nexa.BuildingBlocks.Domain.Results;
+﻿using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.Integrations.OpenBanking.Abstractions;
+using Nexa.Integrations.OpenBanking.Abstractions.Consts;
 using Nexa.Integrations.OpenBanking.Abstractions.Contracts;
-using Nexa.Integrations.OpenBanking.Abstractions.Exceptions;
 using Stripe;
 using Stripe.FinancialConnections;
-using Stripe.Forwarding;
-
 namespace Nexa.Integrations.Baas.Stripe
 {
     public class StripeBankingService : IBankingTokenService
@@ -70,7 +69,7 @@ namespace Nexa.Integrations.Baas.Stripe
 
                 if (bankToken.Used)
                 {
-                    return new Result<ProcessorToken>(new OpenBankingExcetpion("invalid_bank_token"));
+                    return new BusinessLogicException(OpenBankingErrorConsts.InvalidBankToken);
                 }
 
                 var result = new ProcessorToken
@@ -83,10 +82,10 @@ namespace Nexa.Integrations.Baas.Stripe
 
             }
             catch(StripeException exception)
+                when(exception.StripeError.Code == "invalid_request_error")
             {
-                return new Result<ProcessorToken>(new OpenBankingExcetpion("invalid_bank_token"));
-            }
-            
+                return new EntityNotFoundException(OpenBankingErrorConsts.BankTokenNotExist);
+            }          
         }
     }
 }

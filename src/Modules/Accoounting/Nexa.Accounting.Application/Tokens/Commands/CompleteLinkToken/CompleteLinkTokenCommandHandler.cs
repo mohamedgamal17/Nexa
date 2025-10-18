@@ -64,7 +64,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
 
             if (processorTokenResult.IsFailure)
             {
-                return new Result<BankAccountDto>(new BusinessLogicException(processorTokenResult.Exception!.Message));
+                return processorTokenResult.Exception!;
 
             }
             var processorToken = processorTokenResult.Value!;
