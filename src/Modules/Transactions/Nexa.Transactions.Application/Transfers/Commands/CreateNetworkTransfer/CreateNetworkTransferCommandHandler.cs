@@ -1,4 +1,5 @@
-﻿using Nexa.Accounting.Shared.Dtos;
+﻿using Nexa.Accounting.Shared.Consts;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
@@ -40,12 +41,12 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateNetworkTransfer
 
             if (!isWalletOwner)
             {
-                return new Result<TransferDto>(new ForbiddenAccessException());
+                return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
             }
 
             if (senderWallet.Balance < request.Amount)
             {
-                return new Result<TransferDto>(new BusinessLogicException("Insufficient balance to complete the transfer."));
+                return new BusinessLogicException(WalletErrorConsts.InsufficentBalance);
             }
 
             var transferNumber = _transferNumberGeneratorService.Generate();

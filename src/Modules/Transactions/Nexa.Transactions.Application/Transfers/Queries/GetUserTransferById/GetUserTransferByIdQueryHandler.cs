@@ -6,7 +6,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
 using Nexa.Transactions.Domain.Transfers;
-
+using Nexa.Transactions.Shared.Consts;
 namespace Nexa.Transactions.Application.Transfers.Queries.GetUserTransferById
 {
     public class GetUserTransferByIdQueryHandler : IApplicationRequestHandler<GetUserTransferByIdQuery, TransferDto>
@@ -33,7 +33,7 @@ namespace Nexa.Transactions.Application.Transfers.Queries.GetUserTransferById
 
             if(result == null)
             {
-                return new Result<TransferDto>(new EntityNotFoundException(typeof(Transfer), request.TransferId));
+                return new EntityNotFoundException(TransferErrorConsts.TransferNotExist);
             }
 
 

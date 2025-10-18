@@ -1,4 +1,5 @@
-﻿using Nexa.Accounting.Shared.Dtos;
+﻿using Nexa.Accounting.Shared.Consts;
+using Nexa.Accounting.Shared.Dtos;
 using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
@@ -9,8 +10,7 @@ using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
 using Nexa.Transactions.Application.Transfers.Services;
 using Nexa.Transactions.Domain.Transfers;
-using Nexa.Transactions.Shared.Enums;
-
+using Nexa.Transactions.Shared.Consts;
 namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
 {
     public class CreateBankTransferCommandHandler : IApplicationRequestHandler<CreateBankTransferCommand, TransferDto>
@@ -40,29 +40,29 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
 
             if (wallet == null)
             {
-                return new Result<TransferDto>(new BusinessLogicException("User wallet is not exist."));
+                return new BusinessLogicException(WalletErrorConsts.WalletNotExist);
             }
 
             if(!IsWalletOwner(wallet, userId))
             {
-                return new Result<TransferDto>(new ForbiddenAccessException("Current user dosen't own this wallet."));
+                return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
             }
 
             if(wallet.State == WalletState.Frozen)
             {
-                return new Result<TransferDto>(new BusinessLogicException("Current wallet is frozen operation cannot be done."));
+                return new BusinessLogicException(WalletErrorConsts.WalletFrozen);
             }
 
             var fundingResource = await _fundingResourceService.GetFundingResourceById(request.FundingResourceId);
 
             if(fundingResource == null)
             {
-                return new Result<TransferDto>(new BusinessLogicException("Funding resource is not exist."));
+                return new BusinessLogicException(FundingResourceErrorConsts.FundingResourceNotExist);
             }
 
             if (!IsFundingResourceOwner(fundingResource, userId))
             {
-                return new Result<TransferDto>(new ForbiddenAccessException("Current user dosen't own this funding resource."));
+                return new ForbiddenAccessException(FundingResourceErrorConsts.FundingResourceNotOwned);
             }
 
             string transferNumber = _transferNumberGenerator.Generate();

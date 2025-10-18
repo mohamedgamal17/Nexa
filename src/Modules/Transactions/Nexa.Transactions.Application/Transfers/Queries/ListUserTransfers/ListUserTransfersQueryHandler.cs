@@ -6,7 +6,6 @@ using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
 using Nexa.Transactions.Domain.Transfers;
 using Vogel.BuildingBlocks.EntityFramework.Extensions;
-
 namespace Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers
 {
     public class ListUserTransfersQueryHandler : IApplicationRequestHandler<ListUserTransfersQuery, Paging<TransferDto>>

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.CustomerManagement.Shared.Services;
-using Nexa.Integrations.Baas.Abstractions.Services;
 using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Shared.Enums;
 
