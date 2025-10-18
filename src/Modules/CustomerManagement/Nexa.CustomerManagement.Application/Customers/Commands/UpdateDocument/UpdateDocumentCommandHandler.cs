@@ -8,6 +8,7 @@ using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 {
@@ -34,7 +35,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
             if(customer == null)
             {
-                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
             if(customer.Info == null)

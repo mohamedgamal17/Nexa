@@ -1,11 +1,11 @@
 ﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 
 namespace Nexa.CustomerManagement.Application.Customers.Queries.GetCurrentUserCustomer
@@ -31,7 +31,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Queries.GetCurrentUserCu
 
             if(customer == null)
             {
-                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
             return await _customerResponseFactory.PrepareDto(customer);

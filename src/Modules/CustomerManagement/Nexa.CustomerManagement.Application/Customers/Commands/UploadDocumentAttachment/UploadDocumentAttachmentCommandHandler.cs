@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.BuildingBlocks.Domain.Consts;
+using Nexa.CustomerManagement.Shared.Consts;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentAttachment
 {
@@ -42,7 +43,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentA
 
             if (customer == null)
             {
-                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
             if (customer.Document == null)

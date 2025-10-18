@@ -6,6 +6,7 @@ using Nexa.CustomerManagement.Application.Customers.Factories;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.KYC;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
