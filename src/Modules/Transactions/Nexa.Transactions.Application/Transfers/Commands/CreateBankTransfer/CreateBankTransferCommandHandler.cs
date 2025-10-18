@@ -10,7 +10,6 @@ using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
 using Nexa.Transactions.Application.Transfers.Services;
 using Nexa.Transactions.Domain.Transfers;
-using Nexa.Transactions.Shared.Consts;
 namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
 {
     public class CreateBankTransferCommandHandler : IApplicationRequestHandler<CreateBankTransferCommand, TransferDto>
@@ -57,12 +56,12 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
 
             if(fundingResource == null)
             {
-                return new BusinessLogicException(FundingResourceErrorConsts.FundingResourceNotExist);
+                return new BusinessLogicException(BankAccountErrorConsts.BankAccountNotExist);
             }
 
             if (!IsFundingResourceOwner(fundingResource, userId))
             {
-                return new ForbiddenAccessException(FundingResourceErrorConsts.FundingResourceNotOwned);
+                return new ForbiddenAccessException(BankAccountErrorConsts.BankAccountNotOwned);
             }
 
             string transferNumber = _transferNumberGenerator.Generate();
