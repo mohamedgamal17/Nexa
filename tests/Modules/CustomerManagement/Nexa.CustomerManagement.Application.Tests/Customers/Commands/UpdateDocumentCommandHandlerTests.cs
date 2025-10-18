@@ -7,6 +7,8 @@ using Nexa.CustomerManagement.Shared.Enums;
 using FluentAssertions;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.BuildingBlocks.Domain.Consts;
+using Nexa.CustomerManagement.Shared.Consts;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]
@@ -110,7 +112,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var response = await Mediator.Send(command);
 
-            response.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            response.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
         [Test]
         public async Task Should_failure_while_creating_document_when_customer_is_not_created()
@@ -124,7 +126,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var response = await Mediator.Send(command);
 
-            response.ShoulBeFailure(typeof(EntityNotFoundException));
+            response.ShoulBeFailure(typeof(EntityNotFoundException), CustomerErrorConsts.CustomerNotExist);
         }
 
         [Test]
@@ -143,7 +145,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var response = await Mediator.Send(command);
 
-            response.ShoulBeFailure(typeof(BusinessLogicException));
+            response.ShoulBeFailure(typeof(BusinessLogicException),CustomerErrorConsts.IncompleteCustomerInfo);
         }
 
         [Test]
@@ -165,7 +167,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var response = await Mediator.Send(command);
 
-            response.ShoulBeFailure(typeof(ForbiddenAccessException));
+            response.ShoulBeFailure(typeof(ForbiddenAccessException),CustomerErrorConsts.DocumentNotOwned);
         }
 
 

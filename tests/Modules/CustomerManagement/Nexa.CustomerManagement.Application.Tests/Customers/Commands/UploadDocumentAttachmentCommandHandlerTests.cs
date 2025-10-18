@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Nexa.Application.Tests.Extensions;
 using FluentAssertions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.BuildingBlocks.Domain.Consts;
+using Nexa.CustomerManagement.Shared.Consts;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]
@@ -65,7 +67,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
         [Test]
@@ -83,7 +85,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException),CustomerErrorConsts.CustomerNotExist);
         }
 
         [Test]
@@ -103,7 +105,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.DocumentNotExist);
         }
 
         private async Task<IFormFile> PrepareImageData()

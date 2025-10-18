@@ -6,6 +6,8 @@ using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer;
 using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
+using Nexa.BuildingBlocks.Domain.Consts;
+using Nexa.CustomerManagement.Shared.Consts;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
     [TestFixture]
@@ -47,7 +49,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
 
@@ -60,7 +62,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException), CustomerErrorConsts.CustomerNotExist);
 
         }
 

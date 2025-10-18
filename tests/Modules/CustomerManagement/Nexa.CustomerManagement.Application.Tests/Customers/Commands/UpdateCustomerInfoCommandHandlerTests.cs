@@ -1,12 +1,14 @@
 ﻿using Bogus.Extensions.UnitedStates;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerInfo;
 using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
@@ -49,7 +51,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
         [Test]
@@ -61,7 +63,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException),CustomerErrorConsts.CustomerNotExist);
         }
 
         private UpdateCustomerInfoCommand PrepareUpdateCustomerInfoCommand()

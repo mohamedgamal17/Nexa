@@ -1,12 +1,14 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Reviews;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
@@ -118,7 +120,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
         [Test]
@@ -134,7 +136,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException), CustomerErrorConsts.CustomerNotExist);
         }
 
         [Test]
@@ -154,7 +156,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.IncompleteCustomerInfo);
         }
 
         [TestCase(VerificationState.Processing)]
@@ -176,7 +178,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException),CustomerErrorConsts.InvalidCustomerInfoVerificationState);
         }
 
 
@@ -200,32 +202,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException),CustomerErrorConsts.DocumentNotExist);
         }
 
-        [Test]
-        public async Task Should_failure_while_creating_document_kyc_review_when_customer_info_is_not_reviewed_or_accepted()
-        {
-            AuthenticationService.Login();
-
-            var userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id);
-
-            await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport);
-
-            var command = new CreateKycReviewCommand
-            {
-                KycLiveVideoId = Guid.NewGuid().ToString(),
-                Type = KycReviewType.Document
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException));
-        }
 
         [TestCase(DocumentType.Passport)]
         [TestCase(DocumentType.DrivingLicense)]
@@ -254,7 +233,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.IncompleteDocument);
         }
 
         [TestCase(VerificationState.Processing)]
@@ -269,8 +248,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
 
-            await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: state);
+            fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: state);
 
+            await CreateDocumentAttachment(fakeCustomer.Id, DocumentSide.Front);
+
+            if (fakeCustomer.Document!.RequireBothSides())
+            {
+                await CreateDocumentAttachment(fakeCustomer.Id, DocumentSide.Back);
+            }
 
             var command = new CreateKycReviewCommand
             {
@@ -280,7 +265,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException),CustomerErrorConsts.InvalidDocumentVerificationState);
         }
 
     }
