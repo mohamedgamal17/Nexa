@@ -7,5 +7,6 @@
         {
 
         }
+        public BusinessLogicException(NexaError error ,  List<object>? data = null) : base(error, data) { } 
     }
 }
