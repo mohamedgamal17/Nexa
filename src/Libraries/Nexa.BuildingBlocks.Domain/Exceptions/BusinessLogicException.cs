@@ -2,7 +2,7 @@
 {
     public class BusinessLogicException : NexaException
     {
-        public BusinessLogicException(string code , string message) 
+        public BusinessLogicException(string code , string? message = null) 
             : base(code , message)
         {
 
