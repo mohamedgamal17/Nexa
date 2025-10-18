@@ -8,7 +8,7 @@
         }
      
 
-        public ForbiddenAccessException(string code) : base(code)
+        public ForbiddenAccessException(string code  , string? message = null) : base(message)
         {
         }
     }

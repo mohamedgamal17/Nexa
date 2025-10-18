@@ -4,7 +4,7 @@
     {
         public string Code { get; set; }
         public List<object> Params { get; set; }
-        public NexaException(string code) : base(code)
+        public NexaException(string code  , string? message = null) : base(message ?? code)
         {
             Code = code;
             Params = new List<object>();

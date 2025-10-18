@@ -2,7 +2,7 @@
 {
     public class EntityNotFoundException : NexaException
     {
-        public EntityNotFoundException(string code) : base(code)
+        public EntityNotFoundException(string code , string message) : base(code , message)
         {
         }
 
