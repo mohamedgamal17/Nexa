@@ -6,9 +6,10 @@
         {
             
         }
-        public ForbiddenAccessException(string message) : base(message)
+     
+
+        public ForbiddenAccessException(string code) : base(code)
         {
-            
         }
     }
 }

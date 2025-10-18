@@ -1,10 +1,9 @@
 ﻿namespace Nexa.BuildingBlocks.Domain.Exceptions
 {
-    public class BusinessLogicException : Exception
+    public class BusinessLogicException : NexaException
     {
-        public BusinessLogicException(string message) : base(message)
+        public BusinessLogicException(string code) : base(code)
         {
-            
         }
     }
 }

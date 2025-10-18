@@ -1,11 +1,11 @@
 ﻿namespace Nexa.BuildingBlocks.Domain.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class EntityNotFoundException : NexaException
     {
-        public EntityNotFoundException(string message) : base(message)
+        public EntityNotFoundException(string code) : base(code)
         {
-            
         }
+
         public EntityNotFoundException(Type entity, string id) : base(
                $"there is no such {entity.Name} entity with id : {id}"
            )
