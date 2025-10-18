@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken;
 using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
+using Nexa.Integrations.OpenBanking.Abstractions.Consts;
 
 namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 {
@@ -34,7 +37,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
         [Test]
@@ -46,7 +49,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException) , CustomerErrorConsts.CustomerNotExist);
         }
 
         [Test]
@@ -62,7 +65,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.CustomerNotVerified);
         }
     }
 }

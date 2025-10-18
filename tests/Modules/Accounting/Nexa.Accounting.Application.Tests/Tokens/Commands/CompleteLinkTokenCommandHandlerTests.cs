@@ -4,7 +4,9 @@ using Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.FundingResources;
 using Nexa.Application.Tests.Extensions;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 {
@@ -46,7 +48,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(UnauthorizedAccessException));
+            result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException) , GlobalErrorConsts.UnauthorizedAccess);
 
         }
 
@@ -59,7 +61,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException), CustomerErrorConsts.CustomerNotExist);
 
         }
 
@@ -76,7 +78,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.CustomerNotVerified);
 
         }
     }
