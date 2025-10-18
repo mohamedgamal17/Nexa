@@ -17,6 +17,9 @@ namespace Nexa.CustomerManagement.Shared.Consts
         public static NexaError IncompleteCustomerInfo
             = new(nameof(IncompleteCustomerInfo).ToCamelCase(), "Customer info must be completed first.");
 
+        public static NexaError InvalidCustomerInfoVerificationState
+                 = new(nameof(InvalidCustomerInfoVerificationState).ToCamelCase(), "Invalid customer info verification state.");
+
         public static NexaError DocumentNotExist =
             new(nameof(DocumentNotExist).ToCamelCase(), "Customer dosen't provide document yet.");
 
@@ -25,5 +28,8 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError IncompleteDocument
             = new(nameof(IncompleteDocument).ToCamelCase(), "Document attachments is missing.");
+
+        public static NexaError InvalidDocumentVerificationState 
+            = new(nameof(InvalidDocumentVerificationState).ToCamelCase(), "Invalid document verification state.");
     }
 }
