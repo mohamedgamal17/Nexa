@@ -21,5 +21,7 @@
         }
 
         public static implicit operator Result<T>(T value) => new Result<T>(value);
+
+        public static implicit operator Result<T>(Exception exception) => new Result<T>(exception);
     }
 }
