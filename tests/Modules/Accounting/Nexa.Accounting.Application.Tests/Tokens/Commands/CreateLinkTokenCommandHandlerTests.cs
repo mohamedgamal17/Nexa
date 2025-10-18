@@ -46,7 +46,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException));
         }
 
         [Test]
