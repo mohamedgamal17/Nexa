@@ -20,6 +20,9 @@ namespace Nexa.CustomerManagement.Shared.Consts
         public static NexaError DocumentNotExist =
             new(nameof(DocumentNotExist).ToCamelCase(), "Customer dosen't provide document yet.");
 
+        public static NexaError DocumentNotOwned
+            = new(nameof(DocumentNotOwned).ToCamelCase(), "The document does not belong to the current user.");
+
         public static NexaError IncompleteDocument
             = new(nameof(IncompleteDocument).ToCamelCase(), "Document attachments is missing.");
     }

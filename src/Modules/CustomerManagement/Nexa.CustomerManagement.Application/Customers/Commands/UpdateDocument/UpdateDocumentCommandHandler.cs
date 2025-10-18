@@ -85,7 +85,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
                 if(!IsKycDocumentOwner(kycDocument, customer))
                 {
-                    return new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess);
+                    return new ForbiddenAccessException(CustomerErrorConsts.DocumentNotOwned);
                 }
 
                 return kycDocument;
