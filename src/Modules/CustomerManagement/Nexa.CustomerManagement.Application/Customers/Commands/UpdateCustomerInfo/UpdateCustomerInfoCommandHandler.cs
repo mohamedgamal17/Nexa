@@ -35,7 +35,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerI
 
             if(customer == null)
             {
-                return new BusinessLogicException(CustomerErrorConsts.CustomerNotExist); 
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist); 
             }
             var address = Address.Create(
                     request.Address.Country,
