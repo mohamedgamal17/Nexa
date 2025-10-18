@@ -32,7 +32,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 
             if (userAlreadHasCustomer)
             {
-                return new Result<CustomerDto>(new BusinessLogicException("User customer is not already created."));
+                return new BusinessLogicException(CustomerErrorConsts.UserAlreadyHasCustomer);
             }
 
             var customer = new Customer(userId,request.PhoneNumber,request.EmailAddress);

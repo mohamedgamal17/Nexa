@@ -9,6 +9,7 @@ using Nexa.CustomerManagement.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.BuildingBlocks.Domain.Consts;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentAttachment
 {
@@ -41,12 +42,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentA
 
             if (customer == null)
             {
-                return new Result<CustomerDto>(new EntityNotFoundException("Current user customer is not exist."));
+                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
             }
 
             if (customer.Document == null)
             {
-                return new Result<CustomerDto>(new BusinessLogicException("Current user must create document first."));
+                return new BusinessLogicException(CustomerErrorConsts.DocumentNotExist);
 
             }
 

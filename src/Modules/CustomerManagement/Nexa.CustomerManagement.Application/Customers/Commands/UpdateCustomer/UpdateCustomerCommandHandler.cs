@@ -1,5 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
@@ -31,7 +32,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
 
             if (customer == null)
             {
-                return new Result<CustomerDto>(new EntityNotFoundException("Current user dosen't have customer application"));
+                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
             }
 
             customer.Update(request.PhoneNumber, request.EmailAddress);

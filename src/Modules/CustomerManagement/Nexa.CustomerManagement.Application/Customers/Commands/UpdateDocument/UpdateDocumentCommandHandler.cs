@@ -1,5 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
@@ -33,12 +34,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
             if(customer == null)
             {
-                return new Result<CustomerDto>(new EntityNotFoundException("Current user must complete customer initial data first"));
+                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
             }
 
             if(customer.Info == null)
             {
-                return new Result<CustomerDto>(new BusinessLogicException("Current user must complete customer info first."));
+                return new BusinessLogicException(CustomerErrorConsts.IncompleteCustomerInfo);
             }
 
             var kycResult = await CreateOrUpdateKycDocument(customer, request);
@@ -83,7 +84,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
                 if(!IsKycDocumentOwner(kycDocument, customer))
                 {
-                    return new Result<KYCDocument>(new ForbiddenAccessException());
+                    return new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess);
                 }
 
                 return kycDocument;

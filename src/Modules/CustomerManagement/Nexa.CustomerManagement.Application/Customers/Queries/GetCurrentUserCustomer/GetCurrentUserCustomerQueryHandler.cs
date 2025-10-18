@@ -1,5 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.CustomerManagement.Application.Customers.Factories;
@@ -30,7 +31,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Queries.GetCurrentUserCu
 
             if(customer == null)
             {
-                return new Result<CustomerDto>(new BusinessLogicException("current user must complete customer data first."));
+                return new EntityNotFoundException(GlobalErrorConsts.ResourceNotFound);
             }
 
             return await _customerResponseFactory.PrepareDto(customer);
