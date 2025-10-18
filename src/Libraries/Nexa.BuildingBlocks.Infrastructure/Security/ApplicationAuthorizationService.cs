@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 
@@ -20,7 +21,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
         {
             if (!_securityContext.IsUserAuthenticated)
             {
-                return new Result<Unit>(new UnauthorizedAccessException());
+                return new Result<Unit>(new NexaUnauthorizedAccessException(GlobalErrorConsts.UnauthorizedAccess));
             }
 
             var currentUser = _securityContext.ClaimsPrincipal!;
@@ -29,7 +30,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
 
             if (!authorizationResult.Succeeded)
             {
-                return PrepareFailureAuthroizationResult(authorizationResult.Failure!);
+                return new Result<Unit>(new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess));
             }
 
             return Unit.Value;
@@ -39,7 +40,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
         {
             if (!_securityContext.IsUserAuthenticated)
             {
-                return new Result<Unit>(new UnauthorizedAccessException());
+                return new Result<Unit>(new NexaUnauthorizedAccessException(GlobalErrorConsts.UnauthorizedAccess));
             }
 
             var currentUser = _securityContext.ClaimsPrincipal!;
@@ -48,7 +49,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
 
             if (!authorizationResult.Succeeded)
             {
-                return PrepareFailureAuthroizationResult(authorizationResult.Failure!);
+                return new Result<Unit>(new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess));
             }
 
             return Unit.Value;
@@ -59,7 +60,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
 
             if (!_securityContext.IsUserAuthenticated)
             {
-                return new Result<Unit>(new UnauthorizedAccessException());
+                return new Result<Unit>(new NexaUnauthorizedAccessException(GlobalErrorConsts.UnauthorizedAccess));
             }
 
             var currentUser = _securityContext.ClaimsPrincipal!;
@@ -68,7 +69,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
 
             if (!authorizationResult.Succeeded)
             {
-                return PrepareFailureAuthroizationResult(authorizationResult.Failure!);
+                return new Result<Unit>(new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess));
             }
 
             return Unit.Value;
@@ -78,7 +79,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
         {
             if (!_securityContext.IsUserAuthenticated)
             {
-                return new Result<Unit>(new UnauthorizedAccessException());
+                return new NexaUnauthorizedAccessException(GlobalErrorConsts.UnauthorizedAccess);
             }
 
             var currentUser = _securityContext.ClaimsPrincipal!;
@@ -88,23 +89,13 @@ namespace Nexa.BuildingBlocks.Infrastructure.Security
 
             if (!authorizationResult.Succeeded)
             {
-                return PrepareFailureAuthroizationResult(authorizationResult.Failure!);
+                return new Result<Unit>(new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess));
             }
 
             return Unit.Value;
         }
 
 
-        private Result<Unit> PrepareFailureAuthroizationResult(AuthorizationFailure authorizationFailure)
-        {
-            var failureMessages = authorizationFailure
-                .FailureReasons
-                .Select(x => x.Message)
-                .ToList();
-
-            string message = string.Join(" , ", failureMessages);
-
-            return new Result<Unit>(new ForbiddenAccessException(message));
-        }
+     
     }
 }

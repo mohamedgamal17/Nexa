@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace Nexa.BuildingBlocks.Application.Behaviours
             {
                 if (!_securityContext.IsUserAuthenticated)
                 {
-                    return new Result<TResponse>(new UnauthorizedAccessException());
+                    return new Result<TResponse>(new NexaUnauthorizedAccessException(GlobalErrorConsts.UnauthorizedAccess));
                 }
 
                 var currentUser = _securityContext.User!;
@@ -56,7 +57,7 @@ namespace Nexa.BuildingBlocks.Application.Behaviours
 
                     if (!authorized)
                     {
-                        return new Result<TResponse>(new ForbiddenAccessException());
+                        return new Result<TResponse>(new ForbiddenAccessException(GlobalErrorConsts.ForbiddenAccess));
                     }
                 }
 
