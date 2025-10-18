@@ -3,9 +3,9 @@ using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 using Nexa.CustomerManagement.Shared.Services;
-using Nexa.Integrations.Baas.Abstractions.Services;
 using Nexa.Integrations.OpenBanking.Abstractions;
 using Nexa.Integrations.OpenBanking.Abstractions.Contracts;
 using Nexa.Integrations.OpenBanking.Abstractions.enums;
@@ -16,16 +16,13 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
     {
         private readonly ICustomerService _customerService;
 
-        private readonly IBaasFundingResourceService _baasFundingResourceService;
-
         private readonly IBankingTokenService _bankingTokenService;
 
         private readonly ISecurityContext _securityContext;
 
-        public CreateLinkTokenCommandHandler(ICustomerService customerService, IBaasFundingResourceService baasFundingResourceService, IBankingTokenService bankingTokenService, ISecurityContext securityContext)
+        public CreateLinkTokenCommandHandler(ICustomerService customerService,  IBankingTokenService bankingTokenService, ISecurityContext securityContext)
         {
             _customerService = customerService;
-            _baasFundingResourceService = baasFundingResourceService;
             _bankingTokenService = bankingTokenService;
             _securityContext = securityContext;
         }
@@ -36,14 +33,14 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
 
             var customer = await _customerService.GetCustomerByUserId(userId);
 
-            if(customer == null)
+            if (customer == null)
             {
-                return new Result<BankingTokenDto>(new BusinessLogicException("User should complete and validate customer information before processding in linking bank accounts"));
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
-            if(customer.State != VerificationState.Verified)
+            if (customer.State != VerificationState.Verified)
             {
-                return new Result<BankingTokenDto>(new BusinessLogicException("Customer should be verified first before linking bank account."));
+                return new BusinessLogicException(CustomerErrorConsts.CustomerNotVerified);
             }
 
             var apiRequest = new TokenCreateRequest

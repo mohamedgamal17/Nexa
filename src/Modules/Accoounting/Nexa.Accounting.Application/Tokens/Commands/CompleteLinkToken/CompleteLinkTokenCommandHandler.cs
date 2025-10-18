@@ -7,6 +7,7 @@ using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 using Nexa.CustomerManagement.Shared.Services;
 using Nexa.Integrations.Baas.Abstractions.Contracts.FundingResources;
@@ -44,12 +45,12 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
 
             if (customer == null)
             {
-                return new Result<BankAccountDto>(new BusinessLogicException("User should complete and validate customer information before processding in linking bank accounts"));
+                return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
             if (customer.State != VerificationState.Verified)
             {
-                return new Result<BankAccountDto>(new BusinessLogicException("Customer should be verified first before linking bank account."));
+                return new BusinessLogicException(CustomerErrorConsts.CustomerNotVerified);
             }
 
             var processorTokenRequest = new TokenProcessReqeust
