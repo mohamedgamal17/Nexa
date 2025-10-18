@@ -8,6 +8,7 @@ using Nexa.BuildingBlocks.Domain.Results;
 using Vogel.BuildingBlocks.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.Accounting.Shared.Consts;
 
 namespace Nexa.Accounting.Application.FundingResources.Queries.GetUserBankAccountById
 {
@@ -40,7 +41,7 @@ namespace Nexa.Accounting.Application.FundingResources.Queries.GetUserBankAccoun
 
             if(result == null)
             {
-                return new Result<BankAccountDto>(new EntityNotFoundException(typeof(BankAccount), request.BankAccountId));
+                return new EntityNotFoundException(BankAccountErrorConsts.BankAccountNotExist);
             }
 
 
