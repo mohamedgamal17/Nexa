@@ -28,8 +28,12 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         public static void AssertCustomer(this  Customer customer, string userId, UpdateCustomerCommand command)
         {
             customer.UserId.Should().Be(userId);
-            customer.EmailAddress.Should().Be(command.EmailAddress);
-            customer.PhoneNumber.Should().Be(command.PhoneNumber);
+            customer.Info.Should().NotBeNull();
+            customer.Info!.FirstName.Should().Be(command.FirstName);
+            customer.Info!.LastName.Should().Be(command.LastName);
+            customer.Info.Gender.Should().Be(command.Gender);
+            customer.Info.BirthDate.Should().Be(command.BirthDate);
+            customer.Info.Address.AssertAddress(command.Address);
         }
 
         public static void AssertCustomerInfo(this Customer customer  ,UpdateCustomerInfoCommand command)
