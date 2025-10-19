@@ -30,7 +30,8 @@ namespace Nexa.CustomerManagement.Domain.Customers
             EmailAddress = emailAddres;
         }
 
-  
+
+        public void AddFintechCustomerId(string fintechCustomerId) => FintechCustomerId = fintechCustomerId;
         public void AddKycCustomerId(string kycCustomerId)
         {
             KycCustomerId = kycCustomerId;

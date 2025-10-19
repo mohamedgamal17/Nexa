@@ -8,6 +8,8 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.Integrations.Baas.Abstractions.Contracts.Clients;
+using Nexa.Integrations.Baas.Abstractions.Services;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommandHandler : IApplicationRequestHandler<CreateCustomerCommand, CustomerDto>
@@ -16,13 +18,14 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         private readonly ISecurityContext _securityContext;
         private readonly ICustomerResponseFactory _customerResponseFactory;
         private readonly IKYCProvider _kycProvider;
-
-        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider)
+        private readonly IBaasCustomerService _baasCustomerService;
+        public CreateCustomerCommandHandler(ICustomerManagementRepository<Customer> customerRepository, ISecurityContext securityContext, ICustomerResponseFactory customerResponseFactory, IKYCProvider kycProvider, IBaasCustomerService baasCustomerService)
         {
             _customerRepository = customerRepository;
             _securityContext = securityContext;
             _customerResponseFactory = customerResponseFactory;
             _kycProvider = kycProvider;
+            _baasCustomerService = baasCustomerService;
         }
 
         public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -36,7 +39,30 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 return new BusinessLogicException(CustomerErrorConsts.UserAlreadyHasCustomer);
             }
 
-            var customer = new Customer(userId,request.PhoneNumber,request.EmailAddress);
+            var customer = new Customer(userId, request.PhoneNumber, request.EmailAddress);
+
+            var address = Domain.Customers.Address.Create(
+                      request.Address.Country,
+                      request.Address.City,
+                      request.Address.State,
+                      request.Address.StreetLine,
+                      request.Address.PostalCode,
+                      request.Address.ZipCode
+                  );
+
+            var info = CustomerInfo.Create(
+                    request.FirstName,
+                    request.LastName,
+                    request.BirthDate,
+                    request.Gender,
+                    address
+                );
+
+            customer.UpdateInfo(info);
+
+            await AttachBaasCustomer(customer);
+
+            await AttachKycCustomer(customer);
 
             await _customerRepository.InsertAsync(customer);
 
@@ -44,5 +70,58 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 
             return await _customerResponseFactory.PrepareDto(result);
         }
+
+
+        private async Task AttachBaasCustomer(Customer customer)
+        {
+            var baasRequest = PrepareBaasCustoemrRequest(customer);
+
+            var baasCustomer = await _baasCustomerService.CreateCustomerAsync(baasRequest);
+
+            customer.AddFintechCustomerId(baasCustomer.Id);
+        }
+
+        private async Task AttachKycCustomer(Customer customer)
+        {
+            var kycRequest = PrepareKycClientRequest(customer);
+
+            var kycCustomer = await _kycProvider.CreateClientAsync(kycRequest);
+
+            customer.AddKycCustomerId(kycCustomer.Id);
+        }
+        private KYCClientRequest PrepareKycClientRequest(Customer customer)
+        {
+            var request = new KYCClientRequest
+            {
+                EmailAddress = customer.EmailAddress,
+                PhoneNumber = customer.PhoneNumber,
+                Info = new KYCClientInfo
+                {
+                    FirstName = customer.Info.FirstName,
+                    LastName = customer.Info.LastName,
+                    Nationality = customer.Info.Nationality,
+                    SSN = customer.Info.IdNumber,
+                    BirthDate = customer.Info.BirthDate,
+                    Gender = customer.Info.Gender,
+                    Address = customer.Info.Address
+                }
+            };
+
+            return request;
+        }
+
+        private CreateBaasCustomerRequest PrepareBaasCustoemrRequest(Customer customer)
+        {
+            var request = new CreateBaasCustomerRequest
+            {
+                FirstName = customer.Info!.FirstName,
+                LastName = customer.Info!.LastName,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.EmailAddress
+            };
+
+            return request;
+        }
+
     }
 }
