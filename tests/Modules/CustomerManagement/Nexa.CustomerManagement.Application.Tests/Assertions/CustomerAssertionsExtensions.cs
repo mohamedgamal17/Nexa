@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
 using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer;
-using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerInfo;
 using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Dtos;
@@ -33,18 +32,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             customer.Info!.LastName.Should().Be(command.LastName);
             customer.Info.Gender.Should().Be(command.Gender);
             customer.Info.BirthDate.Should().Be(command.BirthDate);
-            customer.Info.Address.AssertAddress(command.Address);
-        }
-
-        public static void AssertCustomerInfo(this Customer customer  ,UpdateCustomerInfoCommand command)
-        {
-            customer.Info.Should().NotBeNull();
-            customer.Info!.FirstName.Should().Be(command.FirstName);
-            customer.Info.LastName.Should().Be(command.LastName);
-            customer.Info.Gender.Should().Be(command.Gender);
-            customer.Info.BirthDate.Should().Be(command.BirthDate);
-            customer.Info.Nationality.Should().Be(command.Nationality);
-            customer.Info.IdNumber.Should().Be(command.IdNumber);
             customer.Info.Address.AssertAddress(command.Address);
         }
 
