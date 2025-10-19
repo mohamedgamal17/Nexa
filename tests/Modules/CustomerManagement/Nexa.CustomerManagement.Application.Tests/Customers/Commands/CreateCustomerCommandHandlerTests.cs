@@ -6,10 +6,12 @@ using Nexa.Application.Tests.Extensions;
 using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
+using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Application.Tests.Assertions;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Consts;
+using Nexa.CustomerManagement.Shared.Enums;
 using Nexa.CustomerManagement.Shared.Events;
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
@@ -85,6 +87,18 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             {
                 EmailAddress = faker.Person.Email,
                 PhoneNumber = faker.Person.Phone,
+                FirstName= faker.Person.FirstName,
+                LastName = faker.Person.LastName,
+                Gender = faker.PickRandom<Gender>(),
+                BirthDate = DateTime.Now.AddYears(-25),
+                Address = new AddressModel
+                {
+                    Country = "US",
+                    City = Faker.Person.Address.City,
+                    State = Faker.Person.Address.State,
+                    StreetLine = Faker.Person.Address.Street,
+                    ZipCode = Faker.Person.Address.ZipCode
+                }
             };
 
             return command;

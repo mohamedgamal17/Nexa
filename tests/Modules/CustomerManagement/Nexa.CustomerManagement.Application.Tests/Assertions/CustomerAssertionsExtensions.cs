@@ -15,11 +15,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             customer.UserId.Should().Be(userId);
             customer.EmailAddress.Should().Be(command.EmailAddress);
             customer.PhoneNumber.Should().Be(command.PhoneNumber);
-            if(customer.Info != null)
-            {
-                customer.KycCustomerId.Should().NotBeNull();
-            }
-                      
+            customer.KycCustomerId.Should().NotBeNull();
+            customer.FintechCustomerId.Should().NotBeNull();
+            customer.Info.Should().NotBeNull();
+            customer.Info!.FirstName.Should().Be(command.FirstName);
+            customer.Info!.LastName.Should().Be(command.LastName);
+            customer.Info.Gender.Should().Be(command.Gender);
+            customer.Info.BirthDate.Should().Be(command.BirthDate);
+            customer.Info.Address.AssertAddress(command.Address);
         }
 
         public static void AssertCustomer(this  Customer customer, string userId, UpdateCustomerCommand command)
