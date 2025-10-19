@@ -44,7 +44,8 @@ namespace Nexa.Application.Tests
             services.AddTransient<IBaasClientService, FakeBaasClientService>()
                 .AddTransient<IBaasWalletService, FakeBaasWalletProvider>()
                 .AddTransient<IBaasFundingResourceService, FakeBaasFundingResurceService>()
-                .AddTransient<IBaasTransferService, FakeBaasTransferService>();
+                .AddTransient<IBaasTransferService, FakeBaasTransferService>()
+                .AddTransient<IBaasCustomerService, FakeBaasCustomerService>();
         }
 
         private void RegisterFakeOpenBanking(IServiceCollection services)
