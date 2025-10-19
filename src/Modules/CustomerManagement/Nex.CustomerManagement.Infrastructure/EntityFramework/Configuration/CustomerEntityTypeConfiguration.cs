@@ -5,6 +5,7 @@ using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.Reviews;
 namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 {
+
     public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
@@ -32,8 +33,8 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
                 navigationBuilder.Property(x => x.Id).HasMaxLength(CustomerInfoTableConsts.IdLength);
                 navigationBuilder.Property(x => x.FirstName).HasMaxLength(CustomerInfoTableConsts.FirstNameLength);
                 navigationBuilder.Property(x => x.LastName).HasMaxLength(CustomerInfoTableConsts.LastNameLength);
-                navigationBuilder.Property(x => x.IdNumber).HasMaxLength(CustomerInfoTableConsts.IdNumberLength);
-                navigationBuilder.Property(x => x.Nationality).HasMaxLength(CustomerInfoTableConsts.NationalityLength);
+                navigationBuilder.Property(x => x.IdNumber).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.IdNumberLength);
+                navigationBuilder.Property(x => x.Nationality).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.NationalityLength);
                 navigationBuilder.Property(x => x.KycReviewId).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.KycReviewIdLength);
                 navigationBuilder.HasOne<KycReview>().WithMany().HasForeignKey(x => x.KycReviewId);
 
