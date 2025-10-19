@@ -99,8 +99,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 {
                     FirstName = customer.Info.FirstName,
                     LastName = customer.Info.LastName,
-                    Nationality = customer.Info.Nationality,
-                    SSN = customer.Info.IdNumber,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
                     Address = customer.Info.Address
