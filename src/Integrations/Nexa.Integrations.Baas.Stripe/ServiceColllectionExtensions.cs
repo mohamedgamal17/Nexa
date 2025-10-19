@@ -34,7 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddTransient<IBaasWalletService, StripeWalletService>()
                 .AddTransient<IBaasFundingResourceService, StripeFundingResourceService>()
                 .AddTransient<IBankingTokenService, StripeBankingService>()
-                .AddTransient<IBaasTransferService, StripeTransferService>();
+                .AddTransient<IBaasTransferService, StripeTransferService>()
+                .AddTransient<IBaasCustomerService, StripeCustomerService>();
         }
     }
 }
