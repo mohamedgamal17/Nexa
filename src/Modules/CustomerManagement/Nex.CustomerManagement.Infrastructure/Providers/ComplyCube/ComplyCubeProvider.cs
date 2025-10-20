@@ -223,15 +223,6 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
                 type = MapCheckType(request.Type)
             };
 
-            if (request.Type == KYCCheckType.IdNumberCheck)
-            {
-                var addresses = await _addressApi.ListAsync(request.ClientId);
-
-                var mainAddress = addresses.items.Single(x => x.type == "main");
-
-                apiRequest.addressId = mainAddress.id;
-            }
-
             var response = await SendCustomPostRequest<Check>("/checks", apiRequest);
 
             return PrepareKYCCheck(response);
@@ -270,7 +261,6 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
         {
             return checkType switch
             {
-                KYCCheckType.IdNumberCheck => "multi_bureau_check",
                 KYCCheckType.IdentityCheck => "identity_check",
                 _ => "document_check"
             };
@@ -322,7 +312,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
                 ClientId = document.clientId,
                 IssuingCountry = document.issuingCountry,
                 Type = document.type == "passport" ? DocumentType.Passport : DocumentType.DrivingLicense,
-                Attachements = document.images.Select(PrepareKYCDocumentAttachement).ToList()
+                Attachements = document.images?.Select(PrepareKYCDocumentAttachement).ToList() ?? new List<KYCDocumentAttachement>()
             };
 
             return response;
