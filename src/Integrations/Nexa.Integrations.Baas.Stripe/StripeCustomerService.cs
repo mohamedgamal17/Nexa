@@ -9,9 +9,9 @@ namespace Nexa.Integrations.Baas.Stripe
     {
         private readonly CustomerService _customerService;
 
-        public StripeCustomerService(CustomerService customerService)
+        public StripeCustomerService()
         {
-            _customerService = customerService;
+            _customerService = new CustomerService();
         }
 
         public async Task<BaasCustomer> CreateCustomerAsync(CreateBaasCustomerRequest request, CancellationToken cancellationToken = default)
