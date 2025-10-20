@@ -8,10 +8,6 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string LastName { get;  set; }
         public DateTime BirthDate { get;  set; }
         public Gender Gender { get; set; }
-        public string Nationality { get;  set; }
-        public string IdNumber { get;  set; }
         public AddressDto Address { get;  set; }
-        public string? KycReviewId { get;  set; }
-        public VerificationState State { get;  set; }
     }
 }

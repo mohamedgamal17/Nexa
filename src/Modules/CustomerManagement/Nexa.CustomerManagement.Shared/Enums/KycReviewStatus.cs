@@ -2,7 +2,7 @@
 {
     public enum KycReviewStatus
     {
-        Pending,
-        Completed
+        Pending = 0,
+        Completed = 5
     }
 }

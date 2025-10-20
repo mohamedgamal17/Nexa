@@ -7,7 +7,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
         public string KycDocumentId { get; set; }
         public DocumentType Type { get; set; }
         public string? IssuingCountry { get; set; }
-        public VerificationState State { get; set; }
+        public DocumentVerificationStatus Status { get; set; }
         public string? KycReviewId { get; set; }
         public List<DocumentAttachment> Attachments { get; private set; } = new List<DocumentAttachment>();
 
@@ -17,7 +17,7 @@ namespace Nexa.CustomerManagement.Domain.Documents
                      && Attachments.Any(x => x.Side == DocumentSide.Back);
         private bool ShouldHasFrontSideOnly => Attachments.Any(x => x.Side == DocumentSide.Front);
         public bool HasRequireAttachments => RequireBothSides() ? ShouldHasBothSides : ShouldHasFrontSideOnly;
-        public bool HasValidStateToBeVerified => (State == VerificationState.Pending || State == VerificationState.Rejected);
+        public bool HasValidStateToBeVerified => (Status == DocumentVerificationStatus.Pending || Status == DocumentVerificationStatus.Rejected);
         public bool CanBeVerified => HasValidStateToBeVerified  && HasRequireAttachments;
 
 
@@ -53,27 +53,27 @@ namespace Nexa.CustomerManagement.Domain.Documents
 
         public void MarkAsProcessing(string kycReviewId)
         {
-            if(State  == VerificationState.Pending 
-                || State == VerificationState.Rejected)
+            if(Status  == DocumentVerificationStatus.Pending 
+                || Status == DocumentVerificationStatus.Rejected)
             {
                 KycReviewId = kycReviewId;
-                State = VerificationState.Processing;
+                Status = DocumentVerificationStatus.Processing;
             }
         }
 
         public void MarkAsVerified()
         {
-            if(State == VerificationState.Processing)
+            if(Status == DocumentVerificationStatus.Processing)
             {
-                State = VerificationState.Verified;
+                Status = DocumentVerificationStatus.Verified;
             }
         }
 
         public void MarkAsRejected()
         {
-            if(State != VerificationState.Rejected)
+            if(Status != DocumentVerificationStatus.Rejected)
             {
-                State = VerificationState.Rejected;
+                Status = DocumentVerificationStatus.Rejected;
             }
         }
 

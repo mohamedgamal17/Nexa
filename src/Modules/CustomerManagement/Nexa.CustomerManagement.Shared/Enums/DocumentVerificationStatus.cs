@@ -1,6 +1,6 @@
 ﻿namespace Nexa.CustomerManagement.Shared.Enums
 {
-    public enum VerificationState
+    public enum DocumentVerificationStatus
     {
         Pending = 0,
         Processing = 5,

@@ -38,7 +38,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
                 return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
-            if (customer.State != VerificationState.Verified)
+            if (customer.Status != CustomerStatus.Verified)
             {
                 return new BusinessLogicException(CustomerErrorConsts.CustomerNotVerified);
             }

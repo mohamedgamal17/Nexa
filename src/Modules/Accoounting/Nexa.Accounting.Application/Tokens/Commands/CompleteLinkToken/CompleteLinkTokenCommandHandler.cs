@@ -48,7 +48,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
                 return new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist);
             }
 
-            if (customer.State != VerificationState.Verified)
+            if (customer.Status != CustomerStatus.Verified)
             {
                 return new BusinessLogicException(CustomerErrorConsts.CustomerNotVerified);
             }

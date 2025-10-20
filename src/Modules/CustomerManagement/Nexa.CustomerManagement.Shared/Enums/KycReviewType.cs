@@ -2,7 +2,7 @@
 {
     public enum KycReviewType
     {
-        Info,
+        Info = 0,
         Document = 5
     }
 }

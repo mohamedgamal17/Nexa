@@ -2,7 +2,7 @@
 {
     public enum DocumentSide
     {
-        Front,
-        Back
+        Front = 0,
+        Back = 5
     }
 }

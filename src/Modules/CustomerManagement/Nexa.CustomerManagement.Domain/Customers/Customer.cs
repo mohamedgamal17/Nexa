@@ -1,5 +1,4 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-using Nexa.CustomerManagement.Domain.Customers.Events;
 using Nexa.CustomerManagement.Domain.Documents;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
@@ -14,10 +13,8 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string EmailAddress { get; set; }
         public CustomerInfo? Info { get; set; }
         public Document? Document { get; set; }
-        public VerificationState State { get; private set; }
+        public CustomerStatus Status { get; private set; }
 
-        public bool CanBeReviewed => Info?.State == VerificationState.Verified &&
-            Document?.State == VerificationState.Verified;
         private Customer()
         {
             
@@ -53,100 +50,25 @@ namespace Nexa.CustomerManagement.Domain.Customers
             Info = info;
         }
       
-        public void Review(string? fintechCustomerid = null)
+
+        public void MarkAsVerified()
         {
-            if (!CanBeReviewed)
+            if (Status != CustomerStatus.Unverified)
             {
-                throw new InvalidOperationException("Both of customer info and document should be verified first.");
+                return;
             }
-
-            if (fintechCustomerid != null)
+            if (Document!.Status == DocumentVerificationStatus.Verified)
             {
-                FintechCustomerId = fintechCustomerid;
-            }
-
-            State = VerificationState.Processing;
-        }
-
-        public void Reject()
-        {
-            if(State == VerificationState.Processing)
-            {
-                State = VerificationState.Rejected;
-
-                Info!.MarkAsRejected();
-
-                Document!.MarkAsRejected();
-
-                var @event = new CustomerRejectedEvent(Id, UserId, FintechCustomerId!, EmailAddress, PhoneNumber);
-
-                AppendEvent(@event);
-            }   
-        }
-
-        public void Accept()
-        {
-            if(State == VerificationState.Processing)
-            {
-                State = VerificationState.Verified;
-
-                var @event = new CustomerAcceptedEvent(Id, UserId, FintechCustomerId!, EmailAddress, PhoneNumber);
-
-                AppendEvent(@event);
+                Status = CustomerStatus.Verified;
             }
         }
-
-        public void ReviewCustomerInfo(KycReview kycReview)
-        {
-            if(Info != null)
-            {
-                Info.MarkAsProcessing(kycReview.Id);
-            }
-        }
-
-        public void AcceptCustomerInfo()
-        {
-            if(Info != null)
-            {
-                Info.MarkAsVerified();
-
-                var infoEvent = new CustomerInfoAcceptedEvent(Id);
-
-                AppendEvent(infoEvent);
-            }
-        }
-
-        public void RejectCustomerInfo()
-        {
-            if(Info != null)
-            {
-                Info.MarkAsRejected();
-
-                if(Document != null && Document.State == VerificationState.Verified)
-                {
-                    RejectDocument();
-
-                }
-
-            }
-        }
-
         public void AcceptDocument()
         {
             if(Document != null)
             {
-                if(Info!.State == VerificationState.Rejected)
-                {
-                    RejectDocument();
-                }
-                else
-                {
-                    Document.MarkAsVerified();
+                Document.MarkAsVerified();
 
-                    var documentEvent = new CustomerInfoAcceptedEvent(Id);
-
-                    AppendEvent(documentEvent);
-                }
+                MarkAsVerified();
             }
         }
 
