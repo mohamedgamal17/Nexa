@@ -8,7 +8,6 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
     [Authorize]
     public class CreateKycReviewCommand : ICommand<KycReviewDto>
     {
-        public KycReviewType Type { get; set; }
         public string? KycLiveVideoId { get; set; }
     }
 }

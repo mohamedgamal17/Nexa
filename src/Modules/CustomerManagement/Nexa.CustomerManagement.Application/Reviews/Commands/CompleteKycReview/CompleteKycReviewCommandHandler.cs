@@ -24,14 +24,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview
             var kycReview = await _kycReviewRepository.SingleAsync(x => x.KycCheckId == request.KycCheckId);
             var customer = await _customerRepository.SingleAsync(x => x.Id == kycReview.CustomerId);
 
-            if(kycReview.Type == KycReviewType.Info)
-            {
-                CompleteCustomerInfoReview(request, customer);
-            }
-            else
-            {
-                CompleteDocumentReview(request, customer);
-            }
+            CompleteDocumentReview(request, customer);
 
             kycReview.Complete(request.Outcome);
 
@@ -42,17 +35,6 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview
             return Unit.Value;
         }
 
-        private void CompleteCustomerInfoReview(CompleteKycReviewCommand request, Customer customer)
-        {
-            if (request.Outcome == KycReviewOutcome.Clear)
-            {
-                customer.AcceptCustomerInfo();
-            }
-            else
-            {
-                customer.RejectCustomerInfo();
-            }
-        }
 
         private void CompleteDocumentReview(CompleteKycReviewCommand request, Customer customer)
         {

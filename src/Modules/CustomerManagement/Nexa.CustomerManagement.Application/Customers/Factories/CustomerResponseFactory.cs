@@ -23,7 +23,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 UserId = view.UserId,
                 FintechCustomerId = view.FintechCustomerId,
                 KycCustomerId = view.KycCustomerId,
-                State = view.State
+                Status = view.Status
             };
 
             if(view.Info != null)
@@ -46,10 +46,8 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
             {
                 FirstName = info.FirstName,
                 LastName = info.LastName,
-                Nationality = info.Nationality,
                 Gender = info.Gender,
                 BirthDate = info.BirthDate,
-                IdNumber = info.IdNumber,
                 Address = new AddressDto
                 {
                     Country = info.Address.Country,
@@ -59,8 +57,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                     PostalCode = info.Address.PostalCode,
                     ZipCode = info.Address.ZipCode
                 },
-                State = info.State,
-                KycReviewId = info.KycReviewId
 
             };
 
