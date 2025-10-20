@@ -19,7 +19,7 @@ namespace Nexa.Accounting.Application.Tests.Tokens.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var customer = FakeCustomerService.CreateRandomCustomer(userId, VerificationState.Verified);
+            var customer = FakeCustomerService.CreateRandomCustomer(userId, CustomerStatus.Verified);
 
             var command = new CreateLinkTokenCommand { RedirectUri = "https://test.com/" };
 

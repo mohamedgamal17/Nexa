@@ -64,9 +64,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                     Faker.Person.FirstName,
                     Faker.Person.LastName,
                     Faker.Person.DateOfBirth,
-                    "US",
                     Faker.PickRandom<Gender>(),
-                    Faker.Person.Ssn(),
                     address
                     );
 
@@ -79,53 +77,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                 return await repository.InsertAsync(customer);
             });
         }
-
-
-        protected async Task<Customer> CreateReviewedCustomer(string? userId = null)
-        {
-            return await WithScopeAsync(async (sp) =>
-            {
-                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
-
-                var fakeCustomer = await CreateCustomerAsync(userId);
-
-                await CreateDocumentWithAttachmentsAsync(fakeCustomer.Id, DocumentType.Passport);
-
-                await AcceptCustomerInfo(fakeCustomer.Id);
-
-                await AcceptCustomerDocument(fakeCustomer.Id);
-
-                var customer = await repository.SingleAsync(x => x.Id == fakeCustomer.Id);
-
-                var request = new Integrations.Baas.Abstractions.Contracts.Clients.CreateBaasClientRequest
-                
-                {
-                    FirstName = customer.Info!.FirstName,
-                    LastName = customer.Info.LastName,
-                    SSN = customer.Info.IdNumber,
-                    PhoneNumber = customer.PhoneNumber,
-                    Email = customer.EmailAddress,
-                    DateOfBirth = customer.Info.BirthDate,
-                    Gender = customer.Info.Gender == Gender.Male ? Integrations.Baas.Abstractions.Contracts.Clients.Gender.Male : Integrations.Baas.Abstractions.Contracts.Clients.Gender.Female,
-                    Address = new Integrations.Baas.Abstractions.Contracts.Clients.Address
-                    {
-                        Country = customer.Info.Address.Country,
-                        State = customer.Info.Address.State,
-                        City = customer.Info.Address.City,
-                        StreetLine = customer.Info.Address.StreetLine,
-                        PostalCode = customer.Info.Address.PostalCode,
-                        ZipCode = customer.Info.Address.ZipCode
-                    }
-
-                };
-
-                var baasClient = await FakeBaasClientService.CreateClientAsync(request);
-
-                customer.Review(baasClient.Id);
-
-                return await repository.UpdateAsync(customer);
-            });
-        }
+ 
         protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type , string? issuingCountry = null )
         {
             return await WithScopeAsync(async sp =>
@@ -186,53 +138,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
             });
         }
 
-        protected async Task<Customer> ReviewCustomerInfo(string customerId)
-        {
-            return await WithScopeAsync(async sp =>
-            {
-                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
-
-                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
-
-                var kycReview = new KycReview(customerId, Guid.NewGuid().ToString(), null, KycReviewType.Info);
-
-                await kycReviewRepository.InsertAsync(kycReview);
-
-                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
-
-                customer.ReviewCustomerInfo(kycReview);
-
-                await customerRepository.UpdateAsync(customer);
-
-                return customer;
-            });
-        }
-        protected async Task<Customer> AcceptCustomerInfo(string customerId)
-        {
-            return await WithScopeAsync(async sp =>
-            {
-                await ReviewCustomerInfo(customerId);
-
-                var customerRepository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
-
-                var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
-
-                var customer = await customerRepository.SingleAsync(x => x.Id == customerId);
-
-                var kycReview = await kycReviewRepository.SingleAsync(x => x.Id == customer.Info!.KycReviewId);
-
-                kycReview.Complete(KycReviewOutcome.Clear);
-
-                await kycReviewRepository.UpdateAsync(kycReview);
-
-                customer.AcceptCustomerInfo();
-
-                await customerRepository.UpdateAsync(customer);
-
-                return customer;
-            });
-        }
-
+  
         protected async Task<Customer> ReviewCustomerDocument(string customerId)
         {
             return await WithScopeAsync(async sp =>
@@ -323,8 +229,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Nationality = customer.Info.Nationality,
-                    SSN = customer.Info.IdNumber,
                     Address = customer.Info.Address
                 };
 

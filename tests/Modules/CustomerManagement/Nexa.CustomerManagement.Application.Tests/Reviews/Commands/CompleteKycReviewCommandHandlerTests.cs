@@ -22,96 +22,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
             KycReviewRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<KycReview>>();
         }
 
-        [Test]
-        public async Task Should_accepte_customer_info_kyc_review()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            fakeCustomer =  await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
-
-            var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Info!.KycReviewId);
-
-            var command = new CompleteKycReviewCommand
-            {
-                KycCheckId = fakeReview.KycCheckId,
-                Outcome = KycReviewOutcome.Clear
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShouldBeSuccess();
-
-            var kycReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeReview.Id);
-            var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
-
-            kycReview.Status.Should().Be(KycReviewStatus.Completed);
-            kycReview.Outcome.Should().Be(KycReviewOutcome.Clear);
-
-            customer.Info!.State.Should().Be(VerificationState.Verified);
-        }
-
-        [Test]
-        public async Task Should_publish_customer_baas_creation_request_event_when_both_of_info_and_document_is_accepted_while_accepting_customer_info()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: VerificationState.Verified);
-
-            fakeCustomer = await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
-
-            var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Info!.KycReviewId);
-
-            var command = new CompleteKycReviewCommand
-            {
-                KycCheckId = fakeReview.KycCheckId,
-                Outcome = KycReviewOutcome.Clear
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShouldBeSuccess();
-
-            Assert.That(await TestHarness.Published.Any<CustomerBaasCreationRequestedEvent>());
-        }
-
-        [Test]
-        public async Task Should_reject_customer_info_kyc_review()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            fakeCustomer =  await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
-
-            var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Info!.KycReviewId);
-
-            var command = new CompleteKycReviewCommand
-            {
-                KycCheckId = fakeReview.KycCheckId,
-                Outcome = KycReviewOutcome.Rejected
-            };
-            var result = await Mediator.Send(command);
-
-            result.ShouldBeSuccess();
-
-            var kycReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeReview.Id);
-            var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
-
-            kycReview.Status.Should().Be(KycReviewStatus.Completed);
-            kycReview.Outcome.Should().Be(KycReviewOutcome.Rejected);
-
-            customer.Info!.State.Should().Be(VerificationState.Rejected);
-        }
 
         [Test]
         public async Task Should_accept_document_kyc_review()
@@ -120,11 +30,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
-            await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
-
-            fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: VerificationState.Processing);
+            fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: DocumentVerificationStatus.Processing);
 
             var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Document!.KycReviewId);
 
@@ -144,37 +52,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
             kycReview.Status.Should().Be(KycReviewStatus.Completed);
             kycReview.Outcome.Should().Be(KycReviewOutcome.Clear);
 
-            customer.Document!.State.Should().Be(VerificationState.Verified);
+            customer.Document!.Status.Should().Be(DocumentVerificationStatus.Verified);
+            customer.Status.Should().Be(CustomerStatus.Verified);
         }
 
-
-        [Test]
-        public async Task Should_publish_customer_baas_creation_request_event_when_both_of_info_and_document_is_accepted_while_accepting_customer_document()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: VerificationState.Processing);
-
-            fakeCustomer = await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Verified);
-
-            var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Document!.KycReviewId);
-
-            var command = new CompleteKycReviewCommand
-            {
-                KycCheckId = fakeReview.KycCheckId,
-                Outcome = KycReviewOutcome.Clear
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShouldBeSuccess();
-
-            Assert.That(await TestHarness.Published.Any<CustomerBaasCreationRequestedEvent>());
-        }
 
         [Test]
         public async Task Should_reject_document_kyc_review()
@@ -183,11 +64,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
-            await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
-
-            fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: VerificationState.Processing);
+            fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: DocumentVerificationStatus.Processing);
 
             var fakeReview = await KycReviewRepository.SingleAsync(x => x.Id == fakeCustomer.Document!.KycReviewId);
 
@@ -206,7 +85,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             kycReview.Outcome.Should().Be(KycReviewOutcome.Rejected);
 
-            customer.Document!.State.Should().Be(VerificationState.Rejected);
+            customer.Document!.Status.Should().Be(DocumentVerificationStatus.Rejected);
         }
 
     }

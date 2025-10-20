@@ -186,15 +186,13 @@ namespace Nexa.Transactions.Application.Tests.Transfers
                 FintechCustomerId = Guid.NewGuid().ToString(),
                 UserId = userId ?? Guid.NewGuid().ToString(),
                 PhoneNumber = "+13462127336",
-                State = VerificationState.Verified,
+                Status = CustomerStatus.Verified,
                 KycCustomerId = Guid.NewGuid().ToString(),
                 EmailAddress = "test@test.com",
                 Info = new CustomerInfoDto
                 {
                     FirstName = Faker.Person.FirstName,
                     LastName = Faker.Person.LastName,
-                    Nationality = "us",
-                    IdNumber = Faker.Person.Ssn(),
                     Gender = Gender.Male,
                     BirthDate = Faker.Person.DateOfBirth,
                     Address = new AddressDto

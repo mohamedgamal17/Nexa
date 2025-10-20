@@ -17,47 +17,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
     public class CreateKycReviewCommandHandlerTests : KycReviewTestFixture
     {
         protected ICustomerManagementRepository<Customer> CustomerRepository { get; set; }
-
         protected ICustomerManagementRepository<KycReview> KycReviewRepository { get; set; }
         public CreateKycReviewCommandHandlerTests()
         {
             CustomerRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<Customer>>();
             KycReviewRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<KycReview>>();
-        }
-
-        [Test]
-        public async Task Should_create_customer_info_kyc_review()
-        {
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id);
-
-            var command = new CreateKycReviewCommand
-            {
-                Type = KycReviewType.Info
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShouldBeSuccess();
-
-            var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
-
-            var kycReview = await KycReviewRepository.SingleOrDefaultAsync(x => x.Id == result.Value!.Id);
-
-            kycReview.Should().NotBeNull();
-
-            kycReview!.AssertKycReview(command, customer);
-
-            customer.Info!.KycReviewId.Should().Be(kycReview!.Id);
-
-            customer.Info!.State.Should().Be(VerificationState.Processing);
-
-            result.Value!.AssertKycReviewDto(kycReview);
         }
 
         [TestCase(DocumentType.Passport)]
@@ -68,9 +32,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
             string? issuingCountry = documentType != DocumentType.Passport ? "US" : null;
 
@@ -86,7 +48,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var command = new CreateKycReviewCommand
             {
-                Type = KycReviewType.Document,
+
                 KycLiveVideoId = Guid.NewGuid().ToString()
             };
 
@@ -104,7 +66,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             customer.Document!.KycReviewId.Should().Be(kycReview!.Id);
 
-            customer.Document!.State.Should().Be(VerificationState.Processing);
+            customer.Document!.Status.Should().Be(DocumentVerificationStatus.Processing);
 
             result.Value!.AssertKycReviewDto(kycReview);
         }
@@ -114,7 +76,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
         {
             var command = new CreateKycReviewCommand
             {
-                Type = KycReviewType.Document,
                 KycLiveVideoId = Guid.NewGuid().ToString()
             };
 
@@ -130,7 +91,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var command = new CreateKycReviewCommand
             {
-                Type = KycReviewType.Document,
+
                 KycLiveVideoId = Guid.NewGuid().ToString()
             };
 
@@ -139,48 +100,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
             result.ShoulBeFailure(typeof(EntityNotFoundException), CustomerErrorConsts.CustomerNotExist);
         }
 
-        [Test]
-        public async Task Should_failure_while_creating_kyc_review_when_customer_info_is_not_completed()
-        {
-            AuthenticationService.Login();
-
-            var userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            var command = new CreateKycReviewCommand
-            {
-                KycLiveVideoId = Guid.NewGuid().ToString(),
-                Type = KycReviewType.Info
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.IncompleteCustomerInfo);
-        }
-
-        [TestCase(VerificationState.Processing)]
-        [TestCase(VerificationState.Verified)]
-        public async Task Should_failure_while_creating_customer_info_kyc_review_when_info_is_in_invalid_state(VerificationState state)
-        {
-            AuthenticationService.Login();
-
-            var userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id, state);
-
-            var command = new CreateKycReviewCommand
-            {
-                Type = KycReviewType.Info
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException),CustomerErrorConsts.InvalidCustomerInfoVerificationState);
-        }
-
+  
 
 
         [Test]
@@ -190,14 +110,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
             var command = new CreateKycReviewCommand
             {
                 KycLiveVideoId = Guid.NewGuid().ToString(),
-                Type = KycReviewType.Document
             };
 
             var result = await Mediator.Send(command);
@@ -214,21 +131,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
             fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, documentType);
-
-            if (fakeCustomer.Document!.RequireBothSides())
-            {
-                await CreateDocumentAttachment(fakeCustomer.Id, DocumentSide.Front);
-            }
 
             var command = new CreateKycReviewCommand
             {
                 KycLiveVideoId = Guid.NewGuid().ToString(),
-                Type = KycReviewType.Document
             };
 
             var result = await Mediator.Send(command);
@@ -236,17 +145,15 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
             result.ShoulBeFailure(typeof(BusinessLogicException), CustomerErrorConsts.IncompleteDocument);
         }
 
-        [TestCase(VerificationState.Processing)]
-        [TestCase(VerificationState.Verified)]
-        public async Task Should_failure_while_creating_document_kyc_review_when_document_dose_not_have_valid_state(VerificationState state)
+        [TestCase(DocumentVerificationStatus.Processing)]
+        [TestCase(DocumentVerificationStatus.Verified)]
+        public async Task Should_failure_while_creating_document_kyc_review_when_document_dose_not_have_valid_state(DocumentVerificationStatus state)
         {
             AuthenticationService.Login();
 
             var userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
-
-            await CreateCustomerInfo(fakeCustomer.Id, VerificationState.Processing);
+            var fakeCustomer = await CreateCustomerAsync(userId);
 
             fakeCustomer = await CreateDocumentAsync(fakeCustomer.Id, DocumentType.Passport, verificationState: state);
 
@@ -259,8 +166,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 
             var command = new CreateKycReviewCommand
             {
-                KycLiveVideoId = Guid.NewGuid().ToString(),
-                Type = KycReviewType.Document
+                KycLiveVideoId = Guid.NewGuid().ToString()
             };
 
             var result = await Mediator.Send(command);

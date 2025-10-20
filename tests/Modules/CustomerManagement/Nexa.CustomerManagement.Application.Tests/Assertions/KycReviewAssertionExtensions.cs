@@ -14,12 +14,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
         {
             kycReview.KycCheckId.Should().NotBeNull();
             kycReview.CustomerId.Should().Be(customer.Id);
-            kycReview.Type.Should().Be(command.Type);
-
-            if(command.Type == KycReviewType.Document)
-            {
-                kycReview.KycLiveVideoId.Should().Be(command.KycLiveVideoId);
-            }
+            kycReview.KycLiveVideoId.Should().Be(command.KycLiveVideoId);
         }
 
         public static void AssertKycReviewDto(this KycReviewDto dto , KycReview kycReview)

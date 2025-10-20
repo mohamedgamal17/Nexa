@@ -69,8 +69,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             dto.LastName.Should().Be(info.LastName);
             dto.Gender.Should().Be(info.Gender);
             dto.BirthDate.Should().Be(info.BirthDate);
-            dto.Nationality.Should().Be(info.Nationality);
-            dto.IdNumber.Should().Be(info.IdNumber);
             dto.Address.AssertAddressDto(info.Address);
         }
         public static void AssertAddressDto(this AddressDto dto , Address address)

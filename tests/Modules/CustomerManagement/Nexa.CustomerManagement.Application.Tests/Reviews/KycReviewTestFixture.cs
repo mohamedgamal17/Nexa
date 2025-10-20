@@ -53,37 +53,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
             });
         }
 
-        protected async Task<KycReview> CreateInfoReview(Customer customer , KycReviewStatus reviewStatus = KycReviewStatus.Pending , KycReviewOutcome reviewOutcome = KycReviewOutcome.Clear)
-        {
-            return await WithScopeAsync(async (sp) =>
-            {
-                var repository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
-
-                var kycCheck = await CreateKycCheck(customer, KYCCheckType.IdNumberCheck);
-
-                var kycReview = KycReview.Info(customer.Id, kycCheck.Id);
-
-                if (reviewStatus == KycReviewStatus.Completed)
-                    kycReview.Complete(reviewOutcome);
-
-                return await repository.InsertAsync(kycReview);
-            });
-        }
-        protected async Task<Customer> CreateCustomerWithoutInfo(string? userId = null)
-        {
-            return await WithScopeAsync(async (sp) =>
-            {
-                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
-
-                var customer = new Customer(userId ?? Guid.NewGuid().ToString(), Faker.Person.Phone, Faker.Person.Email);
-
-                var client = await CreateKycClient(customer);
-
-                customer.AddKycCustomerId(client.Id);
-
-                return await repository.InsertAsync(customer);
-            });
-        }
         protected async Task<Customer> CreateCustomerAsync(string? userId = null)
         {
 
@@ -106,9 +75,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
                     Faker.Person.FirstName,
                     Faker.Person.LastName,
                     Faker.Person.DateOfBirth,
-                    "US",
                     Faker.PickRandom<Gender>(),
-                    Faker.Person.Ssn(),
                     address
                     );
 
@@ -122,7 +89,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
             });
         }
 
-        protected async Task<Customer> CreateCustomerInfo(string customerId, VerificationState infoVerificationState = VerificationState.Pending)
+        protected async Task<Customer> CreateCustomerInfo(string customerId)
         {
             return await WithScopeAsync(async (sp) =>
             {
@@ -143,41 +110,18 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
                     Faker.Person.FirstName,
                     Faker.Person.LastName,
                     Faker.Person.DateOfBirth,
-                    "US",
                     Faker.PickRandom<Gender>(),
-                    Faker.Person.Ssn(),
                     address
                     );
 
                 customer.UpdateInfo(info);
 
-                if (infoVerificationState != VerificationState.Pending)
-                {
-                    var reviewStatus = (infoVerificationState == VerificationState.Verified
-                    || infoVerificationState == VerificationState.Rejected) ? KycReviewStatus.Completed : KycReviewStatus.Pending;
-
-                    var reviewOutCome = infoVerificationState == VerificationState.Verified ? KycReviewOutcome.Clear : KycReviewOutcome.Rejected;
-
-                    var review = await CreateInfoReview(customer);
-
-                    customer.Info!.MarkAsProcessing(review.Id);
-
-                    if (infoVerificationState == VerificationState.Verified)
-                    {
-                        customer.Info.MarkAsVerified();
-                    }
-
-                    if (infoVerificationState == VerificationState.Rejected)
-                    {
-                        customer.Info.MarkAsRejected();
-                    }
-                }
 
                 return await repository.UpdateAsync(customer);
 
             });
         }
-        protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type, string? issuingCountry = null, VerificationState verificationState = VerificationState.Pending)
+        protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type, string? issuingCountry = null, DocumentVerificationStatus verificationState = DocumentVerificationStatus.Pending)
         {
             return await WithScopeAsync(async sp =>
             {
@@ -191,23 +135,23 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
 
                 customer.UpdateDocument(docuemnt);
 
-                if(verificationState != VerificationState.Pending)
+                if(verificationState != DocumentVerificationStatus.Pending)
                 {
-                    var reviewStatus = (verificationState == VerificationState.Verified
-                      || verificationState == VerificationState.Rejected) ? KycReviewStatus.Completed : KycReviewStatus.Pending;
+                    var reviewStatus = (verificationState == DocumentVerificationStatus.Verified
+                      || verificationState == DocumentVerificationStatus.Rejected) ? KycReviewStatus.Completed : KycReviewStatus.Pending;
 
-                    var reviewOutCome = verificationState == VerificationState.Verified ? KycReviewOutcome.Clear : KycReviewOutcome.Rejected;
+                    var reviewOutCome = verificationState == DocumentVerificationStatus.Verified ? KycReviewOutcome.Clear : KycReviewOutcome.Rejected;
 
                     var review = await CreateDocumentReview(customer);
 
                     customer.Document!.MarkAsProcessing(review.Id);
 
-                    if (verificationState == VerificationState.Verified)
+                    if (verificationState == DocumentVerificationStatus.Verified)
                     {
                         customer.Document!.MarkAsVerified();
                     }
 
-                    if (verificationState == VerificationState.Rejected)
+                    if (verificationState == DocumentVerificationStatus.Rejected)
                     {
                         customer.Document!.MarkAsRejected();
                     }
@@ -283,8 +227,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Nationality = customer.Info.Nationality,
-                    SSN = customer.Info.IdNumber,
                     Address = customer.Info.Address
                 };
 

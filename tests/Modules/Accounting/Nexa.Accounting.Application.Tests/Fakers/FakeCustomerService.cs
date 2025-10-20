@@ -45,21 +45,21 @@ namespace Nexa.Accounting.Application.Tests.Fakers
             return customer;
         }
 
-        public CustomerDto CreateRandomCustomer(string? userId = null , VerificationState verificationState = VerificationState.Pending)
+        public CustomerDto CreateRandomCustomer(string? userId = null , CustomerStatus verificationState = CustomerStatus.Unverified)
         {
             var customer = GenerateCustomerDto(userId ?? Guid.NewGuid().ToString(), verificationState);
 
             return AddCustomer(customer);
         }
 
-        private CustomerDto GenerateCustomerDto(string userId , VerificationState verificationState)
+        private CustomerDto GenerateCustomerDto(string userId , CustomerStatus verificationState)
         {
             var dto = new CustomerDto
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
                 FintechCustomerId = Guid.NewGuid().ToString(),
-                State = verificationState,
+                Status = verificationState,
                 EmailAddress = _faker.Person.Email,
                 KycCustomerId = Guid.NewGuid().ToString(),
                 PhoneNumber = _faker.Person.Phone,
