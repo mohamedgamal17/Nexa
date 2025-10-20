@@ -33,11 +33,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
                 navigationBuilder.Property(x => x.Id).HasMaxLength(CustomerInfoTableConsts.IdLength);
                 navigationBuilder.Property(x => x.FirstName).HasMaxLength(CustomerInfoTableConsts.FirstNameLength);
                 navigationBuilder.Property(x => x.LastName).HasMaxLength(CustomerInfoTableConsts.LastNameLength);
-                navigationBuilder.Property(x => x.IdNumber).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.IdNumberLength);
-                navigationBuilder.Property(x => x.Nationality).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.NationalityLength);
-                navigationBuilder.Property(x => x.KycReviewId).IsRequired(false).HasMaxLength(CustomerInfoTableConsts.KycReviewIdLength);
-                navigationBuilder.HasOne<KycReview>().WithMany().HasForeignKey(x => x.KycReviewId);
-
                 navigationBuilder.OwnsOne(x => x.Address, addressNavigationBuilder =>
                 {
                     addressNavigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
