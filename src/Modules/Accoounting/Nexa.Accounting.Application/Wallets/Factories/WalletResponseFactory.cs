@@ -35,7 +35,6 @@ namespace Nexa.Accounting.Application.Wallets.Factories
                 CustomerId = view.CustomerId,
                 Number = view.Number,             
                 Balance = view.Balance,
-                State = view.State
             };
 
             return Task.FromResult(dto);

@@ -10,6 +10,5 @@ namespace Nexa.Accounting.Domain.Wallets
         public string UserId { get; set; }
         public string Number { get;  set; }    
         public decimal Balance { get;  set; }
-        public WalletState State { get; set; }
     }
 }
