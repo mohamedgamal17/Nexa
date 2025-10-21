@@ -11,7 +11,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
     {
 
         [Test]
-        public async Task Should_create_external_network_transfer_integraiton_event()
+        public async Task Should_pubish_transfer_network_funds_integraiton_event()
         {
             AuthenticationService.Login();
 
@@ -25,7 +25,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeNetworkTransfer = await CreateProcessNetworkTransferAsync(userId, senderWallet.Id, reciverWallet.Id, 500);
 
-
             await TestHarness.Start();
 
             var message = new ProcessNetworkTransferIntegrationEvent(fakeNetworkTransfer.Id, fakeNetworkTransfer.Number, fakeNetworkTransfer.WalletId, fakeNetworkTransfer.ReciverId, fakeNetworkTransfer.Amount);
@@ -34,9 +33,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             Assert.That(await TestHarness.Consumed.Any<ProcessNetworkTransferIntegrationEvent>());
 
-            var transfer = await TransferRepository.SingleAsync(x => x.Id == fakeNetworkTransfer.Id);
-
-            transfer.ExternalTransferId.Should().NotBeNull();
+            Assert.That(await TestHarness.Published.Any<TransferNetworkFundsIntegrationEvent>());
 
             await TestHarness.Stop();
 

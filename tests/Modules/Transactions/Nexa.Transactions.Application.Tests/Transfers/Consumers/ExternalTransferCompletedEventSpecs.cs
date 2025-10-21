@@ -1,9 +1,6 @@
 ﻿using MassTransit.Testing;
-using Nexa.Accounting.Shared.Enums;
 using Nexa.Accounting.Shared.Events;
-using Nexa.Transactions.Shared.Enums;
 using Nexa.Transactions.Shared.Events;
-
 namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 {
     [TestFixture]
@@ -70,42 +67,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
             Assert.That(await TestHarness.Published.Any<TransferFundsIntegrationEvent>());
 
             await TestHarness.Stop();
-
-        }
-
-
-        [Test]
-        public async Task Should_publish_transfer_newtwor_funds_integration_event_when_transfer_is_network_transfer()
-        {
-
-            AuthenticationService.Login();
-
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeCustomer = await CreateCustomerAsync(userId);
-
-            var fakeSenderWallet = await CreateWalletAsync(userId);
-
-            var fakeReciveWallet = await CreateWalletAsync(userId);
-
-            var fakeTransfer = await CreateProcessNetworkTransferAsync(userId, fakeSenderWallet.Id, fakeReciveWallet.Id,  50);
-
-            await TestHarness.Start();
-
-            var @event = new ExternalTransferCompletedIntegrationEvent
-            {
-                TransferId = fakeTransfer.Id,
-                ExternalTransferId = fakeTransfer.ExternalTransferId!
-            };
-
-            await TestHarness.Bus.Publish(@event);
-
-            Assert.That(await TestHarness.Consumed.Any<ExternalTransferCompletedIntegrationEvent>());
-
-            Assert.That(await TestHarness.Published.Any<TransferNetworkFundsIntegrationEvent>());
-
-            await TestHarness.Stop();
-
         }
     }
 }
