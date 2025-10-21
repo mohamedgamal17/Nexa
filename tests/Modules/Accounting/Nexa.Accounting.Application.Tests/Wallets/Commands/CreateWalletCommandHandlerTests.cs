@@ -36,7 +36,6 @@ namespace Nexa.Accounting.Application.Tests.Wallets.Commands
 
             wallet.Should().NotBeNull();
 
-            wallet!.State.Should().Be(WalletState.Frozen);
         }
 
     }

@@ -144,7 +144,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers
             });
         }
 
-        public async Task<WalletDto> CreateWalletAsync(string? userId = null, decimal balance = 1000, WalletState walletState = WalletState.Active)
+        public async Task<WalletDto> CreateWalletAsync(string? userId = null, decimal balance = 1000)
         {
             var dto = new WalletDto
             {
@@ -154,7 +154,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers
                 Number = Guid.NewGuid().ToString(),
                 ProviderWalletId = Guid.NewGuid().ToString(),
                 CustomerId = Guid.NewGuid().ToString(),
-                State = walletState
             };
 
             return await FakeWalletService.AddWalletAsync(dto);

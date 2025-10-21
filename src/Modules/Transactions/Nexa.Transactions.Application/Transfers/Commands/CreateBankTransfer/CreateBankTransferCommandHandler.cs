@@ -47,11 +47,6 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
                 return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
             }
 
-            if(wallet.State == WalletState.Frozen)
-            {
-                return new BusinessLogicException(WalletErrorConsts.WalletFrozen);
-            }
-
             var fundingResource = await _fundingResourceService.GetFundingResourceById(request.FundingResourceId);
 
             if(fundingResource == null)

@@ -18,7 +18,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
-            var fakeWallet = await CreateWalletAsync(userId, 100, WalletState.Active);
+            var fakeWallet = await CreateWalletAsync(userId);
 
             var fakeFundingResource = await CreateFundingResourceAsync(userId);
 

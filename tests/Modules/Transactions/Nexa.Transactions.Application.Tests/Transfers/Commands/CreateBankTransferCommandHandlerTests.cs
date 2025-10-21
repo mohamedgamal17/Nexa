@@ -109,28 +109,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
         }
 
         [Test]
-        public async Task Should_failure_while_creating_bank_transfer_when_current_wallet_is_frozen()
-        {
-            AuthenticationService.Login();
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeWallet = await CreateWalletAsync(userId,walletState: WalletState.Frozen);
-
-            var command = new CreateBankTransferCommand
-            {
-                WalletId = fakeWallet.Id,
-                FundingResourceId = Guid.NewGuid().ToString(),
-                Amount = 100,
-                Direction = Shared.Enums.TransferDirection.Credit
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException), WalletErrorConsts.WalletFrozen);
-        }
-
-
-        [Test]
         public async Task Should_failure_while_creating_bank_transfer_when_current_funding_resource_is_not_exist()
         {
             AuthenticationService.Login();

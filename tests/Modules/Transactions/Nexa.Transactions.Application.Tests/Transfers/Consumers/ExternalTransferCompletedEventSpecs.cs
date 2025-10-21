@@ -17,7 +17,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeWallet = await CreateWalletAsync(userId, 100, WalletState.Active);
+            var fakeWallet = await CreateWalletAsync(userId, 100);
 
             var fakeFundingResource = await CreateFundingResourceAsync(userId);
 
@@ -49,7 +49,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeWallet = await CreateWalletAsync(userId, 100, WalletState.Active);
+            var fakeWallet = await CreateWalletAsync(userId, 100);
 
             var fakeFundingResource = await CreateFundingResourceAsync(userId);
 
@@ -84,7 +84,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Consumers
 
             var fakeCustomer = await CreateCustomerAsync(userId);
 
-            var fakeSenderWallet = await CreateWalletAsync(userId, 100, WalletState.Active);
+            var fakeSenderWallet = await CreateWalletAsync(userId);
 
             var fakeReciveWallet = await CreateWalletAsync(userId);
 

@@ -61,25 +61,6 @@ namespace Nexa.Accounting.Application.Tests.Wallets
             });
         }
 
-        public async Task<Wallet> CreateActiveWallet(string? userId = null, decimal balance = 0)
-        {
-            return await WithScopeAsync(async (sp) =>
-            {
-                var wallet = await CreateWalletAsync(userId, balance);
-
-                var repository = sp.GetRequiredService<IWalletRepository>();
-
-                wallet = await repository.SingleAsync(x => x.Id == wallet.Id);
-
-                var baasWallet = await BaasWalletService.CreateWalletAsync(Guid.NewGuid().ToString());
-
-                wallet.Activate(baasWallet.Id);
-
-                await repository.UpdateAsync(wallet);
-
-                return wallet;
-            });
-        }
 
         public async Task<BankAccount> CreateBankAccountAsync(string? userId = null)
         {
