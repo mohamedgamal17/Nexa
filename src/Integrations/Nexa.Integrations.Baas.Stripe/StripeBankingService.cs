@@ -4,55 +4,43 @@ using Nexa.Integrations.OpenBanking.Abstractions;
 using Nexa.Integrations.OpenBanking.Abstractions.Consts;
 using Nexa.Integrations.OpenBanking.Abstractions.Contracts;
 using Stripe;
-using Stripe.FinancialConnections;
 namespace Nexa.Integrations.Baas.Stripe
 {
     public class StripeBankingService : IBankingTokenService
     {
-        private SessionService _sessionService;
-        private TokenService _tokenService;
+        private SetupIntentService _setupIntentService;
         public StripeBankingService()
         {
-            _sessionService = new SessionService();
-            _tokenService = new TokenService();
+            _setupIntentService = new SetupIntentService();
         }
         public async Task<Result<LinkToken>> CreateTokenAsync(TokenCreateRequest request, CancellationToken cancellationToken = default)
         {
 
-            var apiRequest = new SessionCreateOptions
+            var apiRequest = new SetupIntentCreateOptions
             {
-                AccountHolder = new SessionAccountHolderOptions
+                Customer = request.ClientUserId,
+                PaymentMethodTypes = ["us_bank_account"],
+                FlowDirections = ["outbound"],
+                PaymentMethodOptions = new SetupIntentPaymentMethodOptionsOptions
                 {
-                    Type = "account",
-                    Account = request.ClientUserId,
-
-                },
-                Permissions = new List<string>
-                {
-                    "payment_method",
-                    "balances",
-                    "transactions",
-                    "ownership"
-                },
-
-                Filters = new SessionFiltersOptions
-                {
-                    AccountSubcategories = new List<string>
+                    UsBankAccount = new SetupIntentPaymentMethodOptionsUsBankAccountOptions
                     {
-                        "checking",
-                        "savings"
-                    },
-                    Countries = request.CountryCodes.Select(x => x.ToString().ToLower()).ToList()
-
-                },
-
-                ReturnUrl = request.RedirectUri,
-                
+                        FinancialConnections = new SetupIntentPaymentMethodOptionsUsBankAccountFinancialConnectionsOptions
+                        {
+                            Permissions = ["payment_method", "balances", "transactions", "ownership"],
+                            Filters = new SetupIntentPaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersOptions
+                            {
+                                AccountSubcategories = ["checking", "savings"],
+                            }
+                        }
+                    }
+                }, 
+                Usage = "off_session",
+                                            
             };
 
 
-            var response = await _sessionService.CreateAsync(apiRequest);
-
+            var response = await _setupIntentService.CreateAsync(apiRequest);
 
             var linkToken = new LinkToken { Token = response.ClientSecret };
 
@@ -63,20 +51,17 @@ namespace Nexa.Integrations.Baas.Stripe
         {
             try
             {
-                var requestOptions = new RequestOptions { StripeAccount = request.ClientUserId };
+                var setupIntent = await _setupIntentService.GetAsync(request.Token );
 
-                var bankToken = await _tokenService.GetAsync(request.Token);
-
-                if (bankToken.Used)
+                if(setupIntent.Status != "succeeded")
                 {
-                    return new BusinessLogicException(OpenBankingErrorConsts.InvalidBankToken);
+                    return new BusinessLogicException(OpenBankingErrorConsts.IncompleteBankToken);
                 }
 
                 var result = new ProcessorToken
                 {
-                    Token = bankToken.Id
+                    Token = setupIntent.PaymentMethodId
                 };
-
 
                 return result;
 

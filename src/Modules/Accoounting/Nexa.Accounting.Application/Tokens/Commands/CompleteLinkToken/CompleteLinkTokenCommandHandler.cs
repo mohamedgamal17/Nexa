@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Nexa.Accounting.Application.FundingResources.Factories;
+﻿using Nexa.Accounting.Application.FundingResources.Factories;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.FundingResources;
 using Nexa.Accounting.Shared.Dtos;
@@ -55,7 +54,6 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken
 
             var processorTokenRequest = new TokenProcessReqeust
             {
-                ClientUserId = customer.FintechCustomerId!,
                 Token = request.Token,
                 Provider = ProcessorProvider.Stripe
             };

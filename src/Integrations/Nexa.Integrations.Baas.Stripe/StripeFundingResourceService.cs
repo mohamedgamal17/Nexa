@@ -1,5 +1,4 @@
-﻿using Nexa.Integrations.Baas.Abstractions.Configuration;
-using Nexa.Integrations.Baas.Abstractions.Contracts.FundingResources;
+﻿using Nexa.Integrations.Baas.Abstractions.Contracts.FundingResources;
 using Nexa.Integrations.Baas.Abstractions.Services;
 using Stripe;
 
@@ -7,44 +6,41 @@ namespace Nexa.Integrations.Baas.Stripe
 {
     public class StripeFundingResourceService : IBaasFundingResourceService
     {
-        private readonly AccountExternalAccountService accountExternalAccountService;
-        public StripeFundingResourceService(BaasConfiguration baasConfiguration)
+        private readonly PaymentMethodService _paymentMethodService;
+        public StripeFundingResourceService()
         {
-            accountExternalAccountService = new AccountExternalAccountService();
+            _paymentMethodService = new PaymentMethodService();
             
         }
         public async Task<BaasBankAccount> CreateBankAccountAsync(string accountId, BaasBankAccountCreateRequest request, CancellationToken cancellationToken = default)
         {
 
-            var apiRequest = new AccountExternalAccountCreateOptions
+            var apiRequest = new PaymentMethodAttachOptions
             {
-                ExternalAccount = request.Token
+               Customer = accountId
             };
 
+            var response = await _paymentMethodService.AttachAsync(request.Token, apiRequest);
 
-            var response = await accountExternalAccountService.CreateAsync(accountId, apiRequest);
-
-
-            return PrepareBaasBankAccount((BankAccount)response);
-
+            return PrepareBaasBankAccount(response);
         }
 
         public async Task<BaasBankAccount> GetBankAccountAsync(string accountId, string bankAccountId, CancellationToken cancellationToken = default)
         {
-            var response = await accountExternalAccountService.GetAsync(accountId,bankAccountId );
+            var response = await _paymentMethodService.GetAsync(bankAccountId);
 
-            return PrepareBaasBankAccount((BankAccount)response);
+            return PrepareBaasBankAccount(response);
         }
 
-        private BaasBankAccount PrepareBaasBankAccount(BankAccount bankAccount)
+        private BaasBankAccount PrepareBaasBankAccount(PaymentMethod paymentMethod)
         {
             var response = new BaasBankAccount
             {
-                Id = bankAccount.Id,
-                HolderName = bankAccount.AccountHolderName,               
-                BankName = bankAccount.BankName,
-                RoutingNumber = bankAccount.RoutingNumber,
-                AccountNumberLast4 = bankAccount.Last4,
+                Id = paymentMethod.Id,
+                HolderName = paymentMethod.UsBankAccount.BankName,               
+                BankName = paymentMethod.UsBankAccount.BankName,
+                RoutingNumber = paymentMethod.UsBankAccount.RoutingNumber,
+                AccountNumberLast4 = paymentMethod.UsBankAccount.Last4,
                 Country = "us",
                 Currency = "usd"
             };
