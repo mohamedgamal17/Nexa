@@ -18,8 +18,7 @@ namespace Nexa.Accounting.Infrastructure.EntityFramework.Repositories
                     Balance = x.Balance,
                     Number = x.Number,
                     ProviderWalletId = x.ProviderWalletId,
-                    CustomerId = x.CustomerId,
-                    State = x.State
+                    CustomerId = x.CustomerId
                 });
 
             return query;
