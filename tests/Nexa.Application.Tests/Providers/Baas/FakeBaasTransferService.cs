@@ -17,20 +17,6 @@ namespace Nexa.Application.Tests.Providers.Baas
 
             return Task.FromResult(response);
         }
-
-        public Task<BaasNetworkTransfer> NetworkTransfer(NetworkTransferRequest request, CancellationToken cancellationToken = default)
-        {
-            var response = new BaasNetworkTransfer
-            {
-                Id = Guid.NewGuid().ToString(),
-                SenderWalletId = request.SenderWalletId,
-                ReciverWalletId = request.ReciverWalletId,
-                Amount = request.Amount
-            };
-
-            return Task.FromResult(response);
-        }
-
         public Task<BaasBankTransfer> Withdraw(BankTransferRequest request, CancellationToken cancellationToken = default)
         {
             var response = new BaasBankTransfer

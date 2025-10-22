@@ -7,22 +7,47 @@ namespace Nexa.Integrations.Baas.Stripe
     public class StripeFundingResourceService : IBaasFundingResourceService
     {
         private readonly PaymentMethodService _paymentMethodService;
+        private readonly CustomerService _customerService;
         public StripeFundingResourceService()
         {
             _paymentMethodService = new PaymentMethodService();
+            _customerService = new CustomerService();
             
         }
         public async Task<BaasBankAccount> CreateBankAccountAsync(string accountId, BaasBankAccountCreateRequest request, CancellationToken cancellationToken = default)
         {
-
-            var apiRequest = new PaymentMethodAttachOptions
+            if (request.Token.StartsWith("pm"))
             {
-               Customer = accountId
-            };
+                var response = await _paymentMethodService.GetAsync(request.Token);
 
-            var response = await _paymentMethodService.AttachAsync(request.Token, apiRequest);
+                return PrepareBaasBankAccount(response);
+            }
+            else
+            {
 
-            return PrepareBaasBankAccount(response);
+                var customer = await _customerService.GetAsync(accountId);
+
+                var apiRequest = new PaymentMethodCreateOptions
+                {
+                    Customer = accountId,
+
+                    UsBankAccount = new PaymentMethodUsBankAccountOptions
+                    {
+                        FinancialConnectionsAccount = request.Token,
+                        
+                    },
+                    BillingDetails = new PaymentMethodBillingDetailsOptions
+                    {
+                        Name = customer.Name,
+                        Email = customer.Email
+                    }
+                };
+
+                var response = await _paymentMethodService.CreateAsync(apiRequest);
+
+                return PrepareBaasBankAccount(response);
+
+            }
         }
 
         public async Task<BaasBankAccount> GetBankAccountAsync(string accountId, string bankAccountId, CancellationToken cancellationToken = default)
@@ -37,7 +62,7 @@ namespace Nexa.Integrations.Baas.Stripe
             var response = new BaasBankAccount
             {
                 Id = paymentMethod.Id,
-                HolderName = paymentMethod.UsBankAccount.BankName,               
+                HolderName = paymentMethod.BillingDetails.Name,               
                 BankName = paymentMethod.UsBankAccount.BankName,
                 RoutingNumber = paymentMethod.UsBankAccount.RoutingNumber,
                 AccountNumberLast4 = paymentMethod.UsBankAccount.Last4,

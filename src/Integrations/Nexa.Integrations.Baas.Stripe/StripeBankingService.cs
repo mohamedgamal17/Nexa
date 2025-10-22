@@ -18,9 +18,9 @@ namespace Nexa.Integrations.Baas.Stripe
 
             var apiRequest = new SetupIntentCreateOptions
             {
-                Customer = request.ClientUserId,
                 PaymentMethodTypes = ["us_bank_account"],
-                FlowDirections = ["outbound"],
+                FlowDirections = ["inbound", "outbound"],
+                AttachToSelf =  true,
                 PaymentMethodOptions = new SetupIntentPaymentMethodOptionsOptions
                 {
                     UsBankAccount = new SetupIntentPaymentMethodOptionsUsBankAccountOptions
@@ -32,7 +32,8 @@ namespace Nexa.Integrations.Baas.Stripe
                             {
                                 AccountSubcategories = ["checking", "savings"],
                             }
-                        }
+                        },
+
                     }
                 }, 
                 Usage = "off_session",

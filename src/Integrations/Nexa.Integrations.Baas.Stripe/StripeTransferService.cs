@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Nexa.Integrations.Baas.Abstractions.Configuration;
 using Nexa.Integrations.Baas.Abstractions.Contracts.Transfers;
 using Nexa.Integrations.Baas.Abstractions.Services;
 using Stripe;
@@ -8,24 +9,26 @@ namespace Nexa.Integrations.Baas.Stripe
 {
     public class StripeTransferService : IBaasTransferService
     {
+        private readonly BaasConfiguration _baasConfiguration;
         private readonly InboundTransferService _inboundTransferService;
         private readonly SetupIntentService _setupIntentService;
         private readonly OutboundPaymentService _outboundPaymentService;
         private readonly OutboundTransferService _outboundTransferService;
-        public StripeTransferService()
+        public StripeTransferService(BaasConfiguration baasConfiguration)
         {
             _inboundTransferService = new InboundTransferService();
             _setupIntentService = new SetupIntentService();
             _outboundPaymentService = new OutboundPaymentService();
             _outboundTransferService = new OutboundTransferService();
+            _baasConfiguration = baasConfiguration;
         }
         public async Task<BaasBankTransfer> Deposit(BankTransferRequest request, CancellationToken cancellationToken = default)
         {
-            var requestOptions = new RequestOptions { StripeAccount = request.AccountId };
-
             var setupIntentRequest = new SetupIntentCreateOptions
             {
+                AttachToSelf = true,
                 PaymentMethod = request.FundingResourceId,
+                PaymentMethodTypes  = ["us_bank_account"],
                 Confirm = true,
                 MandateData = new SetupIntentMandateDataOptions
                 {
@@ -34,24 +37,23 @@ namespace Nexa.Integrations.Baas.Stripe
                         Type = "offline",
                     },
                 },
-                AutomaticPaymentMethods = new SetupIntentAutomaticPaymentMethodsOptions { Enabled = true, AllowRedirects = "never" }
             };
 
-            await _setupIntentService.CreateAsync(setupIntentRequest, requestOptions);
+            await _setupIntentService.CreateAsync(setupIntentRequest);
 
             var inboundTransferRequest = new InboundTransferCreateOptions
             {
-                FinancialAccount = request.WalletId,
+                Amount = (long)(request.Amount * 100),
                 Currency = "usd",
                 OriginPaymentMethod = request.FundingResourceId,
-                Amount = (long)(request.Amount * 100),
+                FinancialAccount = _baasConfiguration.FinancialAccounts.Main,                          
                 Metadata = new Dictionary<string, string>
                 {
-                    { StripeMetaDataConsts.ClientTransferId , request.ClinetTransferId }
+                    { StripeMetaDataConsts.ClientTransferId , request.ClientTransferId },
                 }
             };
 
-            var response = await _inboundTransferService.CreateAsync(inboundTransferRequest, requestOptions);
+            var response = await _inboundTransferService.CreateAsync(inboundTransferRequest);
 
             var result = new BaasBankTransfer
             {
@@ -60,43 +62,9 @@ namespace Nexa.Integrations.Baas.Stripe
                 Amount = response.Amount / 100,
                 FundingResourceId = response.OriginPaymentMethod
             };
-
-
             return result;
         }
 
-        public async Task<BaasNetworkTransfer> NetworkTransfer(NetworkTransferRequest request, CancellationToken cancellationToken = default)
-        {
-            var requestOptions = new RequestOptions { StripeAccount = request.SenderAccountId };
-
-            var options = new OutboundPaymentCreateOptions
-            {
-                Currency = "usd",
-                FinancialAccount = request.SenderWalletId,
-                DestinationPaymentMethodData = new OutboundPaymentDestinationPaymentMethodDataOptions
-                {
-                    Type = "financial_account",
-                    FinancialAccount = request.ReciverWalletId
-                },
-                Amount = (long)(request.Amount * 100),
-                Metadata = new Dictionary<string, string>
-                {
-                    { StripeMetaDataConsts.ClientTransferId , request.ClientTransferId }
-                }
-            };
-
-            var response = await _outboundPaymentService.CreateAsync(options, requestOptions);
-
-            var result = new BaasNetworkTransfer
-            {
-                Id = response.Id,
-                SenderWalletId = response.FinancialAccount,
-                ReciverWalletId = response.DestinationPaymentMethodDetails!.FinancialAccount.Id,
-                Amount = response.Amount / 100
-            };
-
-            return result;
-        }
 
         public async Task<BaasBankTransfer> Withdraw(BankTransferRequest request, CancellationToken cancellationToken = default)
         {
@@ -104,17 +72,15 @@ namespace Nexa.Integrations.Baas.Stripe
             {
                 Amount = (long)(request.Amount * 100),
                 Currency = "usd",
-                FinancialAccount = request.WalletId,
+                FinancialAccount = _baasConfiguration.FinancialAccounts.Main,
                 DestinationPaymentMethod = request.FundingResourceId,
                 Metadata = new Dictionary<string, string>
                 {
-                    {StripeMetaDataConsts.ClientTransferId , request.ClinetTransferId }
+                    {StripeMetaDataConsts.ClientTransferId , request.ClientTransferId }
                 }
             };
 
-            var requestOptions = new RequestOptions { StripeAccount = request.AccountId };
-
-            var response = await _outboundTransferService.CreateAsync(options, requestOptions);
+            var response = await _outboundTransferService.CreateAsync(options);
 
             var result = new BaasBankTransfer
             {

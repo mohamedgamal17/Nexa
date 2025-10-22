@@ -6,8 +6,6 @@ namespace Nexa.Integrations.Baas.Abstractions.Services
     {
         Task<BaasBankTransfer> Deposit(BankTransferRequest request , CancellationToken cancellationToken = default);
 
-        Task<BaasNetworkTransfer> NetworkTransfer(NetworkTransferRequest request, CancellationToken cancellationToken = default);
-
         Task<BaasBankTransfer> Withdraw(BankTransferRequest request, CancellationToken cancellationToken = default);
     }
 }

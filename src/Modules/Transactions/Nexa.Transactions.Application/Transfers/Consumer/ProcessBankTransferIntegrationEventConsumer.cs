@@ -48,7 +48,7 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
                 AccountId = customer!.FintechCustomerId!,
                 FundingResourceId = fundingResource!.ProviderBankAccountId,
                 Amount = context.Message.Amount,
-                ClinetTransferId = context.Message.TransferId
+                ClientTransferId = context.Message.TransferId
             };
 
             var externalTransfer = transfer.Direction == TransferDirection.Credit

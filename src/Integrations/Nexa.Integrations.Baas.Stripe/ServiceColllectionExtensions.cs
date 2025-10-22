@@ -14,9 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var stripeConfig = new BaasConfiguration();
 
-            configuration.Bind(BaasConfiguration.SectionName, stripeConfig);
-
-            stripeConfig.SetIsDevlopment(isDevlopment);
+            configuration.GetSection(BaasConfiguration.SectionName).Bind(stripeConfig);
 
             services.AddSingleton(stripeConfig);
 
