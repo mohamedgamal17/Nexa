@@ -1,4 +1,5 @@
-﻿using MassTransit.Testing;
+﻿using Bogus;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Accounting.Domain;
 using Nexa.Accounting.Domain.FundingResources;
@@ -12,11 +13,13 @@ namespace Nexa.Accounting.Application.Tests.Wallets
         protected IWalletRepository WalletRepository { get; }
         protected IBaasWalletService BaasWalletService { get; }
         protected IAccountingRepository<LedgerEntry> LedgerEntryRepository { get; }
+        protected Faker Faker { get; }
         public WalletTestFixture()
         {
             WalletRepository = ServiceProvider.GetRequiredService<IWalletRepository>();
             LedgerEntryRepository = ServiceProvider.GetRequiredService<IAccountingRepository<LedgerEntry>>();
             BaasWalletService = ServiceProvider.GetRequiredService<IBaasWalletService>();
+            Faker = new Faker();
         }
 
         protected override async Task InitializeAsync(IServiceProvider services)
