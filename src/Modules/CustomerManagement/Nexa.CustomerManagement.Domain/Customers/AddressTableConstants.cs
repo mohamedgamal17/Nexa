@@ -5,9 +5,9 @@
 
         public const int CountryLength = 3;
 
-        public const int CityLength = 20;
+        public const int CityLength = 100;
 
-        public const int StateLength = 20;
+        public const int StateLength = 100;
 
         public const int StreetLineLength = 500;
 
