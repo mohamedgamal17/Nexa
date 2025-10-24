@@ -11,17 +11,15 @@ namespace Nexa.Host.Endpoints.Webhooks
     public class StripeWebhookEndpoint : Endpoint<EmptyRequest>
     {
         private readonly IBaasWebHookService _baasWebhookService;
-        private readonly IMediator _mediator;
         private readonly MassTransit.IPublishEndpoint _publishEndpoint;
         private readonly ILogger<StripeWebhookEndpoint> _logger;
-        public StripeWebhookEndpoint(IBaasWebHookService baasWebhookService, IMediator mediator, ILogger<StripeWebhookEndpoint> logger, MassTransit.IPublishEndpoint publishEndpoint)
+
+        public StripeWebhookEndpoint(IBaasWebHookService baasWebhookService, MassTransit.IPublishEndpoint publishEndpoint, ILogger<StripeWebhookEndpoint> logger)
         {
             _baasWebhookService = baasWebhookService;
-            _mediator = mediator;
+            _publishEndpoint = publishEndpoint;
             _logger = logger;
-            _publishEndpoint = publishEndpoint;  
         }
-
 
         public override void Configure()
         {
@@ -56,13 +54,6 @@ namespace Nexa.Host.Endpoints.Webhooks
                     _logger.LogDebug("Handling stripe outbound transfer");
 
                     await HandleOutboundTransfer(stripeEvent);
-                }
-
-                if (stripeEvent.Type.Contains("outbound_payment"))
-                {
-                    _logger.LogDebug("Handling stripe outbound payment");
-
-                    await HandleOutboundPayment(stripeEvent);
                 }
 
                 await SendOkAsync();
@@ -108,22 +99,6 @@ namespace Nexa.Host.Endpoints.Webhooks
                 await _publishEndpoint.Publish(@event);
             }
 
-        }
-
-        private async  Task HandleOutboundPayment(Event stripeEvent)
-        {
-            var stripeEntity = (OutboundPayment)stripeEvent.Data;
-
-            if(stripeEvent.Type == Stripe.EventTypes.TreasuryOutboundPaymentPosted)
-            {
-                var @event = new ExternalTransferCompletedIntegrationEvent
-                {
-                    TransferId = stripeEntity.Metadata[StripeMetaDataConsts.ClientTransferId],
-                    ExternalTransferId = stripeEntity.Id
-                };
-
-                await _publishEndpoint.Publish(@event);
-            }
         }
     }
 }
