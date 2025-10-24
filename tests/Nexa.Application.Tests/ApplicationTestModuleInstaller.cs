@@ -41,7 +41,7 @@ namespace Nexa.Application.Tests
 
         private void RegisterFakeBaasProvider(IServiceCollection services)
         {
-            services.AddTransient<IBaasClientService, FakeBaasClientService>()
+            services
                 .AddTransient<IBaasWalletService, FakeBaasWalletProvider>()
                 .AddTransient<IBaasFundingResourceService, FakeBaasFundingResurceService>()
                 .AddTransient<IBaasTransferService, FakeBaasTransferService>()

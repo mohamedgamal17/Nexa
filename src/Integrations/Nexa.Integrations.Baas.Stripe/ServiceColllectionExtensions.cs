@@ -27,8 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection RegisterServices(IServiceCollection services)
         {
-            return services.AddTransient<IBaasClientService, StripeClientService>()
-                .AddTransient<IBaasWebHookService, StripeWebhookService>()
+            return services.AddTransient<IBaasWebHookService, StripeWebhookService>()
                 .AddTransient<IBaasWalletService, StripeWalletService>()
                 .AddTransient<IBaasFundingResourceService, StripeFundingResourceService>()
                 .AddTransient<IBankingTokenService, StripeBankingService>()

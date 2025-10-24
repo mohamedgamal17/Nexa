@@ -8,7 +8,7 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
-using Nexa.Integrations.Baas.Abstractions.Contracts.Clients;
+using Nexa.Integrations.Baas.Abstractions.Contracts.Customers;
 using Nexa.Integrations.Baas.Abstractions.Services;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {

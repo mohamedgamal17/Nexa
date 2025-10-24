@@ -1,6 +1,6 @@
-﻿namespace Nexa.Integrations.Baas.Abstractions.Contracts.Clients
+﻿namespace Nexa.Integrations.Baas.Abstractions.Contracts.Customers
 {
-    public class CreateBaasCustomerRequest
+    public class UpdateBaasCustomerRequest
     {
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

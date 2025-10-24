@@ -16,14 +16,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
     {
         protected Faker Faker { get; }
         protected IKYCProvider KycProvider { get; set; }
-
-        protected IBaasClientService FakeBaasClientService { get; set; }
         protected ITestHarness TestHarness { get; set; }
         public CustomerTestFixture()
         {
             Faker = new Faker();
             KycProvider = ServiceProvider.GetRequiredService<IKYCProvider>();
-            FakeBaasClientService = ServiceProvider.GetRequiredService<IBaasClientService>();
             TestHarness = ServiceProvider.GetRequiredService<ITestHarness>();
         }
 

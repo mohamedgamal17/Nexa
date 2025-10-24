@@ -1,5 +1,4 @@
-﻿using Nexa.Integrations.Baas.Abstractions.Contracts.Clients;
-using Nexa.Integrations.Baas.Abstractions.Contracts.Customers;
+﻿using Nexa.Integrations.Baas.Abstractions.Contracts.Customers;
 using Nexa.Integrations.Baas.Abstractions.Services;
 
 namespace Nexa.Application.Tests.Providers.Baas
