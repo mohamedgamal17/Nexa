@@ -44,7 +44,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
 
                 var kycCheck = await CreateKycCheck(customer, KYCCheckType.IdentityCheck, customer.Document!.Id, Guid.NewGuid().ToString());
 
-                var kycReview = KycReview.Document(customer.Id, kycCheck.Id, kycCheck.LiveVideoId);
+                var kycReview = new KycReview(customer.Id, kycCheck.Id, kycCheck.LiveVideoId);
 
                 if (reviewStatus == KycReviewStatus.Completed)
                     kycReview.Complete(reviewOutcome);

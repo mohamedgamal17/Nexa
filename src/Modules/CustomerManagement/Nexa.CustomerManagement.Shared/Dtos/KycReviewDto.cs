@@ -8,7 +8,6 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string CustomerId { get; set; }
         public string KycCheckId { get; set; }
         public string? KycLiveVideoId { get; set; }
-        public KycReviewType Type { get; set; }
         public KycReviewStatus Status { get; set; }
         public KycReviewOutcome? Outcome { get; set; }
     }

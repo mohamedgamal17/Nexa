@@ -144,7 +144,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
 
                 var kycReviewRepository = sp.GetRequiredService<ICustomerManagementRepository<KycReview>>();
 
-                var kycReview = new KycReview(customerId, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), KycReviewType.Document);
+                var kycReview = new KycReview(customerId, Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 
                 await kycReviewRepository.InsertAsync(kycReview);
 

@@ -71,7 +71,7 @@ namespace Nexa.CustomerManagement.Application.Reviews.Commands.CreateKycReview
 
             var kycCheck = await CreateKycCheck(customer, request);
 
-            var kycReview = KycReview.Document(customer.Id, kycCheck.Id, request.KycLiveVideoId!);
+            var kycReview = new KycReview(customer.Id, kycCheck.Id, request.KycLiveVideoId!);
 
             customer.ReviewDocument(kycReview);
 

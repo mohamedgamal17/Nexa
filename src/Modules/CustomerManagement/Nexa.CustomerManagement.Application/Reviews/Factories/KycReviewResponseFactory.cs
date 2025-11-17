@@ -11,7 +11,6 @@ namespace Nexa.CustomerManagement.Application.Reviews.Factories
             var dto = new KycReviewDto
             {
                 Id = view.Id,
-                Type = view.Type,
                 CustomerId = view.CustomerId,
                 KycLiveVideoId = view.KycLiveVideoId,
                 KycCheckId = view.KycCheckId,

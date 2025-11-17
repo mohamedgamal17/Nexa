@@ -23,7 +23,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             dto.CustomerId.Should().Be(kycReview.CustomerId);
             dto.KycCheckId.Should().Be(kycReview.KycCheckId);
             dto.KycLiveVideoId.Should().Be(kycReview.KycLiveVideoId);
-            dto.Type.Should().Be(kycReview.Type);
             dto.Status.Should().Be(kycReview.Status);
             dto.Outcome.Should().Be(kycReview.Outcome);
         }
