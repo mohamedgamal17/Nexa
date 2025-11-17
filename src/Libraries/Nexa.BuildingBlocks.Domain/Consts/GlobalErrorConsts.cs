@@ -20,6 +20,15 @@ namespace Nexa.BuildingBlocks.Domain.Consts
         public static NexaError MaxLength
             = new NexaError(nameof(MaxLength).ToCamelCase(), "Maximum length is {0} characters.");
 
+        public static NexaError GreaterThan
+            = new(nameof(GreaterThan).ToCamelCase(), "Value must be greater than {0}");
+
+        public static NexaError LessThan
+            = new(nameof(LessThan).ToCamelCase(), "Value must be less than {0}");
+
+        public static NexaError LessThantOrEqualTo
+            = new(nameof(LessThantOrEqualTo), "Value must be less than or equal to {0}");
+
         public static NexaError InvalidPhoneNumber
             = new NexaError(nameof(InvalidPhoneNumber).ToCamelCase(), "Invalid phone number");
 

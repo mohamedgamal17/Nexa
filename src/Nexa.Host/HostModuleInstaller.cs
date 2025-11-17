@@ -6,7 +6,6 @@ using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Endpoints;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
-using Nexa.Integrations.OpenBanking.Plaid;
 namespace Nexa.Host
 {
     public class HostModuleInstaller : IModuleInstaller
