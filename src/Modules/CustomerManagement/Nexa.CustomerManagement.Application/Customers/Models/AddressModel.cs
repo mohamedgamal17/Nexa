@@ -3,7 +3,6 @@ using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.CustomerManagement.Domain.Customers;
 using ISO3166;
 using Nexa.CustomerManagement.Shared.Consts;
-using Nexa.CustomerManagement.Shared.Helpers;
 using Nexa.CustomerManagement.Shared.Extensions;
 namespace Nexa.CustomerManagement.Application.Customers.Models
 {

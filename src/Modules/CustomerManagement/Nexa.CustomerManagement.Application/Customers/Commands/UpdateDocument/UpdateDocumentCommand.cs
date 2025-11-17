@@ -8,7 +8,6 @@ using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
 using Nexa.CustomerManagement.Shared.Extensions;
-using Nexa.CustomerManagement.Shared.Helpers;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 {
     [Authorize]
