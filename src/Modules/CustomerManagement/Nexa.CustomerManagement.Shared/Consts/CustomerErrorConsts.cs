@@ -31,5 +31,11 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError InvalidDocumentVerificationState 
             = new(nameof(InvalidDocumentVerificationState).ToCamelCase(), "Invalid document verification state.");
+
+        public static NexaError UnsupportedRegion
+            = new(nameof(UnsupportedRegion).ToCamelCase(), "Country code is not supported.");
+
+        public static NexaError PhoneRegionNotSupported
+            = new(nameof(PhoneRegionNotSupported).ToCamelCase(), "Phone numbers from this region are not supported.");
     }
 }
