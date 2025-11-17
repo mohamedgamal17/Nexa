@@ -16,6 +16,7 @@
         Task<KYCCheck> CreateCheckAsync(KYCCheckRequest request, CancellationToken cancellationToken = default);
         Task<KYCCheck> GetCheckAsync(string checkId, CancellationToken cancellationToken = default);
         Task<string> CreateSdkToken(KYCSdkTokenRequest request, CancellationToken cancellationToken = default);
+        Task<KYCLiveVideo> GetLiveVideoAsync(string liveVideoId, CancellationToken cancellationToken = default);
         Task<bool> VerifiyWebHookSignature(string signature, string body);
     }
 }

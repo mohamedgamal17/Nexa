@@ -157,5 +157,17 @@ namespace Nexa.CustomerManagement.Application.Tests.Fakers
         {
             return Task.FromResult(Guid.NewGuid().ToString());
         }
+
+        public Task<KYCLiveVideo> GetLiveVideoAsync(string liveVideoId, CancellationToken cancellationToken = default)
+        {
+            var response = new KYCLiveVideo
+            {
+                Id = liveVideoId,
+                ClientId = Guid.NewGuid().ToString(),
+
+            };
+
+            return Task.FromResult(response);
+        }
     }
 }

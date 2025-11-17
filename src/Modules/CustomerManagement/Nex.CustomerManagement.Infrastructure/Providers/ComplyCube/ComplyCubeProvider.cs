@@ -15,6 +15,7 @@ using System.Text.Json.Serialization;
 using System.Text;
 using Nexa.CustomerManagement.Application.Helpers;
 using ComplyCube.Net.Resources.SDKTokens;
+using ComplyCube.Net.Resources.LiveVideos;
 
 namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 {
@@ -34,6 +35,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 
         private readonly SDKTokenApi _tokenApi;
 
+        private readonly LiveVideoApi _liveVideoApi;
         public ComplyCubeProvider(ComplyCubeConfiguration configuration)
         {
 
@@ -44,6 +46,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
             _documentApi = new DocumentApi(_client);
             _checkApi = new CheckApi(_client);
             _tokenApi = new SDKTokenApi(_client);
+            _liveVideoApi = new LiveVideoApi(_client);
             
         }
         public async Task<KYCClient> CreateClientAsync(KYCClientRequest request, CancellationToken cancellationToken = default)
@@ -456,7 +459,18 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
             throw new NotImplementedException();
         }
 
+        public async Task<KYCLiveVideo> GetLiveVideoAsync(string liveVideoId, CancellationToken cancellationToken = default)
+        {
+            var video = await _liveVideoApi.GetAsync(liveVideoId);
 
+            var response = new KYCLiveVideo
+            {
+                Id = video.id,
+                ClientId = video.clientId,
+            };
+
+            return response;
+        }
     }
     public class ExtendedCheckRequest : CheckRequest
     {
