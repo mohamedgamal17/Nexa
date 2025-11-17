@@ -49,5 +49,8 @@ namespace Nexa.BuildingBlocks.Domain.Consts
 
         public static NexaError InvalidFileExtension
             = new(nameof(InvalidFileExtension).ToCamelCase(), "Invalid file extension.");
+
+        public static NexaError InvalidUri
+            = new(nameof(InvalidUri).ToCamelCase(), "Value must be a valid absolute URL.");
     }
 }
