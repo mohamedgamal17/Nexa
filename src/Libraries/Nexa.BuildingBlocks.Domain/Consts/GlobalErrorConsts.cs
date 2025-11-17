@@ -36,6 +36,6 @@ namespace Nexa.BuildingBlocks.Domain.Consts
             = new(nameof(FileSizeExceeded).ToCamelCase(), "File size must not exceed {0} MB.");
 
         public static NexaError InvalidFileExtension
-            = new(nameof(InvalidFileExtension).ToCamelCase(), "Invalid file extension.")
+            = new(nameof(InvalidFileExtension).ToCamelCase(), "Invalid file extension.");
     }
 }
