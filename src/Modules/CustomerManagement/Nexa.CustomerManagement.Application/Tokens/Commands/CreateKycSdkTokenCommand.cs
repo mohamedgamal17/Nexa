@@ -18,7 +18,7 @@ namespace Nexa.CustomerManagement.Application.Tokens.Commands
         public CreateKycSdkTokenCommandHandler()
         {
             RuleFor(x => x.Referrer)
-                .Matches("/^(https?|file|\\*):\\/\\/(\\*|(\\*\\.)?[^/*]+)\\/.*$/")
+                .Matches(@"^(https?|file|\*)://(\*|(\*\.)?[^/*]+)(/.*)$")
                 .WithMessage(CustomerErrorConsts.InvalidReferrerUrl.Code)
                 .WithMessage(CustomerErrorConsts.InvalidReferrerUrl.Message)
                 .NotNull()
