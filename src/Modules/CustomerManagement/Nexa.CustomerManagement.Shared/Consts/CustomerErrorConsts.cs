@@ -37,5 +37,15 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError PhoneRegionNotSupported
             = new(nameof(PhoneRegionNotSupported).ToCamelCase(), "Phone numbers from this region are not supported.");
+
+
+        public static NexaError InvalidKycDocumentId
+            = new(nameof(InvalidKycDocumentId).ToCamelCase(), "Invalid kyc document id.");
+
+        public static NexaError InvalidImage
+            = new(nameof(InvalidImage).ToCamelCase(), "File is not a valid image.");
+
+        public static NexaError InvalidImageDimensions
+            = new(nameof(InvalidImageDimensions).ToCamelCase(), "Image dimensions must not exceed {0}x{1}.");
     }
 }

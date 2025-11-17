@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="ISO3166" Version="1.0.4" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Nexa.BuildingBlocks.Domain\Nexa.BuildingBlocks.Domain.csproj" />
   </ItemGroup>

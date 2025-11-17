@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
+using Nexa.CustomerManagement.Shared.Extensions;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentAttachment
 {
@@ -11,6 +13,15 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentA
     {
         public IFormFile Data { get; set; }
         public DocumentSide Side { get; set; }
+    }
+
+    public class UploadDocumentAttachmentCommandValidator : AbstractValidator<UploadDocumentAttachmentCommand>
+    {
+        public UploadDocumentAttachmentCommandValidator()
+        {
+            RuleFor(x => x.Data)
+                .IsValidImage();
+        }
     }
 }
 
