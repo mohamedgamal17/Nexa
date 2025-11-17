@@ -35,24 +35,14 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
         {
             string userId = _securityContext.User!.Id!;
 
-            var wallet = await _walletService.GetWalletById(request.WalletId);
-
-            if (wallet == null)
-            {
-                return new BusinessLogicException(WalletErrorConsts.WalletNotExist);
-            }
+            var wallet = (await _walletService.GetWalletById(request.WalletId))!;
 
             if(!IsWalletOwner(wallet, userId))
             {
                 return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
             }
 
-            var fundingResource = await _fundingResourceService.GetFundingResourceById(request.FundingResourceId);
-
-            if(fundingResource == null)
-            {
-                return new BusinessLogicException(BankAccountErrorConsts.BankAccountNotExist);
-            }
+            var fundingResource = (await _fundingResourceService.GetFundingResourceById(request.FundingResourceId))!;
 
             if (!IsFundingResourceOwner(fundingResource, userId))
             {

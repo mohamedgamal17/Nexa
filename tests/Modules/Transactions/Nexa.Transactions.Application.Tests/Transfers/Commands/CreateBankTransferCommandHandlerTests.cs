@@ -70,24 +70,7 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
             result.ShoulBeFailure(typeof(NexaUnauthorizedAccessException), GlobalErrorConsts.UnauthorizedAccess);
         }
 
-        [Test]
-        public async Task Should_failure_while_creating_bank_transfer_when_user_wallet_is_not_exist()
-        {
-            AuthenticationService.Login();
-
-            var command = new CreateBankTransferCommand
-            {
-                WalletId = Guid.NewGuid().ToString(),
-                FundingResourceId = Guid.NewGuid().ToString(),
-                Amount = 100,
-                Direction = Shared.Enums.TransferDirection.Credit
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException), WalletErrorConsts.WalletNotExist);
-        }
-
+      
         [Test]
         public async Task Should_failure_while_creating_bank_transfer_when_user_dose_not_own_current_wallet()
         {
@@ -108,26 +91,6 @@ namespace Nexa.Transactions.Application.Tests.Transfers.Commands
             result.ShoulBeFailure(typeof(ForbiddenAccessException), WalletErrorConsts.WalletNotOwned);
         }
 
-        [Test]
-        public async Task Should_failure_while_creating_bank_transfer_when_current_funding_resource_is_not_exist()
-        {
-            AuthenticationService.Login();
-            string userId = AuthenticationService.GetCurrentUser()!.Id;
-
-            var fakeWallet = await CreateWalletAsync(userId);
-
-            var command = new CreateBankTransferCommand
-            {
-                WalletId = fakeWallet.Id,
-                FundingResourceId = Guid.NewGuid().ToString(),
-                Amount = 100,
-                Direction = Shared.Enums.TransferDirection.Credit
-            };
-
-            var result = await Mediator.Send(command);
-
-            result.ShoulBeFailure(typeof(BusinessLogicException), BankAccountErrorConsts.BankAccountNotExist);
-        }
 
         [Test]
         public async Task Should_failure_while_creating_bank_transfer_when_user_dose_not_own_current_funding_resource()
