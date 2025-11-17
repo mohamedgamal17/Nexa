@@ -47,5 +47,11 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError InvalidImageDimensions
             = new(nameof(InvalidImageDimensions).ToCamelCase(), "Image dimensions must not exceed {0}x{1}.");
+
+        public static NexaError InvalidKycLiveVideoId
+            = new(nameof(InvalidKycLiveVideoId).ToCamelCase(), "KycLiveVideoId is not exist.");
+
+        public static NexaError InvalidReferrerUrl
+            = new(nameof(InvalidReferrerUrl).ToCamelCase(), "Referrer should be based on Google Chrome match pattern URLs");
     }
 }
