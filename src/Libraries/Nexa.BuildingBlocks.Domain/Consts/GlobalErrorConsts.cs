@@ -31,5 +31,11 @@ namespace Nexa.BuildingBlocks.Domain.Consts
 
         public static NexaError InvalidCountryCode
             = new(nameof(InvalidCountryCode).ToCamelCase(), "Invalid country code.");
+
+        public static NexaError FileSizeExceeded
+            = new(nameof(FileSizeExceeded).ToCamelCase(), "File size must not exceed {0} MB.");
+
+        public static NexaError InvalidFileExtension
+            = new(nameof(InvalidFileExtension).ToCamelCase(), "Invalid file extension.")
     }
 }
