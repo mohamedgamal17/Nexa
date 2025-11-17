@@ -23,11 +23,14 @@ namespace Nexa.BuildingBlocks.Domain.Consts
         public static NexaError GreaterThan
             = new(nameof(GreaterThan).ToCamelCase(), "Value must be greater than {0}");
 
+        public static NexaError GreaterThanOrEqualTo
+          = new(nameof(GreaterThanOrEqualTo), "Value must be greater than or equal to {0}");
+
         public static NexaError LessThan
             = new(nameof(LessThan).ToCamelCase(), "Value must be less than {0}");
 
-        public static NexaError LessThantOrEqualTo
-            = new(nameof(LessThantOrEqualTo), "Value must be less than or equal to {0}");
+        public static NexaError LessThanOrEqualTo
+            = new(nameof(LessThanOrEqualTo), "Value must be less than or equal to {0}");
 
         public static NexaError InvalidPhoneNumber
             = new NexaError(nameof(InvalidPhoneNumber).ToCamelCase(), "Invalid phone number");

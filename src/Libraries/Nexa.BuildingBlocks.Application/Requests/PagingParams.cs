@@ -14,9 +14,9 @@ namespace Nexa.BuildingBlocks.Application.Requests
         public PagingParamasValidator()
         {
             RuleFor(x => x.Skip)
-                .GreaterThan(0)
-                .WithErrorCode(string.Format(GlobalErrorConsts.GreaterThan.Code))
-                .WithMessage(string.Format(GlobalErrorConsts.GreaterThan.Message, 0));
+                .GreaterThanOrEqualTo(0)
+                .WithErrorCode(string.Format(GlobalErrorConsts.GreaterThanOrEqualTo.Code))
+                .WithMessage(string.Format(GlobalErrorConsts.GreaterThanOrEqualTo.Message, 0));
 
             RuleFor(x => x.Length)
                 .GreaterThan(0)
