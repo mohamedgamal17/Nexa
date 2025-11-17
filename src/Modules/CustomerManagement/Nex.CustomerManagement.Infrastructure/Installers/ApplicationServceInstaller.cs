@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.CustomerManagement.Application.Customers.Services;
@@ -13,6 +14,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Installers
                 .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Application.AssemblyReference.Assembly))
                 .RegisterPoliciesHandlerFromAssembly(Application.AssemblyReference.Assembly)
                 .RegisterFactoriesFromAssembly(Application.AssemblyReference.Assembly)
+                .AddValidatorsFromAssembly(Application.AssemblyReference.Assembly)
                 .AddTransient<ICustomerService, CustomerService>();
         }
     }
