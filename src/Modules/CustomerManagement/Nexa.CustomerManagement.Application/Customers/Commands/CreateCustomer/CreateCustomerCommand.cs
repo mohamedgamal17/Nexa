@@ -7,6 +7,7 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
+using Nexa.CustomerManagement.Shared.Extensions;
 using PhoneNumbers;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {
@@ -28,17 +29,8 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
         {
 
             RuleFor(x => x.PhoneNumber)
-                .MaximumLength(CustomerTableConstants.PhoneNumberLength)
-                .WithErrorCode(GlobalErrorConsts.MaxLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MaxLength.Message, x))
-                .Must(IsValidPhoneNumber)
-                .WithErrorCode(GlobalErrorConsts.InvalidPhoneNumber.Code)
-                .WithMessage(GlobalErrorConsts.InvalidPhoneNumber.Message)
-                .Must(IsPhoneNumberSupported)
-                .WithErrorCode(CustomerErrorConsts.PhoneRegionNotSupported.Code)
-                .WithMessage(CustomerErrorConsts.PhoneRegionNotSupported.Message);
+                .IsValidPhoneNumber();
   
-
             RuleFor(x => x.EmailAddress)
                 .NotEmpty()
                 .WithErrorCode(GlobalErrorConsts.Required.Code)
