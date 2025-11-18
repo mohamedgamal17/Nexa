@@ -1,6 +1,10 @@
-﻿using Nexa.BuildingBlocks.Application.Abstractions.Security;
+﻿using Nexa.Accounting.Shared.Consts;
+using Nexa.Accounting.Shared.Dtos;
+using Nexa.Accounting.Shared.Services;
+using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Dtos;
+using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
@@ -12,12 +16,14 @@ namespace Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers
     {
         private readonly ITransferRepository _transferRepository;
         private readonly ITransactionResponseFactory _transactionResponseFactory;
+        private readonly IWalletService _walletService;
         private readonly ISecurityContext _securityContext;
 
-        public ListUserTransfersQueryHandler(ITransferRepository transferRepository, ITransactionResponseFactory transactionResponseFactory, ISecurityContext securityContext)
+        public ListUserTransfersQueryHandler(ITransferRepository transferRepository, ITransactionResponseFactory transactionResponseFactory, IWalletService walletService, ISecurityContext securityContext)
         {
             _transferRepository = transferRepository;
             _transactionResponseFactory = transactionResponseFactory;
+            _walletService = walletService;
             _securityContext = securityContext;
         }
 
@@ -30,6 +36,14 @@ namespace Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers
 
             if(request.WalletId != null)
             {
+                var wallet = (await _walletService.GetWalletById(request.WalletId))!;
+
+                if (!IsWalletOwner(wallet, userId))
+                {
+                    return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
+
+                }
+
                 query = query.Where(x => x.WalletId == request.WalletId);
             }
 
@@ -37,5 +51,8 @@ namespace Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers
 
             return await _transactionResponseFactory.PreparePagingDto(result);
         }
+
+        private bool IsWalletOwner(WalletDto wallet, string userId) => wallet.UserId == userId;
+
     }
 }
