@@ -1,0 +1,40 @@
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          SA_PASSWORD: "Strong_Password_123!"
+          ACCEPT_EULA: "Y"
+        ports:
+          - 1433:1433
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      env:
+        ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=MyApp_TestDb;User Id=sa;Password=Strong_Password_123!;TrustServerCertificate=True;"
