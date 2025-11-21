@@ -46,7 +46,8 @@ namespace Nexa.Application.Tests
         {
             var builder = new ConfigurationManager()
                  .SetBasePath(Directory.GetCurrentDirectory())
-                 .AddJsonFile("appsettings.json", true, true);
+                 .AddJsonFile("appsettings.json", true, false)
+                 .AddEnvironmentVariables();
 
             return builder.Build();
         }
