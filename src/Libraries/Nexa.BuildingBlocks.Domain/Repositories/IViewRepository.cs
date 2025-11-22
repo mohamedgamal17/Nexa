@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Nexa.BuildingBlocks.Domain.NewFolder
+namespace Nexa.BuildingBlocks.Domain.Repositories
 {
     public interface IViewRepository<TView> where TView : class
     {

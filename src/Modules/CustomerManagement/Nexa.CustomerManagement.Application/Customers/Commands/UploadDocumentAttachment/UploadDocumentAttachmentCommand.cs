@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Nexa.BuildingBlocks.Application.Requests;
+using Nexa.CustomerManagement.Application.Extensions;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
-using Nexa.CustomerManagement.Shared.Extensions;
 
 namespace Nexa.CustomerManagement.Application.Customers.Commands.UploadDocumentAttachment
 {

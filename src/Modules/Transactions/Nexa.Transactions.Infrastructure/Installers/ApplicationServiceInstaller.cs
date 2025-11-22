@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.Transactions.Application.Transfers.Services;
 namespace Nexa.Transactions.Infrastructure.Installers

@@ -3,7 +3,7 @@ using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.CustomerManagement.Domain.Customers;
 using ISO3166;
 using Nexa.CustomerManagement.Shared.Consts;
-using Nexa.CustomerManagement.Shared.Extensions;
+using Nexa.CustomerManagement.Application.Extensions;
 namespace Nexa.CustomerManagement.Application.Customers.Models
 {
     public class AddressModel

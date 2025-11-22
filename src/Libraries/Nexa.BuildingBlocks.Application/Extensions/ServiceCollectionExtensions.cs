@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Nexa.BuildingBlocks.Application.Factories;
 using System.Reflection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Nexa.BuildingBlocks.Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -10,12 +11,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var types = assembly.GetTypes()
             .Where(x => x.IsClass)
-            .Where(x => x.GetInterfaces().Any(c =>c.IsGenericType && c.GetGenericTypeDefinition() == typeof(IResponseFactory<,>)))
+            .Where(x => x.GetInterfaces().Any(c => c.IsGenericType && c.GetGenericTypeDefinition() == typeof(IResponseFactory<,>)))
             .ToList();
 
             foreach (var type in types)
             {
-                services.AddTransient(type.GetInterfaces().Where(x=> !x.IsGenericType).First(), type);
+                services.AddTransient(type.GetInterfaces().Where(x => !x.IsGenericType).First(), type);
             }
 
             return services;

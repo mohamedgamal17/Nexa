@@ -1,13 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests.Extensions;
-using Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview;
+using Nexa.CustomerManagement.Application.Reviews.Commands.CompleteKycReview;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
-using Nexa.CustomerManagement.Shared.Events;
-
 namespace Nexa.CustomerManagement.Application.Tests.Reviews.Commands
 {
     [TestFixture]

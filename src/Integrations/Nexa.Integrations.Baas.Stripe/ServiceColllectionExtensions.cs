@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Nexa.Integrations.Baas.Abstractions.Configuration;
 using Nexa.Integrations.Baas.Abstractions.Services;
-using Nexa.Integrations.Baas.Stripe;
 using Nexa.Integrations.OpenBanking.Abstractions;
 using Stripe;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Nexa.Integrations.Baas.Stripe
 {
     public static class ServiceColllectionExtensions
     {
-        public static IServiceCollection AddStripeProvider(this IServiceCollection services 
-            , IConfiguration configuration , bool isDevlopment = true) 
+        public static IServiceCollection AddStripeProvider(this IServiceCollection services
+            , IConfiguration configuration, bool isDevlopment = true)
         {
             var stripeConfig = new BaasConfiguration();
 

@@ -1,11 +1,10 @@
 ﻿using FastEndpoints;
 using MediatR;
 using Nexa.BuildingBlocks.Domain.Results;
-using Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview;
+using Nexa.CustomerManagement.Application.Reviews.Commands.CompleteKycReview;
 using Nexa.CustomerManagement.Domain.KYC;
 using Nexa.CustomerManagement.Shared.Enums;
 using System.Text.Json;
-
 namespace Nexa.Host.Endpoints.Webhooks
 {
     public class ComplyCubeWebHookRequest

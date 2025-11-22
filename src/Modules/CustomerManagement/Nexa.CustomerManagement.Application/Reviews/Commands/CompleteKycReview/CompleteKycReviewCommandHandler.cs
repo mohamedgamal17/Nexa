@@ -6,7 +6,7 @@ using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.Reviews;
 using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Application.Reviews.Commands.UpdateKycReview
+namespace Nexa.CustomerManagement.Application.Reviews.Commands.CompleteKycReview
 {
     public class CompleteKycReviewCommandHandler : IApplicationRequestHandler<CompleteKycReviewCommand, Unit>
     {

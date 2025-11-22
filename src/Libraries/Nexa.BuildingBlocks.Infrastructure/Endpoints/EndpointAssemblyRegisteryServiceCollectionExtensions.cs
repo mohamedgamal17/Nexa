@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Nexa.BuildingBlocks.Application.Extensions;
 using System.Reflection;
 namespace Nexa.BuildingBlocks.Infrastructure.Endpoints
 {

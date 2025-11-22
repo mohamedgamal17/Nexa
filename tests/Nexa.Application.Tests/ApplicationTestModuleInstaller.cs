@@ -13,6 +13,7 @@ using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.Integrations.Baas.Abstractions.Services;
 using Nexa.Integrations.OpenBanking.Abstractions;
+using Vogel.BuildingBlocks.EntityFramework.Extensions;
 namespace Nexa.Application.Tests
 {
     public class ApplicationTestModuleInstaller : IModuleInstaller

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.CustomerManagement.Application.Customers.Services;
 using Nexa.CustomerManagement.Shared.Services;

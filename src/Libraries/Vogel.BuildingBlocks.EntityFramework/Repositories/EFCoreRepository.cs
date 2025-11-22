@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nexa.BuildingBlocks.Domain.NewFolder;
 using Nexa.BuildingBlocks.Domain;
 using System.Linq.Expressions;
+using Nexa.BuildingBlocks.Domain.Repositories;
 namespace Vogel.BuildingBlocks.EntityFramework.Repositories
 {
     public abstract class EFCoreRepository<TEntity, TContext> : IRepository<TEntity>

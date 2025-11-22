@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.Application.Tests;
+using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using Nexa.CustomerManagement.Application.Tests.Fakers;

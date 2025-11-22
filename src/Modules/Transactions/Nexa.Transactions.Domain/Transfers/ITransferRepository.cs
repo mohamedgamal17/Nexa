@@ -1,4 +1,4 @@
-﻿using Nexa.BuildingBlocks.Domain.NewFolder;
+﻿using Nexa.BuildingBlocks.Domain.Repositories;
 
 namespace Nexa.Transactions.Domain.Transfers
 {

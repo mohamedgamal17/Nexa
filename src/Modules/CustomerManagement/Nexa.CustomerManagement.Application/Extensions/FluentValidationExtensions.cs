@@ -8,13 +8,13 @@ using PhoneNumbers;
 using SixLabors.ImageSharp;
 using System.Linq;
 using System.Numerics;
-namespace Nexa.CustomerManagement.Shared.Extensions
+namespace Nexa.CustomerManagement.Application.Extensions
 {
     public static class FluentValidationExtensions
     {
         public static IRuleBuilderOptionsConditions<T, string?> IsValidCountryCode<T>(
                 this IRuleBuilder<T, string?> ruleBuilder,
-                List<string>? supportedCountries =  null
+                List<string>? supportedCountries = null
             )
         {
 
@@ -32,7 +32,7 @@ namespace Nexa.CustomerManagement.Shared.Extensions
                     context.AddFailure(new ValidationFailure
                     {
                         ErrorCode = GlobalErrorConsts.MinLength.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.MinLength.Message,2)
+                        ErrorMessage = string.Format(GlobalErrorConsts.MinLength.Message, 2)
                     });
 
                     return;
@@ -40,8 +40,11 @@ namespace Nexa.CustomerManagement.Shared.Extensions
 
                 if (code.Length > 3)
                 {
-                    context.AddFailure(new ValidationFailure { ErrorCode = GlobalErrorConsts.MaxLength.Code, 
-                        ErrorMessage = string.Format( GlobalErrorConsts.MaxLength.Message , 3) });
+                    context.AddFailure(new ValidationFailure
+                    {
+                        ErrorCode = GlobalErrorConsts.MaxLength.Code,
+                        ErrorMessage = string.Format(GlobalErrorConsts.MaxLength.Message, 3)
+                    });
                     return;
                 }
 
@@ -52,17 +55,20 @@ namespace Nexa.CustomerManagement.Shared.Extensions
                     c.ThreeLetterCode == code ||
                     c.NumericCode == code);
 
-                if(country == null)
+                if (country == null)
                 {
-                    context.AddFailure(new ValidationFailure { ErrorCode = GlobalErrorConsts.InvalidCountryCode.Code, 
-                        ErrorMessage = GlobalErrorConsts.InvalidCountryCode.Message });
+                    context.AddFailure(new ValidationFailure
+                    {
+                        ErrorCode = GlobalErrorConsts.InvalidCountryCode.Code,
+                        ErrorMessage = GlobalErrorConsts.InvalidCountryCode.Message
+                    });
 
                     return;
                 }
 
-                
 
-                if(supportedCountries != null)
+
+                if (supportedCountries != null)
                 {
                     bool isSupportedCountry = supportedCountries.Any(x => x == country.TwoLetterCode || x == country.ThreeLetterCode);
 
@@ -70,20 +76,20 @@ namespace Nexa.CustomerManagement.Shared.Extensions
                     {
                         context.AddFailure(new ValidationFailure { ErrorCode = CustomerErrorConsts.UnsupportedRegion.Code, ErrorMessage = CustomerErrorConsts.UnsupportedRegion.Message });
                     }
-                }            
+                }
             });
         }
 
         public static IRuleBuilderOptionsConditions<T, IFormFile?> IsValidImage<T>(
                 this IRuleBuilder<T, IFormFile?> ruleBuilder,
-              
+
                 long maxFileSizeMB = 5,
                 List<string>? allowedExtensions = null,
                 int maxWidth = 5000,
                 int maxHeight = 5000
             )
         {
-            allowedExtensions ??= [ ".jpg", ".jpeg", ".png", ".gif" ];
+            allowedExtensions ??= [".jpg", ".jpeg", ".png", ".gif"];
 
             return ruleBuilder.Custom((file, context) =>
             {
@@ -222,6 +228,6 @@ namespace Nexa.CustomerManagement.Shared.Extensions
 
         }
 
-    }   
+    }
 
 }

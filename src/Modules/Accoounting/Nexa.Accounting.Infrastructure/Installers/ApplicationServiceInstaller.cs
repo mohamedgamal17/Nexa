@@ -5,6 +5,7 @@ using Nexa.Accounting.Application.Wallets.Services;
 using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
 using FluentValidation;
+using Nexa.BuildingBlocks.Application.Extensions;
 namespace Nexa.Accounting.Infrastructure.Installers
 {
     public class ApplicationServiceInstaller : IServiceInstaller

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.CustomerManagement.Application.Customers.Models;
+using Nexa.CustomerManagement.Application.Extensions;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Dtos;
 using Nexa.CustomerManagement.Shared.Enums;
-using Nexa.CustomerManagement.Shared.Extensions;
 using PhoneNumbers;
 namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
 {

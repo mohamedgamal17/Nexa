@@ -6,6 +6,7 @@ using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Endpoints;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
+using Nexa.Integrations.Baas.Stripe;
 namespace Nexa.Host
 {
     public class HostModuleInstaller : IModuleInstaller

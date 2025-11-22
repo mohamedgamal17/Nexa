@@ -1,10 +1,12 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Vogel.BuildingBlocks.EntityFramework.Extensions
 {
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection RegisterEfCoreInterceptors(this IServiceCollection services)
         {
-            services.AddTransient<TimeProvider>(_ => TimeProvider.System);
+            services.AddTransient(_ => TimeProvider.System);
 
             return services;
         }
