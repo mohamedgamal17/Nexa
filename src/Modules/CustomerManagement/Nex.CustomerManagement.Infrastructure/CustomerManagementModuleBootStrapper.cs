@@ -7,11 +7,24 @@ namespace Nexa.CustomerManagement.Infrastructure
 {
     public class CustomerManagementModuleBootStrapper : IModuleBootstrapper
     {
+        private static readonly SemaphoreSlim DbCreationSemaphore = new(1, 1);
+
         public async Task Bootstrap(IServiceProvider serviceProvider)
         {
             var dbContext = serviceProvider.GetRequiredService<CustomerManagementDbContext>();
 
-            await dbContext.Database.MigrateAsync();
+            await DbCreationSemaphore.WaitAsync();
+
+            try
+            {
+                await dbContext.Database.MigrateAsync();
+
+            }
+            finally
+            {
+                DbCreationSemaphore.Release();
+            }
+
         }
     }
 }
