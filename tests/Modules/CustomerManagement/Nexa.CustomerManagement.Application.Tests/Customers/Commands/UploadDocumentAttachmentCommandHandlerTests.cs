@@ -95,7 +95,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             string userId = AuthenticationService.GetCurrentUser()!.Id;
 
-            var fakeCustomer = CreateCustomerWithoutInfo(userId);
+            var fakeCustomer = await CreateCustomerWithoutInfo(userId);
 
             var command = new UploadDocumentAttachmentCommand
             {

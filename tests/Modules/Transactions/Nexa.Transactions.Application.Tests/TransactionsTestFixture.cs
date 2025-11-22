@@ -6,11 +6,13 @@ using Respawn.Graph;
 using MassTransit.Testing;
 namespace Nexa.Transactions.Application.Tests
 {
+    [TestFixture]
     public class TransactionsTestFixture : TestFixture
     {
         protected ITestHarness TestHarness { get; private set; } = null!;
         protected override Task SetupAsync(IServiceCollection services, IConfiguration configuration)
         {
+            Configuration["ConnectionStrings:Default"] = MsSqlServerContainerFixture.ConnectionString;
             services.InstallModule<TransactionsTestModuleInstaller>(configuration);
             return Task.CompletedTask;
         }

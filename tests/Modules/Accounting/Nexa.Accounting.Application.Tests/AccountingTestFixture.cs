@@ -10,24 +10,37 @@ using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Respawn.Graph;
 using Nexa.Accounting.Application.Tests.Fakers;
 using MassTransit.Testing;
+using Testcontainers.MsSql;
+using DotNet.Testcontainers.Builders;
 namespace Nexa.Accounting.Application.Tests
 {
 
+    [TestFixture]
     public  class AccountingTestFixture : TestFixture
     {
         protected ITestHarness TestHarness { get; private set; } = null!;
+
+
         protected override Task SetupAsync(IServiceCollection services, IConfiguration configuration)
         {
+            Configuration["ConnectionStrings:Default"] = MsSqlServerContainerFixture.ConnectionString;
+
             services.InstallModule<AccountingApplicationTestModuleInstaller>(configuration);
+
             return Task.CompletedTask;
         }
         protected override async Task InitializeAsync(IServiceProvider services)
         {
             TestHarness = services.GetTestHarness();
+
             await services.RunModulesBootstrapperAsync();
+
             await ResetSqlDb(services);
+
             await SeedData(services);
         }
+
+
 
       
         public async Task SeedData(IServiceProvider services)
@@ -56,6 +69,7 @@ namespace Nexa.Accounting.Application.Tests
         protected override async Task ShutdownAsync(IServiceProvider services)
         {
             await ResetSqlDb(services);
+
         }
 
         protected async Task ResetSqlDb(IServiceProvider services)

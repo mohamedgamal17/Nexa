@@ -63,8 +63,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transactions", "Transactions", "{652810BE-012D-4844-BC07-79FFD1D54A87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Application.Tests", "tests\Modules\Transactions\Nexa.Transactions.Application.Tests\Nexa.Transactions.Application.Tests.csproj", "{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Host", "src\Nexa.Host\Nexa.Host.csproj", "{27171FBB-EA58-4B2F-851B-582BECA8AF7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.CustomerManagement.Presentation", "src\Modules\CustomerManagement\Nexa.CustomerManagement.Presentation\Nexa.CustomerManagement.Presentation.csproj", "{A9BAAAA4-371A-46F6-9F38-9E70BB92071F}"
@@ -79,9 +77,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.Baas.Abst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.Baas.Stripe", "src\Integrations\Nexa.Integrations.Baas.Stripe\Nexa.Integrations.Baas.Stripe.csproj", "{2B9D4023-835C-4817-8CB7-9C5E50934D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Abstractions", "src\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj", "{F6507D24-FDBA-4722-B821-89B5D5E76603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.OpenBanking.Abstractions", "src\Integrations\Nexa.Integrations.OpenBanking.Abstractions\Nexa.Integrations.OpenBanking.Abstractions.csproj", "{F6507D24-FDBA-4722-B821-89B5D5E76603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexa.Integrations.OpenBanking.Plaid", "src\Integrations\Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj", "{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Integrations.OpenBanking.Plaid", "src\Integrations\Nexa.Integrations.OpenBanking.Plaid\Nexa.Integrations.OpenBanking.Plaid.csproj", "{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexa.Transactions.Application.Tests", "tests\Modules\Transactions\Nexa.Transactions.Application.Tests\Nexa.Transactions.Application.Tests.csproj", "{C486F4DA-CAD5-49DD-B802-589CDCBA99CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,10 +165,6 @@ Global
 		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27171FBB-EA58-4B2F-851B-582BECA8AF7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27171FBB-EA58-4B2F-851B-582BECA8AF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27171FBB-EA58-4B2F-851B-582BECA8AF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -201,6 +197,10 @@ Global
 		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C486F4DA-CAD5-49DD-B802-589CDCBA99CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C486F4DA-CAD5-49DD-B802-589CDCBA99CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C486F4DA-CAD5-49DD-B802-589CDCBA99CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C486F4DA-CAD5-49DD-B802-589CDCBA99CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,7 +234,6 @@ Global
 		{503555FE-4B67-4AAC-92C3-48370C5627A3} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
 		{A170F3C6-EE6B-4AD3-8EF9-BC5B6F6CDF1B} = {68A3058D-262A-4FE6-9365-0598E9CBB791}
 		{652810BE-012D-4844-BC07-79FFD1D54A87} = {238191CF-DF41-44D5-A824-70EF58D03A27}
-		{B00FFC7C-EA2C-49EC-825D-3B4FF034B9DA} = {652810BE-012D-4844-BC07-79FFD1D54A87}
 		{27171FBB-EA58-4B2F-851B-582BECA8AF7C} = {2030EAB6-A932-4DBA-A14A-7EAE825E0E33}
 		{A9BAAAA4-371A-46F6-9F38-9E70BB92071F} = {8D348BF8-0764-4194-A3A5-335FE82C62DF}
 		{E5356042-272B-4A56-9958-228B6D86D83E} = {D36F3B52-E4B5-485F-90CC-2CA29A128FEC}
@@ -244,6 +243,7 @@ Global
 		{2B9D4023-835C-4817-8CB7-9C5E50934D0B} = {159B8924-8491-4847-B112-937CE2AE0A3B}
 		{F6507D24-FDBA-4722-B821-89B5D5E76603} = {159B8924-8491-4847-B112-937CE2AE0A3B}
 		{FEEA5C2B-82A0-4401-98B8-54BCF2CFFFF1} = {159B8924-8491-4847-B112-937CE2AE0A3B}
+		{C486F4DA-CAD5-49DD-B802-589CDCBA99CF} = {652810BE-012D-4844-BC07-79FFD1D54A87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA213B3C-3D3E-437E-A86D-3FB87D0CE0A3}
