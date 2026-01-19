@@ -24,6 +24,7 @@ namespace Nexa.Accounting.Application.Tests
         protected override Task SetupAsync(IServiceCollection services, IConfiguration configuration)
         {
             Configuration["ConnectionStrings:Default"] = MsSqlServerContainerFixture.ConnectionString;
+            Configuration["WalletHmacSecret"] = Guid.NewGuid().ToString();
 
             services.InstallModule<AccountingApplicationTestModuleInstaller>(configuration);
 
