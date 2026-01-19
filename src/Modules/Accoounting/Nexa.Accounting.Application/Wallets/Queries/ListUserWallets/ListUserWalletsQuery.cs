@@ -9,7 +9,7 @@ namespace Nexa.Accounting.Application.Wallets.Queries.ListUserWallets
     [Authorize]
     public class ListUserWalletsQuery : PagingParams, IQuery<Paging<WalletDto>>
     {
-
+        public string? Number { get; set; }
     }
 
     public class ListUserWalletsQueryValidator : AbstractValidator<ListUserWalletsQuery>
@@ -17,6 +17,10 @@ namespace Nexa.Accounting.Application.Wallets.Queries.ListUserWallets
         public ListUserWalletsQueryValidator()
         {
             Include(new PagingParamasValidator<ListUserWalletsQuery>());
+
+            RuleFor(x => x.Number)
+                .MaximumLength(256)
+                .When(x => x.Number != null);
         }
     }
 }

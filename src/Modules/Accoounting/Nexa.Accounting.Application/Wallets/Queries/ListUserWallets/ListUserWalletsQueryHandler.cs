@@ -28,9 +28,18 @@ namespace Nexa.Accounting.Application.Wallets.Queries.ListUserWallets
         {
             string userId = _securityContext.User!.Id!;
 
-            var results = await _walletRepository.QueryView()
-                .Where(x => x.UserId == userId)
-                .ToPaged(request.Skip, request.Length);
+            var query = _walletRepository.QueryView()
+                 .Where(x => x.UserId == userId);
+
+            if(request.Number != null)
+            {
+                query = query.Where(x =>
+                    x.Number.StartsWith(request.Number) ||
+                    x.Number == request.Number
+                );
+            }
+
+            var results = await query.ToPaged(request.Skip, request.Length);
 
             return await _walletResponseFactory.PreparePagingDto(results);
         }
