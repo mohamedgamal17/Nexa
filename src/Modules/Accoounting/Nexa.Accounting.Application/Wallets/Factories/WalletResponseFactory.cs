@@ -1,11 +1,22 @@
 ﻿using Nexa.Accounting.Domain.Wallets;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Application.Factories;
+using Nexa.BuildingBlocks.Domain.Dtos;
 
 namespace Nexa.Accounting.Application.Wallets.Factories
 {
     public class WalletResponseFactory : ResponseFactory<WalletView, WalletDto>, IWalletResponseFactory
     {
+
+        public async Task<Paging<WalletListDto>> PreparePagingWalletListDto(Paging<WalletView> paged)
+        {
+            var data = await PrepareWalletListDto(paged.Data.ToList());
+
+            var reuslt = new Paging<WalletListDto>() { Data = data, Info = paged.Info };
+
+            return reuslt;
+        }
+
         public async Task<List<WalletListDto>> PrepareWalletListDto(List<WalletView> wallets)
         {
             var tasks = wallets.Select(PrepareWalletListDto);
