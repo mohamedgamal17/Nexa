@@ -10,6 +10,8 @@ namespace Nexa.Accounting.Application.Wallets.Queries.ListWallets
     public class ListWalletQuery : PagingParams , IQuery<Paging<WalletListDto>>
     {
         public string? Number { get; set; }
+        
+        public bool ExcludeOwned { get; set; }
     }
 
     public class ListWalletQueryValidator : AbstractValidator<ListWalletQuery>
