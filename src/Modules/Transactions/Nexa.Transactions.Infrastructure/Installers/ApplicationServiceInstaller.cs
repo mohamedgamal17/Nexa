@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.BuildingBlocks.Application.Extensions;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
@@ -13,6 +14,7 @@ namespace Nexa.Transactions.Infrastructure.Installers
                 .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Application.AssemblyReference.Assembly))
                 .RegisterPoliciesHandlerFromAssembly(Application.AssemblyReference.Assembly)
                 .RegisterFactoriesFromAssembly(Application.AssemblyReference.Assembly)
+                .AddValidatorsFromAssembly(Application.AssemblyReference.Assembly)
                 .AddTransient<ITransferNumberGeneratorService, TransferNumberGeneratorService>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using FluentValidation;
 using MediatR;
 using Nexa.Accounting.Application.Tokens.Commands.CompleteLinkToken;
 using Nexa.Accounting.Shared.Dtos;
@@ -22,6 +23,19 @@ namespace Nexa.Accounting.Presentation.Endpoints.Banking
 
         public override async Task HandleAsync(CompleteLinkTokenCommand req, CancellationToken ct)
         {
+            var validator = Resolve<IValidator<CompleteLinkTokenCommand>>();
+
+            var validationResult = await validator.ValidateAsync(req);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = validationResult.ValidationFailure();
+
+                await SendResultAsync(errorResponse);
+
+                return;
+            }
+
             var result = await _mediator.Send(req);
 
             var response = result.ToOk();

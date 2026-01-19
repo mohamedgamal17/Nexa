@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
@@ -24,6 +25,19 @@ namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers
 
         public override async Task HandleAsync(CreateNetworkTransferCommand req, CancellationToken ct)
         {
+            var validator = Resolve<IValidator<CreateNetworkTransferCommand>>();
+
+            var validationResult = await validator.ValidateAsync(req);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = validationResult.ValidationFailure();
+
+                await SendResultAsync(errorResponse);
+
+                return;
+            }
+
             var result = await _mediator.Send(req);
 
             var response = result.ToOk();

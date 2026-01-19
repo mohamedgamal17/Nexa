@@ -1,6 +1,8 @@
 ﻿using FastEndpoints;
+using FluentValidation;
 using MediatR;
 using Nexa.Accounting.Application.FundingResources.Queries.ListUserBankAccounts;
+using Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
@@ -24,6 +26,19 @@ namespace Nexa.Accounting.Presentation.Endpoints.Banks
 
         public override async Task HandleAsync(ListUserBankAccountsQuery req, CancellationToken ct)
         {
+            var validator = Resolve<IValidator<ListUserBankAccountsQuery>>();
+
+            var validationResult = await validator.ValidateAsync(req);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = validationResult.ValidationFailure();
+
+                await SendResultAsync(errorResponse);
+
+                return;
+            }
+
             var result = await _mediator.Send(req);
 
             var response = result.ToOk();

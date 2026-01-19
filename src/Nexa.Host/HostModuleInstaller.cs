@@ -119,7 +119,7 @@ namespace Nexa.Host
             services.AddFastEndpoints(opt =>
             {
                 opt.Assemblies = assemblies;
-                opt.IncludeAbstractValidators = true;
+
             });
         }
 

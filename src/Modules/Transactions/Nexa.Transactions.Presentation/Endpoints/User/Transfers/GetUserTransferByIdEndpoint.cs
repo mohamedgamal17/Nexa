@@ -24,6 +24,7 @@ namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers
 
         public override async Task HandleAsync(GetUserTransferByIdQuery req, CancellationToken ct)
         {
+
             var result = await _mediator.Send(req);
 
             var response = result.ToOk();

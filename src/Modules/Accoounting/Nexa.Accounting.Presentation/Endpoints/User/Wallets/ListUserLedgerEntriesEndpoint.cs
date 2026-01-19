@@ -1,6 +1,8 @@
 ﻿using FastEndpoints;
+using FluentValidation;
 using MediatR;
 using Nexa.Accounting.Application.Wallets.Queries.ListUserLedgerEntry;
+using Nexa.Accounting.Application.Wallets.Queries.ListUserWallets;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
@@ -25,6 +27,18 @@ namespace Nexa.Accounting.Presentation.Endpoints.User.Wallets
 
         public override async Task HandleAsync(ListUserLedgerEntriesQuery req, CancellationToken ct)
         {
+            var validator = Resolve<IValidator<ListUserLedgerEntriesQuery>>();
+
+            var validationResult = await validator.ValidateAsync(req);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = validationResult.ValidationFailure();
+
+                await SendResultAsync(errorResponse);
+
+                return;
+            }
             var result = await _mediator.Send(req);
 
             var response = result.ToOk();

@@ -20,8 +20,8 @@ namespace Nexa.Accounting.Infrastructure.Installers
                 
             });
 
-            services.AddTransient(typeof(IAccountingRepository<>), typeof(AccountingRepository<>))
-                .AddTransient<IWalletRepository, WalletRepository>();
+            services.AddScoped(typeof(IAccountingRepository<>), typeof(AccountingRepository<>))
+                .AddScoped<IWalletRepository, WalletRepository>();
         }
     }
 }

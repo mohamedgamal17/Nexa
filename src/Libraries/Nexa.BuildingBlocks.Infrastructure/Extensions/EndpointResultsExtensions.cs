@@ -1,10 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
 namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 {
     public static class EndpointResultsExtensions
     {
+        public static IResult ValidationFailure(this ValidationResult result)
+        {
+            if (result.IsValid)
+            {
+                throw new InvalidOperationException("Validation result must be invalid to send bad reqeust");
+            }
+
+            var validationErrors = new ValidationProblemDetails(result.ToDictionary());
+            return Results.BadRequest(validationErrors);
+        }
         public static IResult ToOk<T>(this Result<T> result)
         {
             if (result.IsFailure)
@@ -47,7 +58,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
             return Results.NoContent();
         }
 
-
+   
         private static IResult HandleFailureResults<T>(Result<T> result)
         {
             Exception exception = result.Exception!;
