@@ -13,7 +13,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
       
                 ep.Description(x =>
                     x
-                    .WithGroupName("Customers")
+                    .WithTags("Customers")
                     .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))

@@ -22,7 +22,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.User.Wallets
         {
             Get("{walletId}/ledgerentries");
 
-            Group<WalletRoutingGroup>();
+            Group<UserWalletRoutingGroup>();
         }
 
         public override async Task HandleAsync(ListUserLedgerEntriesQuery req, CancellationToken ct)

@@ -24,7 +24,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Tokens
             Post("kyc/tokens");
 
             Description(x =>
-                x.WithGroupName("Tokens")
+                x.WithTags("Kyc")
                   .Produces(StatusCodes.Status200OK, typeof(TokenDto))
                   .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                   .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))

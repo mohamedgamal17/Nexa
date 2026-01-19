@@ -13,7 +13,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.Banking
 
                 ep.Description(x =>
                     x
-                    .WithGroupName("Tokens")
+                    .WithTags("Banking")
                     .Produces(StatusCodes.Status200OK, typeof(BankingTokenDto))
                     .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))

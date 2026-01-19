@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace Nexa.Accounting.Presentation.Endpoints.User.Wallets
 {
-    public class WalletRoutingGroup : Group
+    public class UserWalletRoutingGroup : Group
     {
-        public WalletRoutingGroup()
+        public UserWalletRoutingGroup()
         {
             Configure("user/wallets", ep =>
             {
 
                 ep.Description(x =>
                     x
-                    .WithGroupName("Wallets")
+                    .WithTags("Wallets")
                     .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))

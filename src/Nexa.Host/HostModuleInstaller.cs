@@ -100,7 +100,9 @@ namespace Nexa.Host
         {
             services.SwaggerDocument(opt =>
             {
-                opt.AutoTagPathSegmentIndex = 2;
+                opt.AutoTagPathSegmentIndex = 0;
+                
+                opt.FlattenSchema = true;
             });
         }
 

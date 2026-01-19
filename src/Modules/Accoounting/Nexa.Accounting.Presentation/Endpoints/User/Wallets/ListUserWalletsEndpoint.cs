@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Nexa.Accounting.Application.FundingResources.Queries.ListUserBankAccounts;
 using Nexa.Accounting.Application.Wallets.Queries.ListUserWallets;
+using Nexa.Accounting.Presentation.Endpoints.Wallets;
 using Nexa.Accounting.Shared.Dtos;
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
@@ -22,7 +23,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.User.Wallets
         {
             Get("");
 
-            Group<WalletRoutingGroup>();
+            Group<UserWalletRoutingGroup>();
         }
 
 

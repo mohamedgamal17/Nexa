@@ -14,6 +14,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.Banks
                 ep.Description(x =>
                     x
                     .WithGroupName("Banks")
+                    .WithTags("Banks")
                     .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status403Forbidden, typeof(ProblemDetails))
                     .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))

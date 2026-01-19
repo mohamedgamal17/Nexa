@@ -48,7 +48,8 @@ app.UseHttpsRedirection()
 
     .UseEndpoints(endpoint =>
     {
-        endpoint.MapFastEndpoints();
+        endpoint.MapFastEndpoints(e=>
+        e.Endpoints.ShortNames = true);
     });
 
 await app.RunModulesBootstrapperAsync();
