@@ -36,7 +36,7 @@ namespace Nexa.Transactions.Application.Transfers.Consumer
         {
             var wallet = await _walletService.GetWalletById(context.Message.WalletId);
 
-            var customer = await _customerService.GetCustomerByUserId(context.Message.UserId);
+            var customer = await _customerService.GetByUserId(context.Message.UserId);
 
             var fundingResource = await _fundingResourceService.GetFundingResourceById(context.Message.FundingResourceId);
 

@@ -10,34 +10,61 @@ namespace Nexa.Accounting.Application.Tests.Fakers
 
         private  readonly Faker _faker = new Faker();
 
-        public Task<CustomerDto?> GetCustomerById(string id, CancellationToken cancellationToken = default)
+        public Task<CustomerDto?> GetById(string id, CancellationToken cancellationToken = default)
         {
             var customer = _customerDb.SingleOrDefault(x => x.Id == id);
 
             return Task.FromResult(customer);
         }
 
-        public Task<CustomerDto?> GetCustomerByUserId(string userId, CancellationToken cancellationToken = default)
+        public Task<CustomerDto?> GetByUserId(string userId, CancellationToken cancellationToken = default)
         {
             var customer = _customerDb.SingleOrDefault(x => x.UserId == userId);
 
             return Task.FromResult(customer);
         }
 
-        public Task<List<CustomerDto>> ListCustomerByIds(List<string> ids, CancellationToken cancellationToken = default)
+        public Task<List<CustomerDto>> ListByIds(List<string> ids, CancellationToken cancellationToken = default)
         {
             var customers = _customerDb.Where(x=> ids.Contains(x.Id)).ToList();
 
             return Task.FromResult(customers);
         }
 
-        public Task<List<CustomerDto>> ListCustomerByUserIds(List<string> userIds, CancellationToken cancellationToken = default)
+        public Task<List<CustomerDto>> ListByUserIds(List<string> userIds, CancellationToken cancellationToken = default)
         {
             var customers = _customerDb.Where(x => userIds.Contains(x.UserId)).ToList();
 
             return Task.FromResult(customers);
         }
 
+        public Task<List<CustomerPublicDto>> ListPublicByIds(List<string> ids, CancellationToken cancellationToken = default)
+        {
+            var customers = _customerDb.Where(x => ids.Contains(x.Id)).ToList();
+
+            return Task.FromResult(customers.Select(PreparePublicDto).ToList());
+        }
+
+        public Task<List<CustomerPublicDto>> ListPublicByUserIds(List<string> userIds, CancellationToken cancellationToken = default)
+        {
+            var customers = _customerDb.Where(x => userIds.Contains(x.Id)).ToList();
+
+            return Task.FromResult(customers.Select(PreparePublicDto).ToList());
+        }
+
+        public Task<CustomerPublicDto?> GetPublicById(string id, CancellationToken cancellationToken = default)
+        {
+            var customer = _customerDb.SingleOrDefault(x => x.Id == id);
+
+            return Task.FromResult(customer != null ? PreparePublicDto(customer) : null);
+        }
+
+        public Task<CustomerPublicDto?> GetPublicByUserId(string userId, CancellationToken cancellationToken = default)
+        {
+            var customer = _customerDb.SingleOrDefault(x => x.UserId == userId);
+
+            return Task.FromResult(customer != null ? PreparePublicDto(customer) : null);
+        }
         public CustomerDto AddCustomer(CustomerDto customer)
         {
             _customerDb.Add(customer);
@@ -68,5 +95,22 @@ namespace Nexa.Accounting.Application.Tests.Fakers
 
             return dto;
         }
+
+        private CustomerPublicDto PreparePublicDto(CustomerDto dto)
+        {
+            return new CustomerPublicDto
+            {
+                Id = dto.Id,
+                UserId = dto.UserId,
+                Info = new CustomerInfoPublicDto
+                {
+                    FirstName = dto.Info.FirstName,
+                    LastName = dto.Info.LastName,
+                    BirthDate = dto.Info.BirthDate,
+                    Gender = dto.Info.Gender
+                }
+            };
+        }
+
     }
 }

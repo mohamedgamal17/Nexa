@@ -31,7 +31,7 @@ namespace Nexa.Accounting.Application.Tokens.Commands.CreateLinkToken
         {
             string userId = _securityContext.User!.Id;
 
-            var customer = await _customerService.GetCustomerByUserId(userId);
+            var customer = await _customerService.GetByUserId(userId);
 
             if (customer == null)
             {

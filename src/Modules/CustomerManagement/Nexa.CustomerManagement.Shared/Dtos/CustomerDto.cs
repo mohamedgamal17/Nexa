@@ -14,4 +14,10 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public DocumentDto Document { get; set; }
         public CustomerStatus Status { get; set; }
     }
+
+    public class CustomerPublicDto : EntityDto
+    {
+        public string UserId { get; set; }
+        public CustomerInfoPublicDto Info { get; set;}
+    }
 }
