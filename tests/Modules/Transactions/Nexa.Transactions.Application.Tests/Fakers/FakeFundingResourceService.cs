@@ -13,11 +13,20 @@ namespace Nexa.Transactions.Application.Tests.Fakers
             return Task.FromResult(bankAccount);
         }
 
+        public Task<List<BankAccountDto>> ListByIds(List<string> ids, CancellationToken cancellationToken)
+        {
+            var result = _db.Where(x => ids.Contains(x.Id)).ToList();
+
+            return Task.FromResult(result);
+        }
+
         public  Task<BankAccountDto> AddFundingResource(BankAccountDto bankAccountDto , CancellationToken cancellationToken = default)
         {
             _db.Add(bankAccountDto);
 
             return Task.FromResult(bankAccountDto);
         }
+
+      
     }
 }
