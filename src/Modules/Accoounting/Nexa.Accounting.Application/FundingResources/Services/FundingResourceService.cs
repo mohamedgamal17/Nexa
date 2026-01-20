@@ -17,7 +17,7 @@ namespace Nexa.Accounting.Application.FundingResources.Services
             _bankAccountRepository = bankAccountRepository;
             _bankAccountResponseFactory = bankAccountResponseFactory;
         }
-        public async Task<List<BankAccountDto>> ListByIds(List<string> ids, CancellationToken cancellationToken)
+        public async Task<List<BankAccountDto>> ListByIds(List<string> ids, CancellationToken cancellationToken = default)
         {
             var banksAccounts = await _bankAccountRepository.AsQuerable()
                 .Where(x => ids.Contains(x.Id))
