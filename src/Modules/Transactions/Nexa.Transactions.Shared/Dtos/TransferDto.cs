@@ -14,8 +14,8 @@ namespace Nexa.Transactions.Shared.Dtos
         public string? ReciverId { get; set; }
         public WalletListDto? Reciver { get; set; }
         public string? FundingResourceId { get; set; }
+        public BankAccountDto? FundingResource { get; set; }
         public TransferDirection? Direction { get; set; }
-
         public BankTransferType? BankTransferType { get; set; }
         public TransferStatus Status { get; set; }
         public DateTime? CompletedAt { get; set; }
