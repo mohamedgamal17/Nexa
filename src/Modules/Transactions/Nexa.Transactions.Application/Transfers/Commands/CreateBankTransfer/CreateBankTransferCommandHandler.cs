@@ -42,7 +42,7 @@ namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer
                 return new ForbiddenAccessException(WalletErrorConsts.WalletNotOwned);
             }
 
-            var fundingResource = (await _fundingResourceService.GetFundingResourceById(request.FundingResourceId))!;
+            var fundingResource = (await _fundingResourceService.GetById(request.FundingResourceId))!;
 
             if (!IsFundingResourceOwner(fundingResource, userId))
             {

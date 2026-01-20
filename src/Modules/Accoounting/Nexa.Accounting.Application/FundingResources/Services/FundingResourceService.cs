@@ -17,7 +17,7 @@ namespace Nexa.Accounting.Application.FundingResources.Services
             _bankAccountResponseFactory = bankAccountResponseFactory;
         }
 
-        public async Task<BankAccountDto?> GetFundingResourceById(string id, CancellationToken cancellationToken = default)
+        public async Task<BankAccountDto?> GetById(string id, CancellationToken cancellationToken = default)
         {
             var bankAccount = await _bankAccountRepository.SingleOrDefaultAsync(x => x.Id == id);
 

@@ -6,7 +6,7 @@ namespace Nexa.Transactions.Application.Tests.Fakers
     public class FakeFundingResourceService : IFundingResourceService
     {
         private static List<BankAccountDto> _db = new List<BankAccountDto>();
-        public Task<BankAccountDto?> GetFundingResourceById(string id, CancellationToken cancellationToken = default)
+        public Task<BankAccountDto?> GetById(string id, CancellationToken cancellationToken = default)
         {
             var bankAccount = _db.SingleOrDefault(x => x.Id == id);
 

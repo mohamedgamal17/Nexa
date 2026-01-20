@@ -39,7 +39,7 @@ namespace Nexa.Transactions.Application.Extensions
                 .WithMessage(GlobalErrorConsts.Required.Message)
                 .MustAsync(async (x, ct) =>
                 {
-                    var fundingResource = await fundingResourceService.GetFundingResourceById(x, ct);
+                    var fundingResource = await fundingResourceService.GetById(x, ct);
                     return fundingResource != null;
                 })
                 .WithErrorCode(BankAccountErrorConsts.BankAccountNotExist.Code)
