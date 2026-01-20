@@ -4,7 +4,7 @@ using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.Transactions.Application.Extensions;
-using Nexa.Transactions.Application.Transfers.Dtos;
+using Nexa.Transactions.Shared.Dtos;
 
 namespace Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers
 {

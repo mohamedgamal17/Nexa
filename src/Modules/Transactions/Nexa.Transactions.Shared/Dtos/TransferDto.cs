@@ -2,7 +2,7 @@
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.Transactions.Shared.Enums;
 
-namespace Nexa.Transactions.Application.Transfers.Dtos
+namespace Nexa.Transactions.Shared.Dtos
 {
     public class TransferDto : EntityDto
     {

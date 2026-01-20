@@ -1,6 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Factories;
-using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Domain.Transfers;
+using Nexa.Transactions.Shared.Dtos;
 
 namespace Nexa.Transactions.Application.Transfers.Factories
 {

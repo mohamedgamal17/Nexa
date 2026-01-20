@@ -5,9 +5,9 @@ using Nexa.Accounting.Shared.Services;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.Transactions.Application.Extensions;
-using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Domain.Transfers;
 using Nexa.Transactions.Shared.Consts;
+using Nexa.Transactions.Shared.Dtos;
 using Nexa.Transactions.Shared.Enums;
 
 namespace Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer

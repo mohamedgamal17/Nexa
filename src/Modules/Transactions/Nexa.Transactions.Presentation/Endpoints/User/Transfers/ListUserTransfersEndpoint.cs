@@ -3,8 +3,8 @@ using FluentValidation;
 using MediatR;
 using Nexa.BuildingBlocks.Domain.Dtos;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
-using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Queries.ListUserTransfers;
+using Nexa.Transactions.Shared.Dtos;
 using System.Net;
 
 namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers

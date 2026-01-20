@@ -5,10 +5,10 @@ using Nexa.BuildingBlocks.Application.Abstractions.Security;
 using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.BuildingBlocks.Domain.Results;
-using Nexa.Transactions.Application.Transfers.Dtos;
 using Nexa.Transactions.Application.Transfers.Factories;
 using Nexa.Transactions.Application.Transfers.Services;
 using Nexa.Transactions.Domain.Transfers;
+using Nexa.Transactions.Shared.Dtos;
 
 namespace Nexa.Transactions.Application.Transfers.Commands.CreateNetworkTransfer
 {

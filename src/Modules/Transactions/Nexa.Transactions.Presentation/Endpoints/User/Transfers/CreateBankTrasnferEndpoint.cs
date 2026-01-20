@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Nexa.BuildingBlocks.Infrastructure.Extensions;
 using Nexa.Transactions.Application.Transfers.Commands.CreateBankTransfer;
 using Nexa.Transactions.Application.Transfers.Commands.CreateNetworkTransfer;
-using Nexa.Transactions.Application.Transfers.Dtos;
+using Nexa.Transactions.Shared.Dtos;
 namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers
 {
     public class CreateBankTrasnferEndpoint : Endpoint<CreateBankTransferCommand, TransferDto>
