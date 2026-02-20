@@ -38,7 +38,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             onboardCustomer.Should().NotBeNull();
 
-            onboardCustomer!.Status.Should().Be(OnboardCustomerStatus.Started);
+            onboardCustomer!.Status.Should().Be(OnboardCustomerStatus.Pending);
         }
 
         [Test]
