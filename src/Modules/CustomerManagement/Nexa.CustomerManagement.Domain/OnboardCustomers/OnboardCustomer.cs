@@ -1,8 +1,8 @@
 ﻿using Nexa.BuildingBlocks.Domain;
-using Nexa.CustomerManagement.Domain.Documents;
+using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Shared.Enums;
 
-namespace Nexa.CustomerManagement.Domain.Customers
+namespace Nexa.CustomerManagement.Domain.OnboardCustomers
 {
     public class OnboardCustomer : AggregateRoot
     {
@@ -10,7 +10,6 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public CustomerInfo? Info { get; set; }
-        public Address? Address { get; set; }
         public OnboardCustomerStatus Status { get; set; }
 
         private OnboardCustomer()
@@ -20,6 +19,6 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public OnboardCustomer(string userId)
         {
             UserId = userId;
-        } 
+        }
     }
 }
