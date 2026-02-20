@@ -13,8 +13,8 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Commands.CreateOn
     {
         private readonly ICustomerManagementRepository<OnboardCustomer> _onboardCustomerRepository;
 
-        private readonly OnboardCustomerResponseFactory _onboardCustomerResponseFactory;
-        public CreateOnboardCustomerCommandHandler(ICustomerManagementRepository<OnboardCustomer> onboardCustomerRepository, OnboardCustomerResponseFactory onboardCustomerResponseFactory)
+        private readonly IOnboardCustomerResponseFactory _onboardCustomerResponseFactory;
+        public CreateOnboardCustomerCommandHandler(ICustomerManagementRepository<OnboardCustomer> onboardCustomerRepository, IOnboardCustomerResponseFactory onboardCustomerResponseFactory)
         {
             _onboardCustomerRepository = onboardCustomerRepository;
             _onboardCustomerResponseFactory = onboardCustomerResponseFactory;
