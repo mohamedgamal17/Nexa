@@ -12,7 +12,7 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Factories
             {
                 Id = view.Id,
                 UserId = view.UserId,
-                Email = view.Email,
+                Email = view.EmailAddress,
                 Status = view.Status
             };
 
