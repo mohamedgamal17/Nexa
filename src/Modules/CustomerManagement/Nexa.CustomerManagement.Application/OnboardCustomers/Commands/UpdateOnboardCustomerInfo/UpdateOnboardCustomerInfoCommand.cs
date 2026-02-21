@@ -9,5 +9,6 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Commands.UpdateOn
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public string Gender { get; set; }
     }
 }

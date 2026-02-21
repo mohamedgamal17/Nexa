@@ -54,7 +54,13 @@ namespace Nexa.CustomerManagement.Domain.OnboardCustomers
             ThrowIfCompleted();
 
             Info = info;
+        }
 
+        public void UpdateAddress(Address address)
+        {
+            ThrowIfCompleted();
+
+            Address = address;
         }
         public void MarkAsCompleted()
         {

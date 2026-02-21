@@ -38,6 +38,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
 
             builder.OwnsOne(x => x.Address, addressNavigationBuilder =>
             {
+                addressNavigationBuilder.ToTable(OnboardCustomerTableConsts.AddressTableName);
                 addressNavigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
                 addressNavigationBuilder.Property(x => x.City).HasMaxLength(AddressTableConstants.CityLength);
                 addressNavigationBuilder.Property(x => x.State).HasMaxLength(AddressTableConstants.StateLength);
