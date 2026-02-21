@@ -9,5 +9,8 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError OnboardCustomerNotExist =
             new NexaError(nameof(OnboardCustomerNotExist), "onboard customer is not exist.");
+
+        public static NexaError OnboardCustomerCompleted =
+            new NexaError(nameof(OnboardCustomerNotExist), "onboard customer state is completed it cannot be modified any more now.");
     }
 }
