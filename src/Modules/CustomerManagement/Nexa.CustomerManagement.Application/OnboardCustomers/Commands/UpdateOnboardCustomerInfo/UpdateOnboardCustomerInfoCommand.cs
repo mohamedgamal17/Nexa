@@ -1,5 +1,6 @@
 ﻿using Nexa.BuildingBlocks.Application.Requests;
 using Nexa.CustomerManagement.Shared.Dtos;
+using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.OnboardCustomers.Commands.UpdateOnboardCustomerInfo
 {
@@ -8,7 +9,7 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Commands.UpdateOn
         public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime BirthDate { get; set; }
     }
 }
