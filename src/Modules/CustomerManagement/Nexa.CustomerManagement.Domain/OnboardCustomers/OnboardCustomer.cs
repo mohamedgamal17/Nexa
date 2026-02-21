@@ -62,6 +62,8 @@ namespace Nexa.CustomerManagement.Domain.OnboardCustomers
                 var @event = new OnboardCustomerCompletedEvent(Id, UserId, EmailAddress!, PhoneNumber!, Info!);
 
                 AppendEvent(@event);
+
+                Status = OnboardCustomerStatus.Completed;
             }
         }
 
