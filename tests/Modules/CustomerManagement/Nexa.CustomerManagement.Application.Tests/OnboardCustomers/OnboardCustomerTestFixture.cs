@@ -56,6 +56,8 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers
                         Gender.Male
                     );
 
+                onboardCustomer.UpdateAddress(address);
+
                 onboardCustomer.UpdateCustomerInfo(customerInfo);
 
                 onboardCustomer.MarkAsCompleted();
