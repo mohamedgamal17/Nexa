@@ -12,5 +12,8 @@ namespace Nexa.CustomerManagement.Shared.Consts
 
         public static NexaError OnboardCustomerCompleted =
             new NexaError(nameof(OnboardCustomerNotExist), "onboard customer state is completed it cannot be modified any more now.");
+
+        public static NexaError OnboardCustomerIncomplete = 
+            new NexaError(nameof(OnboardCustomerIncomplete), "onboard customer data is incompleted.");
     }
 }
