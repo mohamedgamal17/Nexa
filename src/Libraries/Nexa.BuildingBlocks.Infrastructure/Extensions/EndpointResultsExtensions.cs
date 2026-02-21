@@ -121,6 +121,17 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
                 };
 
                 return Results.Problem(problemDetails);
+            }else if(exception is ConflictException conflictException)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status409Conflict,
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8",
+                    Title = conflictException.Code,
+                    Detail = conflictException.Message
+                };
+
+                return Results.Problem(problemDetails);
             }
             else
             {
