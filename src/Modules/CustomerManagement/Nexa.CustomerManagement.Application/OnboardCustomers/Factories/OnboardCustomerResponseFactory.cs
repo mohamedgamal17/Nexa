@@ -1,4 +1,5 @@
 ﻿using Nexa.BuildingBlocks.Application.Factories;
+using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.OnboardCustomers;
 using Nexa.CustomerManagement.Shared.Dtos;
 
@@ -18,7 +19,26 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Factories
 
             PrepareCustomerInfo(view,dto);
 
+            PrepareAddres(view, dto);
+
             return Task.FromResult(dto);
+        }
+
+        private void PrepareAddres(OnboardCustomer view, OnboardCustomerDto dto)
+        {
+            if (view.Address != null)
+            {
+                dto.Address = new AddressDto
+                {
+                    Country = view.Address.Country,
+                    State = view.Address.State,
+                    City = view.Address.City,
+                    StreetLine = view.Address.StreetLine,
+                    PostalCode = view.Address.PostalCode,
+                    ZipCode = view.Address.ZipCode
+                };
+            }
+        
         }
 
         private void PrepareCustomerInfo(OnboardCustomer view , OnboardCustomerDto dto)
@@ -32,21 +52,7 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Factories
                 LastName = view.Info.LastName,
                 Gender = view.Info.Gender,
                 BirthDate = view.Info.BirthDate,
-            };
-
-
-            if(view.Info.Address != null)
-            {
-                dto.Info.Address = new AddressDto
-                {
-                    Country = view.Info.Address.Country,
-                    State = view.Info.Address.State,
-                    City = view.Info.Address.City,
-                    StreetLine = view.Info.Address.StreetLine,
-                    PostalCode = view.Info.Address.PostalCode,
-                    ZipCode = view.Info.Address.ZipCode
-                };
-            }
+            };      
         }
     }
 }

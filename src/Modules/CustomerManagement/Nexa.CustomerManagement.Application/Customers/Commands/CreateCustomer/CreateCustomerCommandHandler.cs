@@ -54,11 +54,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                     request.FirstName,
                     request.LastName,
                     request.BirthDate,
-                    request.Gender,
-                    address
+                    request.Gender
                 );
 
             customer.UpdateInfo(info);
+
+            customer.UpdateAddress(address);
 
             await AttachBaasCustomer(customer);
 
@@ -94,17 +95,24 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
             var request = new KYCClientRequest
             {
                 EmailAddress = customer.EmailAddress,
-                PhoneNumber = customer.PhoneNumber,
-                Info = new KYCClientInfo
+                PhoneNumber = customer.PhoneNumber,            
+            };
+
+            if(customer.Info != null)
+            {
+                request.Info = new KYCClientInfo
                 {
                     FirstName = customer.Info.FirstName,
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Address = customer.Info.Address
-                }
-            };
+                };
+            }
 
+            if(customer.Address != null)
+            {
+                request.Address = customer.Address;
+            }
             return request;
         }
 

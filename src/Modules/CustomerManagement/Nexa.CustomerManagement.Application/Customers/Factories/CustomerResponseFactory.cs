@@ -31,6 +31,11 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 dto.Info = PrepareCustomerInfoDto(view.Info);
             }
 
+            if(view.Address != null)
+            {
+                dto.Address = PrepareAddressDto(view.Address);
+            }
+
             if(view.Document != null)
             {
                 dto.Document = await _documentResponseFactory.PrepareDto(view.Document);
@@ -48,19 +53,23 @@ namespace Nexa.CustomerManagement.Application.Customers.Factories
                 LastName = info.LastName,
                 Gender = info.Gender,
                 BirthDate = info.BirthDate,
-                Address = new AddressDto
-                {
-                    Country = info.Address.Country,
-                    City = info.Address.City,
-                    State = info.Address.State,
-                    StreetLine = info.Address.StreetLine,
-                    PostalCode = info.Address.PostalCode,
-                    ZipCode = info.Address.ZipCode
-                },
-
+               
             };
 
             return dto;
+        }
+
+        private AddressDto PrepareAddressDto(Address address)
+        {
+            return new AddressDto
+            {
+                Country = address.Country,
+                City = address.City,
+                State = address.State,
+                StreetLine = address.StreetLine,
+                PostalCode = address.PostalCode,
+                ZipCode = address.ZipCode
+            };
         }
     }
 }

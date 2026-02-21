@@ -56,8 +56,12 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
             {
                 email = request.EmailAddress,
                 mobile = request.PhoneNumber,
-                type = "person",
-                personDetails = new ExtendedPersonDetails
+                type = "person"
+            };
+
+            if(request.Info != null) 
+            {
+                apiRequest.personDetails = new ExtendedPersonDetails
                 {
                     firstName = request.Info.FirstName,
                     lastName = request.Info.LastName,
@@ -65,31 +69,31 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
                     gender = MapComplyCupeGender(request.Info.Gender),
                     nationality = request.Info.Nationality,
                     ssn = request.Info.SSN
-                }
-            };
+                };
+            }
 
 
             var response = await SendCustomPostRequest<Client>("/clients", apiRequest);
 
 
-            if (request.Info.Address != null)
+            if (request.Address != null)
             {
                 var addressRequest = new AddressRequest
                 {
                     clientId = response.id,
-                    country = request.Info.Address.Country,
-                    city = request.Info.Address.City,
-                    state = request.Info.Address.State,
+                    country = request.Address.Country,
+                    city = request.Address.City,
+                    state = request.Address.State,
                     type = "main",
-                    postalCode = request.Info.Address.PostalCode,
-                    line = request.Info.Address.StreetLine
+                    postalCode = request.Address.PostalCode,
+                    line = request.Address.StreetLine
                 };
 
                 await _addressApi.CreateAsync(addressRequest);
             }
 
 
-            return PrepareKYCClient(response, request.Info.Address);
+            return PrepareKYCClient(response, request.Address);
         }
 
 
@@ -118,16 +122,16 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 
 
 
-            if (request.Info.Address != null)
+            if (request.Address != null)
             {
                 var addressRequest = new AddressRequest
                 {
                     clientId = clientId,
-                    country = request.Info.Address.Country,
-                    city = request.Info.Address.City,
-                    state = request.Info.Address.State,
-                    postalCode = request.Info.Address.PostalCode,
-                    line = request.Info.Address.StreetLine
+                    country = request.Address.Country,
+                    city = request.Address.City,
+                    state = request.Address.State,
+                    postalCode = request.Address.PostalCode,
+                    line = request.Address.StreetLine
                 };
 
                 var clientAddresses = await _addressApi.ListAsync(clientId);
@@ -146,7 +150,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
                 }
             }
 
-            return PrepareKYCClient(response, request.Info.Address);
+            return PrepareKYCClient(response, request.Address);
 
         }
 
@@ -300,7 +304,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Providers.ComplyCube
 
                 if (address != null)
                 {
-                    response.Info.Address = address;
+                    response.Address = address;
                 }
             }
 

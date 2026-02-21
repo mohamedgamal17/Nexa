@@ -11,6 +11,7 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public CustomerInfoDto Info { get; set; }
+        public AddressDto Address { get; set; }
         public DocumentDto Document { get; set; }
         public CustomerStatus Status { get; set; }
     }

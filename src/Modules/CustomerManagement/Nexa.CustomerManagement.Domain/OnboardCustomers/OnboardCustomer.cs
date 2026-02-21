@@ -13,12 +13,13 @@ namespace Nexa.CustomerManagement.Domain.OnboardCustomers
         public string? EmailAddress { get; private set; }
         public string? PhoneNumber { get; private set; }
         public CustomerInfo? Info { get; private set; }
+        public Address? Address { get; set; }
         public OnboardCustomerStatus Status { get; private set; }
         public bool IsCompleted => Status == OnboardCustomerStatus.Completed;
         public bool EmailAddressProvided => EmailAddress != null;
         public bool PhoneNumberProvided => PhoneNumber != null;
         public bool CustomerInfoProvided => Info != null;
-        public bool AddressProvided => CustomerInfoProvided && Info?.Address != null;
+        public bool AddressProvided => Address != null;
 
         public bool HasFullData => EmailAddressProvided
                 && PhoneNumberProvided

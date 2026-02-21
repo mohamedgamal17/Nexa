@@ -8,7 +8,9 @@ namespace Nexa.CustomerManagement.Domain.KYC
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public KYCClientInfo Info { get; set; }
+        public Address Address { get; set; }
+
     }
 
-   
+
 }

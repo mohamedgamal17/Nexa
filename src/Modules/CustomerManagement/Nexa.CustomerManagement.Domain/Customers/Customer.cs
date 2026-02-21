@@ -12,6 +12,7 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public CustomerInfo? Info { get; set; }
+        public Address? Address { get; set; }
         public Document? Document { get; set; }
         public CustomerStatus Status { get; private set; }
 
@@ -50,6 +51,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
             Info = info;
         }
       
+        public void UpdateAddress(Address address)
+        {
+            Address = address;
+        }
 
         public void MarkAsVerified()
         {

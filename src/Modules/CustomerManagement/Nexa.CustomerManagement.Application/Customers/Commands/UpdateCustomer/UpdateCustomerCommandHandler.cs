@@ -54,11 +54,12 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
                     request.FirstName,
                     request.LastName,
                     request.BirthDate,
-                    request.Gender,
-                    address
+                    request.Gender
                 );
 
             customer.UpdateInfo(info);
+
+            customer.UpdateAddress(address);
 
             await UpdateBaasCustomer(customer);
 
@@ -102,15 +103,24 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer
             {
                 EmailAddress = customer.EmailAddress,
                 PhoneNumber = customer.PhoneNumber,
-                Info = new KYCClientInfo
+                
+            };
+
+            if(request.Info != null)
+            {
+                request.Info = new KYCClientInfo
                 {
                     FirstName = customer.Info!.FirstName,
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Address = customer.Info.Address
-                }
-            };
+                };
+            }
+
+            if (customer.Address != null)
+            {
+                request.Address = customer.Address;
+            }
 
             return request;
         }

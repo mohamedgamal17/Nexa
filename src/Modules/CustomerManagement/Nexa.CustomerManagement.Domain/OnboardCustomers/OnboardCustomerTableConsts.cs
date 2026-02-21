@@ -6,6 +6,8 @@
 
         public const string CustomerInfoTableName = "OnboardCustomersInfos";
 
+        public const string AddressTableName = "OnboardCustomersAddresses";
+
         public const int IdLength = 256;
 
         public const int UserIdLength = 256;

@@ -9,26 +9,24 @@ namespace Nexa.CustomerManagement.Domain.Customers
         public string LastName { get; private set; }
         public DateTime BirthDate { get; private set; }
         public Gender Gender { get; set; }
-        public Address Address { get; private set; }
 
         private CustomerInfo()
         {
             
         }
 
-
-        public CustomerInfo(string firstName, string lastName, DateTime birthDate, Gender gender, Address address)
+        public CustomerInfo(string firstName, string lastName, DateTime birthDate, Gender gender)
         {
             FirstName = firstName;
             LastName = lastName;
             BirthDate = birthDate;
             Gender = gender;
-            Address = address;
+
+        }
+        public static CustomerInfo Create(string firstName, string lastName, DateTime birthDate, Gender gender)
+        {
+            return new CustomerInfo(firstName, lastName, birthDate, gender);
         }
 
-        public static CustomerInfo Create(string firstName, string lastName, DateTime birthDate,  Gender gender,  Address address)
-        {
-            return new CustomerInfo(firstName, lastName, birthDate, gender, address);
-        }
     }
 }

@@ -8,7 +8,6 @@ namespace Nexa.CustomerManagement.Shared.Dtos
         public string LastName { get;  set; }
         public DateTime BirthDate { get;  set; }
         public Gender Gender { get; set; }
-        public AddressDto Address { get;  set; }
     }
 
     public class CustomerInfoPublicDto

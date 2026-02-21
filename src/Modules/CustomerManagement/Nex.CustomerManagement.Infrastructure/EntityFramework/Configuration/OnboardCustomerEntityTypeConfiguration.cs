@@ -32,15 +32,18 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
                 navigationBuilder.Property(x => x.Id).HasMaxLength(CustomerInfoTableConsts.IdLength);
                 navigationBuilder.Property(x => x.FirstName).HasMaxLength(CustomerInfoTableConsts.FirstNameLength);
                 navigationBuilder.Property(x => x.LastName).HasMaxLength(CustomerInfoTableConsts.LastNameLength);
-                navigationBuilder.OwnsOne(x => x.Address, addressNavigationBuilder =>
-                {
-                    addressNavigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
-                    addressNavigationBuilder.Property(x => x.City).HasMaxLength(AddressTableConstants.CityLength);
-                    addressNavigationBuilder.Property(x => x.State).HasMaxLength(AddressTableConstants.StateLength);
-                    addressNavigationBuilder.Property(x => x.StreetLine).HasMaxLength(AddressTableConstants.StreetLineLength);
-                    addressNavigationBuilder.Property(x => x.PostalCode).IsRequired(false).HasMaxLength(AddressTableConstants.PostalCodeLength);
-                    addressNavigationBuilder.Property(x => x.ZipCode).IsRequired(false).HasMaxLength(AddressTableConstants.ZipCodeLength);
-                });
+        
+            });
+
+
+            builder.OwnsOne(x => x.Address, addressNavigationBuilder =>
+            {
+                addressNavigationBuilder.Property(x => x.Country).HasMaxLength(AddressTableConstants.CountryLength);
+                addressNavigationBuilder.Property(x => x.City).HasMaxLength(AddressTableConstants.CityLength);
+                addressNavigationBuilder.Property(x => x.State).HasMaxLength(AddressTableConstants.StateLength);
+                addressNavigationBuilder.Property(x => x.StreetLine).HasMaxLength(AddressTableConstants.StreetLineLength);
+                addressNavigationBuilder.Property(x => x.PostalCode).IsRequired(false).HasMaxLength(AddressTableConstants.PostalCodeLength);
+                addressNavigationBuilder.Property(x => x.ZipCode).IsRequired(false).HasMaxLength(AddressTableConstants.ZipCodeLength);
             });
 
             builder.HasIndex(x => x.UserId).IsUnique();
