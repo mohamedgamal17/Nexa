@@ -20,6 +20,8 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
         public CompleteOnboardCustomerCommandHandlerTests()
         {
             OnboardCustomerRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<OnboardCustomer>>();
+
+            CustomerRepository = ServiceProvider.GetRequiredService<ICustomerManagementRepository<Customer>>();
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException), OnboardCustomerErrorConsts.OnboardCustomerIncomplete);
+            result.ShoulBeFailure(typeof(BusinessLogicException), OnboardCustomerErrorConsts.OnboardCustomerCompleted);
 
         }
     }
