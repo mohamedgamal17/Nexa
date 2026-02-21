@@ -87,7 +87,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException), OnboardCustomerErrorConsts.OnboardCustomerNotExist);
+            result.ShoulBeFailure(typeof(BusinessLogicException), OnboardCustomerErrorConsts.OnboardCustomerNotExist);
         }
     }
 }
