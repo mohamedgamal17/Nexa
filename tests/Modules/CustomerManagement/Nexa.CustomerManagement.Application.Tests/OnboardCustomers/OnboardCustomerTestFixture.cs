@@ -53,8 +53,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers
                         Faker.Person.FirstName,
                         Faker.Person.LastName,
                         Faker.Person.DateOfBirth,
-                        Gender.Male,
-                        address
+                        Gender.Male
                     );
 
                 onboardCustomer.UpdateCustomerInfo(customerInfo);

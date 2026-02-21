@@ -75,11 +75,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
                     Faker.Person.FirstName,
                     Faker.Person.LastName,
                     Faker.Person.DateOfBirth,
-                    Faker.PickRandom<Gender>(),
-                    address
+                    Faker.PickRandom<Gender>()
+                    
                     );
 
                 customer.UpdateInfo(info);
+
+                customer.UpdateAddress(address);
 
                 var client = await CreateKycClient(customer);
 
@@ -89,38 +91,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
             });
         }
 
-        protected async Task<Customer> CreateCustomerInfo(string customerId)
-        {
-            return await WithScopeAsync(async (sp) =>
-            {
-                var repository = sp.GetRequiredService<ICustomerManagementRepository<Customer>>();
-
-                var customer = await repository.SingleAsync(x => x.Id == customerId);
-
-                var address = Address.Create(
-                   "US",
-                   Faker.Address.City(),
-                   Faker.Address.State(),
-                   Faker.Address.StreetName(),
-                   Faker.Person.Address.ZipCode,
-                   Faker.Person.Address.ZipCode
-               );
-
-                var info = CustomerInfo.Create(
-                    Faker.Person.FirstName,
-                    Faker.Person.LastName,
-                    Faker.Person.DateOfBirth,
-                    Faker.PickRandom<Gender>(),
-                    address
-                    );
-
-                customer.UpdateInfo(info);
-
-
-                return await repository.UpdateAsync(customer);
-
-            });
-        }
+        
         protected async Task<Customer> CreateDocumentAsync(string customerId, DocumentType type, string? issuingCountry = null, DocumentVerificationStatus verificationState = DocumentVerificationStatus.Pending)
         {
             return await WithScopeAsync(async sp =>
@@ -227,10 +198,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Reviews
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Address = customer.Info.Address
                 };
 
             };
+
+            if(customer.Address != null)
+            {
+                request.Address = customer.Address;
+            }
 
             var kycClient = await KycProvider.CreateClientAsync(request);
 

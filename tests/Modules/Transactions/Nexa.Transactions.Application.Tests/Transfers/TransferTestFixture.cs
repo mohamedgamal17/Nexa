@@ -194,16 +194,17 @@ namespace Nexa.Transactions.Application.Tests.Transfers
                     LastName = Faker.Person.LastName,
                     Gender = Gender.Male,
                     BirthDate = Faker.Person.DateOfBirth,
-                    Address = new AddressDto
-                    {
-                        Country = "us",
-                        City = Faker.Person.Address.City,
-                        State = Faker.Person.Address.State,
-                        StreetLine = Faker.Person.Address.Street,
-                        PostalCode = Faker.Person.Address.ZipCode,
-                        ZipCode = Faker.Person.Address.ZipCode
-                    }
+                    
                 },
+                Address = new AddressDto
+                {
+                    Country = "us",
+                    City = Faker.Person.Address.City,
+                    State = Faker.Person.Address.State,
+                    StreetLine = Faker.Person.Address.Street,
+                    PostalCode = Faker.Person.Address.ZipCode,
+                    ZipCode = Faker.Person.Address.ZipCode
+                }
 
             };
 

@@ -21,7 +21,12 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             customer.Info!.LastName.Should().Be(command.LastName);
             customer.Info.Gender.Should().Be(command.Gender);
             customer.Info.BirthDate.Should().Be(command.BirthDate);
-            customer.Info.Address.AssertAddress(command.Address);
+
+            if(command.Address != null)
+            {
+                customer.Address.Should().NotBeNull();
+                customer.Address!.AssertAddress(command.Address);
+            }
         }
 
         public static void AssertCustomer(this  Customer customer, string userId, UpdateCustomerCommand command)
@@ -32,7 +37,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             customer.Info!.LastName.Should().Be(command.LastName);
             customer.Info.Gender.Should().Be(command.Gender);
             customer.Info.BirthDate.Should().Be(command.BirthDate);
-            customer.Info.Address.AssertAddress(command.Address);
+            if (command.Address != null)
+            {
+                customer.Address.Should().NotBeNull();
+                customer.Address!.AssertAddress(command.Address);
+            }
         }
 
         public static void AssertAddress(this Address address , AddressModel model)
@@ -56,6 +65,11 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
                 dto.Info.AssertCustomerInfoDto(customer.Info);
             }
 
+            if(customer.Address != null)
+            {
+                dto.Address.AssertAddressDto(customer.Address);
+            }
+
             if(customer.Document != null)
             {
                 dto.Document.AssertDocumentDto(customer.Document);
@@ -69,7 +83,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             dto.LastName.Should().Be(info.LastName);
             dto.Gender.Should().Be(info.Gender);
             dto.BirthDate.Should().Be(info.BirthDate);
-            dto.Address.AssertAddressDto(info.Address);
+           
         }
         public static void AssertAddressDto(this AddressDto dto , Address address)
         {

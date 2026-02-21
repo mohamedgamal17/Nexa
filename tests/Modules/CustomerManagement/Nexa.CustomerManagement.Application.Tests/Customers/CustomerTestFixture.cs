@@ -61,8 +61,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                     Faker.Person.FirstName,
                     Faker.Person.LastName,
                     Faker.Person.DateOfBirth,
-                    Faker.PickRandom<Gender>(),
-                    address
+                    Faker.PickRandom<Gender>()
                     );
 
                 customer.UpdateInfo(info);
@@ -226,10 +225,13 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers
                     LastName = customer.Info.LastName,
                     BirthDate = customer.Info.BirthDate,
                     Gender = customer.Info.Gender,
-                    Address = customer.Info.Address
                 };
-
             };
+
+            if(customer.Address != null)
+            {
+                request.Address = customer.Address;
+            }
 
             var kycClient = await KycProvider.CreateClientAsync(request);
 
