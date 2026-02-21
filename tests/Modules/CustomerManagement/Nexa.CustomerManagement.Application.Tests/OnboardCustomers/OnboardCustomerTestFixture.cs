@@ -27,8 +27,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers
             });
         }
 
-
-        public Task<OnboardCustomer> CreateCompletedOnboardCustomer(string userId)
+        public Task<OnboardCustomer> CreateFullDataCustomerAsync(string userId)
         {
             return WithScopeAsync(async (sp) =>
             {
@@ -60,9 +59,24 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers
 
                 onboardCustomer.UpdateCustomerInfo(customerInfo);
 
+                return await repository.InsertAsync(onboardCustomer);
+            });
+        }
+
+
+        public Task<OnboardCustomer> CreateCompletedOnboardCustomer(string userId)
+        {
+            return WithScopeAsync(async (sp) =>
+            {
+                await CreateFullDataCustomerAsync(userId);
+
+                var repository = sp.GetRequiredService<ICustomerManagementRepository<OnboardCustomer>>();
+
+                var onboardCustomer = await repository.SingleAsync(x => x.UserId == userId);
+
                 onboardCustomer.MarkAsCompleted();
 
-                return await repository.InsertAsync(onboardCustomer);
+                return await repository.UpdateAsync(onboardCustomer);
             });
         }
     }

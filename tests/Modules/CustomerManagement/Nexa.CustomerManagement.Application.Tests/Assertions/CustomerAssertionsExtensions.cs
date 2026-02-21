@@ -3,6 +3,7 @@ using Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer;
 using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomer;
 using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Domain.Customers;
+using Nexa.CustomerManagement.Domain.OnboardCustomers;
 using Nexa.CustomerManagement.Shared.Dtos;
 namespace Nexa.CustomerManagement.Application.Tests.Assertions
 {
@@ -42,6 +43,15 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
                 customer.Address.Should().NotBeNull();
                 customer.Address!.AssertAddress(command.Address);
             }
+        }
+        public static void AssertCustomerToOnboard(this Customer customer , OnboardCustomer onboardCustomer)
+        {
+            customer.UserId.Should().Be(onboardCustomer.UserId);
+            customer.PhoneNumber.Should().Be(onboardCustomer.PhoneNumber);
+            customer.EmailAddress.Should().Be(onboardCustomer.EmailAddress);
+            customer.UserId.Should().Be(onboardCustomer.UserId);
+            customer.Info.Should().Be(onboardCustomer.Info);
+            customer.Address.Should().Be(onboardCustomer.Address);
         }
 
         public static void AssertAddress(this Address address , AddressModel model)
