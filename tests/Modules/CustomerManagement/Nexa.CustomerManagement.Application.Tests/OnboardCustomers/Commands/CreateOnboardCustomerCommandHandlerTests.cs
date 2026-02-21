@@ -5,6 +5,7 @@ using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Application.OnboardCustomers.Commands.CreateOnboardCustomer;
 using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Domain.OnboardCustomers;
+using Nexa.CustomerManagement.Shared.Consts;
 using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
@@ -55,7 +56,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(ConflictException));
+            result.ShoulBeFailure(typeof(ConflictException),OnboardCustomerErrorConsts.OnboardCustomerCreateConflict);
         }
 
     }

@@ -6,6 +6,7 @@ using Nexa.Application.Tests.Extensions;
 using FluentAssertions;
 using Nexa.CustomerManagement.Shared.Enums;
 using Nexa.BuildingBlocks.Domain.Exceptions;
+using Nexa.CustomerManagement.Shared.Consts;
 
 namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 {
@@ -56,7 +57,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(EntityNotFoundException));
+            result.ShoulBeFailure(typeof(EntityNotFoundException) ,OnboardCustomerErrorConsts.OnboardCustomerNotExist);
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace Nexa.CustomerManagement.Application.Tests.OnboardCustomers.Commands
 
             var result = await Mediator.Send(command);
 
-            result.ShoulBeFailure(typeof(BusinessLogicException));
+            result.ShoulBeFailure(typeof(BusinessLogicException), OnboardCustomerErrorConsts.OnboardCustomerCompleted);
         }
     }
 }
