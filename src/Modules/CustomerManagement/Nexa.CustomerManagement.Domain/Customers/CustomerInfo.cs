@@ -3,7 +3,7 @@ using Nexa.CustomerManagement.Shared.Enums;
 
 namespace Nexa.CustomerManagement.Domain.Customers
 {
-    public class CustomerInfo : BaseEntity
+    public class CustomerInfo : ValueObject
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -28,5 +28,12 @@ namespace Nexa.CustomerManagement.Domain.Customers
             return new CustomerInfo(firstName, lastName, birthDate, gender);
         }
 
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return FirstName;
+            yield return LastName;
+            yield return BirthDate;
+            yield return Gender;
+        }
     }
 }
