@@ -29,8 +29,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Configuration
             builder.OwnsOne(x => x.Info, navigationBuilder =>
             {
                 navigationBuilder.ToTable(CustomerInfoTableConsts.TableName);
-                navigationBuilder.HasKey(x => x.Id);
-                navigationBuilder.Property(x => x.Id).HasMaxLength(CustomerInfoTableConsts.IdLength);
                 navigationBuilder.Property(x => x.FirstName).HasMaxLength(CustomerInfoTableConsts.FirstNameLength);
                 navigationBuilder.Property(x => x.LastName).HasMaxLength(CustomerInfoTableConsts.LastNameLength);
                

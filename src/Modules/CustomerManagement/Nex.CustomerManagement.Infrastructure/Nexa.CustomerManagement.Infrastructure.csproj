@@ -25,4 +25,7 @@
 	  <ProjectReference Include="..\Nexa.CustomerManagement.Domain\Nexa.CustomerManagement.Domain.csproj" />
 	  <ProjectReference Include="..\Nexa.CustomerManagement.Presentation\Nexa.CustomerManagement.Presentation.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
 </Project>

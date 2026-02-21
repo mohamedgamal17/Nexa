@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
+namespace Nexa.CustomerManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -22,13 +22,78 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     KycCustomerId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    FintechCustomerid = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    FintechCustomerId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OnboardCustomers",
+                schema: "CustomerManagement",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OnboardCustomers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "CustomerManagement",
+                columns: table => new
+                {
+                    CustomerId = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StreetLine = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "CustomerManagement",
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomersInfos",
+                schema: "CustomerManagement",
+                columns: table => new
+                {
+                    CustomerId = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomersInfos", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_CustomersInfos_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "CustomerManagement",
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,7 +105,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     CustomerId = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     KycCheckId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     KycLiveVideoId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Outcome = table.Column<int>(type: "int", nullable: true)
                 },
@@ -57,42 +121,51 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomersInfos",
+                name: "OnboardCustomersAddresses",
                 schema: "CustomerManagement",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    Nationality = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    IdNumber = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Address_Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Address_City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address_State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address_StreetLine = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Address_PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Address_ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    KycReviewId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false)
+                    OnboardCustomerId = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StreetLine = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomersInfos", x => x.Id);
+                    table.PrimaryKey("PK_OnboardCustomersAddresses", x => x.OnboardCustomerId);
                     table.ForeignKey(
-                        name: "FK_CustomersInfos_Customers_Id",
-                        column: x => x.Id,
+                        name: "FK_OnboardCustomersAddresses_OnboardCustomers_OnboardCustomerId",
+                        column: x => x.OnboardCustomerId,
                         principalSchema: "CustomerManagement",
-                        principalTable: "Customers",
+                        principalTable: "OnboardCustomers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OnboardCustomersInfos",
+                schema: "CustomerManagement",
+                columns: table => new
+                {
+                    OnboardCustomerId = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OnboardCustomersInfos", x => x.OnboardCustomerId);
                     table.ForeignKey(
-                        name: "FK_CustomersInfos_KycReviews_KycReviewId",
-                        column: x => x.KycReviewId,
+                        name: "FK_OnboardCustomersInfos_OnboardCustomers_OnboardCustomerId",
+                        column: x => x.OnboardCustomerId,
                         principalSchema: "CustomerManagement",
-                        principalTable: "KycReviews",
-                        principalColumn: "Id");
+                        principalTable: "OnboardCustomers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +177,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                     KycDocumentId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     IssuingCountry = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     KycReviewId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
@@ -157,12 +230,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomersInfos_KycReviewId",
-                schema: "CustomerManagement",
-                table: "CustomersInfos",
-                column: "KycReviewId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Documents_KycDocumentId",
                 schema: "CustomerManagement",
                 table: "Documents",
@@ -197,11 +264,22 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 schema: "CustomerManagement",
                 table: "KycReviews",
                 column: "KycLiveVideoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OnboardCustomers_UserId",
+                schema: "CustomerManagement",
+                table: "OnboardCustomers",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Addresses",
+                schema: "CustomerManagement");
+
             migrationBuilder.DropTable(
                 name: "CustomersInfos",
                 schema: "CustomerManagement");
@@ -211,7 +289,19 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(
+                name: "OnboardCustomersAddresses",
+                schema: "CustomerManagement");
+
+            migrationBuilder.DropTable(
+                name: "OnboardCustomersInfos",
+                schema: "CustomerManagement");
+
+            migrationBuilder.DropTable(
                 name: "Documents",
+                schema: "CustomerManagement");
+
+            migrationBuilder.DropTable(
+                name: "OnboardCustomers",
                 schema: "CustomerManagement");
 
             migrationBuilder.DropTable(

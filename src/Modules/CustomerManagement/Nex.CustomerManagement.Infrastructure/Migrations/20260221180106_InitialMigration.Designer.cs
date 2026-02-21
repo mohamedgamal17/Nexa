@@ -9,11 +9,11 @@ using Nexa.CustomerManagement.Infrastructure.EntityFramework;
 
 #nullable disable
 
-namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
+namespace Nexa.CustomerManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CustomerManagementDbContext))]
-    [Migration("20260221031528_RefactoringCustomerAddress")]
-    partial class RefactoringCustomerAddress
+    [Migration("20260221180106_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,8 +176,7 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
                     b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.CustomerInfo", "Info", b1 =>
                         {
-                            b1.Property<string>("Id")
-                                .HasMaxLength(256)
+                            b1.Property<string>("CustomerId")
                                 .HasColumnType("nvarchar(256)");
 
                             b1.Property<DateTime>("BirthDate")
@@ -196,12 +195,12 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
                                 .HasMaxLength(256)
                                 .HasColumnType("nvarchar(256)");
 
-                            b1.HasKey("Id");
+                            b1.HasKey("CustomerId");
 
                             b1.ToTable("CustomersInfos", "CustomerManagement");
 
                             b1.WithOwner()
-                                .HasForeignKey("Id");
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.OwnsOne("Nexa.CustomerManagement.Domain.Documents.Document", "Document", b1 =>
@@ -295,36 +294,6 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
             modelBuilder.Entity("Nexa.CustomerManagement.Domain.OnboardCustomers.OnboardCustomer", b =>
                 {
-                    b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.CustomerInfo", "Info", b1 =>
-                        {
-                            b1.Property<string>("Id")
-                                .HasMaxLength(256)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.Property<DateTime>("BirthDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.Property<int>("Gender")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.HasKey("Id");
-
-                            b1.ToTable("OnboardCustomersInfos", "CustomerManagement");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Id");
-                        });
-
                     b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.Address", "Address", b1 =>
                         {
                             b1.Property<string>("OnboardCustomerId")
@@ -360,7 +329,36 @@ namespace Nexa.CustomerManagement.Infrastructure.EntityFramework.Migrations
 
                             b1.HasKey("OnboardCustomerId");
 
-                            b1.ToTable("OnboardCustomers", "CustomerManagement");
+                            b1.ToTable("OnboardCustomersAddresses", "CustomerManagement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OnboardCustomerId");
+                        });
+
+                    b.OwnsOne("Nexa.CustomerManagement.Domain.Customers.CustomerInfo", "Info", b1 =>
+                        {
+                            b1.Property<string>("OnboardCustomerId")
+                                .HasColumnType("nvarchar(256)");
+
+                            b1.Property<DateTime>("BirthDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(256)
+                                .HasColumnType("nvarchar(256)");
+
+                            b1.Property<int>("Gender")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(256)
+                                .HasColumnType("nvarchar(256)");
+
+                            b1.HasKey("OnboardCustomerId");
+
+                            b1.ToTable("OnboardCustomersInfos", "CustomerManagement");
 
                             b1.WithOwner()
                                 .HasForeignKey("OnboardCustomerId");
