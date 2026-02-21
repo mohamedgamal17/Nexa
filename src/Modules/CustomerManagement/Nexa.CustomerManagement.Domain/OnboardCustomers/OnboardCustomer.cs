@@ -66,7 +66,7 @@ namespace Nexa.CustomerManagement.Domain.OnboardCustomers
         {
             if(Status == OnboardCustomerStatus.Pending && HasFullData)
             {
-                var @event = new OnboardCustomerCompletedEvent(Id, UserId, EmailAddress!, PhoneNumber!, Info!);
+                var @event = new OnboardCustomerCompletedEvent(Id, UserId, EmailAddress!, PhoneNumber!, Info!, Address!);
 
                 AppendEvent(@event);
 

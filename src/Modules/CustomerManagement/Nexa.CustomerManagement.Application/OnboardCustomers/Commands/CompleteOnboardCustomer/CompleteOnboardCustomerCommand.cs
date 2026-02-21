@@ -1,5 +1,4 @@
 ﻿using Nexa.BuildingBlocks.Application.Requests;
-using Nexa.CustomerManagement.Domain;
 using Nexa.CustomerManagement.Shared.Dtos;
 
 namespace Nexa.CustomerManagement.Application.OnboardCustomers.Commands.CompleteOnboardCustomer

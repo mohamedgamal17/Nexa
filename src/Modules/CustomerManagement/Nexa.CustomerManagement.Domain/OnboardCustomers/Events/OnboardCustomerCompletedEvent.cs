@@ -10,13 +10,15 @@ namespace Nexa.CustomerManagement.Domain.OnboardCustomers.Events
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public CustomerInfo Info { get; set; }
-        public OnboardCustomerCompletedEvent(string id, string userId, string emailAddress, string phoneNumber, CustomerInfo info)
+        public Address Address { get; set; }
+        public OnboardCustomerCompletedEvent(string id, string userId, string emailAddress, string phoneNumber, CustomerInfo info, Address address)
         {
             Id = id;
             UserId = userId;
             EmailAddress = emailAddress;
             PhoneNumber = phoneNumber;
             Info = info;
+            Address = address;
         }
     }
 }
