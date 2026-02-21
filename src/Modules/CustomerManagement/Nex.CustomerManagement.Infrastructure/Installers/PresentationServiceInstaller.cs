@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nexa.BuildingBlocks.Infrastructure.Endpoints;
 using Nexa.BuildingBlocks.Infrastructure.Modularity;
@@ -9,7 +10,9 @@ namespace Nexa.CustomerManagement.Infrastructure.Installers
     {
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
-            services.RegisterEndpoints(Presentation.AssemblyReference.Assembly); 
+            services
+                .AddValidatorsFromAssembly(Application.AssemblyReference.Assembly)
+                .RegisterEndpoints(Presentation.AssemblyReference.Assembly); 
         }
     }
 }
