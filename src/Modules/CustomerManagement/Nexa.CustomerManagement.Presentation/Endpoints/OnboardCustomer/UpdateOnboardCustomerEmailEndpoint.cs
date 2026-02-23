@@ -14,7 +14,6 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.OnboardCustomer
     {
         public string Email { get; set; }
 
-
         public class UpdateOnboardCustomerEmailRequestValidator : AbstractValidator<UpdateOnboardCustomerEmailRequest>
         {
             public UpdateOnboardCustomerEmailRequestValidator()
@@ -58,6 +57,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.OnboardCustomer
             if (!validationResult.IsValid)
             {
                 await SendResultAsync(validationResult.ValidationFailure());
+                return;
             }
 
             var command = new UpdateOnboardCustomerEmailCommand

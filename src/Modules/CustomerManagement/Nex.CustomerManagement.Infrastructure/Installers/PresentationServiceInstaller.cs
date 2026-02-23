@@ -11,7 +11,7 @@ namespace Nexa.CustomerManagement.Infrastructure.Installers
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddValidatorsFromAssembly(Application.AssemblyReference.Assembly)
+                .AddValidatorsFromAssembly(Presentation.AssemblyReference.Assembly)
                 .RegisterEndpoints(Presentation.AssemblyReference.Assembly); 
         }
     }
