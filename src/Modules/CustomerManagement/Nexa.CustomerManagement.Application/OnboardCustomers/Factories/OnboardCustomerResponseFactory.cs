@@ -14,6 +14,10 @@ namespace Nexa.CustomerManagement.Application.OnboardCustomers.Factories
                 Id = view.Id,
                 UserId = view.UserId,
                 Email = view.EmailAddress,
+                EmailAddressProvided = view.EmailAddressProvided,
+                PhoneNumberProvided = view.PhoneNumberProvided,
+                CustomerInfoProvided = view.CustomerInfoProvided,
+                AddressProvided = view.AddressProvided,
                 Status = view.Status
             };
 
