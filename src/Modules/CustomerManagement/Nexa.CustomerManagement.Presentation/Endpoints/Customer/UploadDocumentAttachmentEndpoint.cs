@@ -39,7 +39,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
 
             if (!validationResult.IsValid)
             {
-                var errorResponse = validationResult.ValidationFailure();
+                var errorResponse = validationResult.ToValidationFailure();
 
                 await SendResultAsync(errorResponse);
 

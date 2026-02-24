@@ -6,7 +6,7 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
 {
     public static class EndpointResultsExtensions
     {
-        public static IResult ValidationFailure(this ValidationResult result)
+        public static IResult ToValidationFailure(this ValidationResult result)
         {
             if (result.IsValid)
             {

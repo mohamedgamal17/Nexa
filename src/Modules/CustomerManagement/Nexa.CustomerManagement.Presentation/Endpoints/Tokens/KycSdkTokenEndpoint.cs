@@ -42,7 +42,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Tokens
 
             if (!validationResult.IsValid)
             {
-                var errorResponse = validationResult.ValidationFailure();
+                var errorResponse = validationResult.ToValidationFailure();
 
                 await SendResultAsync(errorResponse);
 

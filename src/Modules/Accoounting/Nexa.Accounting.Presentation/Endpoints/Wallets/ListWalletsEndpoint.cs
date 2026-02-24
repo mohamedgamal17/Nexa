@@ -31,7 +31,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.Wallets
 
             if (!validationResult.IsValid)
             {
-                var errorResponse = validationResult.ValidationFailure();
+                var errorResponse = validationResult.ToValidationFailure();
 
                 await SendResultAsync(errorResponse);
 

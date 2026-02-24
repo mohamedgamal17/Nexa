@@ -32,7 +32,7 @@ namespace Nexa.Accounting.Presentation.Endpoints.Banks
 
             if (!validationResult.IsValid)
             {
-                var errorResponse = validationResult.ValidationFailure();
+                var errorResponse = validationResult.ToValidationFailure();
 
                 await SendResultAsync(errorResponse);
 

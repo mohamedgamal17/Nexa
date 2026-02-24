@@ -56,7 +56,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.OnboardCustomer
 
             if (!validationResult.IsValid)
             {
-                await SendResultAsync(validationResult.ValidationFailure());
+                await SendResultAsync(validationResult.ToValidationFailure());
                 return;
             }
 

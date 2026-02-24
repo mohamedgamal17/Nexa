@@ -31,7 +31,7 @@ namespace Nexa.Transactions.Presentation.Endpoints.User.Transfers
 
             if (!validationResult.IsValid)
             {
-                var errorResponse = validationResult.ValidationFailure();
+                var errorResponse = validationResult.ToValidationFailure();
 
                 await SendResultAsync(errorResponse);
 
