@@ -40,7 +40,7 @@ namespace Nexa.CustomerManagement.Application.Tokens.Commands
             var sdkTokenRequest = new KYCSdkTokenRequest
             {
                 ClientId = customer.KycCustomerId,
-                Referrer = request.Referrer!
+                Referrer = request.Referrer ?? "*://*/*"
             };
 
             var response = await _kycProvider.CreateSdkToken(sdkTokenRequest);

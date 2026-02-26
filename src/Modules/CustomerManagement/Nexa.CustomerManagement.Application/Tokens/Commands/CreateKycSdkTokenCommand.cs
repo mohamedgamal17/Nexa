@@ -10,7 +10,7 @@ namespace Nexa.CustomerManagement.Application.Tokens.Commands
     [Authorize]
     public class CreateKycSdkTokenCommand : ICommand<TokenDto>
     {
-        public string Referrer { get; set; }
+        public string? Referrer { get; set; }
     }
 
     public class CreateKycSdkTokenCommandHandler : AbstractValidator<CreateKycSdkTokenCommand>
@@ -21,9 +21,7 @@ namespace Nexa.CustomerManagement.Application.Tokens.Commands
                 .Matches(@"^(https?|file|\*)://(\*|(\*\.)?[^/*]+)(/.*)$")
                 .WithMessage(CustomerErrorConsts.InvalidReferrerUrl.Code)
                 .WithMessage(CustomerErrorConsts.InvalidReferrerUrl.Message)
-                .NotNull()
-                .WithErrorCode(GlobalErrorConsts.Required.Code)
-                .WithMessage(GlobalErrorConsts.Required.Message);
+                .When(x => x.Referrer != null);
         }
     }
 }
