@@ -48,7 +48,7 @@ namespace Nexa.CustomerManagement.Presentation.Requests.Customers
                     .WithMessage(GlobalErrorConsts.InvalidBirthDate.Message);
 
                 RuleFor(x => x.Gender)
-                    .NotEmpty()
+                    .NotNull()
                     .WithErrorCode(GlobalErrorConsts.Required.Code)
                     .WithMessage(GlobalErrorConsts.Required.Message);
             }
