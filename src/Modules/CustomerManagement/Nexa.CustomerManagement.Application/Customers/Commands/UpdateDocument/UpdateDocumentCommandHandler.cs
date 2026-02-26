@@ -52,7 +52,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateDocument
 
             var kycDocument = kycResult.Value!;
 
-            var document = Document.Create(request.Type, request.IssuingCountry, kycDocument.Id);
+            var document = Document.Create(kycDocument.Type, kycDocument.IssuingCountry, kycDocument.Id);
 
             if(kycDocument.Attachements != null)
             {
