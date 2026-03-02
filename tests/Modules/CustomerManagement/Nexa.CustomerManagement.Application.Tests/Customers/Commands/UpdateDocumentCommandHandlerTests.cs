@@ -84,6 +84,10 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             document.Should().NotBeNull();
 
+            document!.Type.Should().Be(fakeKycDocument.Type);
+
+            document!.IssuingCountry.Should().Be(fakeKycDocument.IssuingCountry);
+
             document!.KycDocumentId.Should().Be(fakeKycDocument.Id);
 
             document.Attachments.Count.Should().Be(1);
@@ -96,7 +100,6 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             attachment.Side.Should().Be(fakekycAttachment.Side);
             attachment.ContentType.Should().Be(fakekycAttachment.ContentType);
 
-            document!.AssertDocument(command);
 
             response.Value!.AssertCustomerDto(customer!);
         }
