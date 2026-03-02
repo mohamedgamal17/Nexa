@@ -6,8 +6,6 @@ using Nexa.BuildingBlocks.Domain.Consts;
 using Nexa.CustomerManagement.Shared.Consts;
 using PhoneNumbers;
 using SixLabors.ImageSharp;
-using System.Linq;
-using System.Numerics;
 namespace Nexa.CustomerManagement.Application.Extensions
 {
     public static class FluentValidationExtensions
@@ -22,17 +20,20 @@ namespace Nexa.CustomerManagement.Application.Extensions
             {
                 if (code == null)
                 {
-                    context.AddFailure(new ValidationFailure { ErrorCode = GlobalErrorConsts.Required.Code, ErrorMessage = GlobalErrorConsts.Required.Message });
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, GlobalErrorConsts.Required.Message)
+                    {
+                        ErrorCode = GlobalErrorConsts.Required.Code
+                    });
 
                     return;
                 }
 
                 if (code.Length < 2)
                 {
-                    context.AddFailure(new ValidationFailure
+
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(GlobalErrorConsts.MinLength.Message, 2))
                     {
-                        ErrorCode = GlobalErrorConsts.MinLength.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.MinLength.Message, 2)
+                        ErrorCode = GlobalErrorConsts.MinLength.Code
                     });
 
                     return;
@@ -40,10 +41,9 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                 if (code.Length > 3)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(GlobalErrorConsts.MaxLength.Message, 3))
                     {
-                        ErrorCode = GlobalErrorConsts.MaxLength.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.MaxLength.Message, 3)
+                        ErrorCode = GlobalErrorConsts.MaxLength.Code
                     });
                     return;
                 }
@@ -57,15 +57,13 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                 if (country == null)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, GlobalErrorConsts.InvalidCountryCode.Message)
                     {
-                        ErrorCode = GlobalErrorConsts.InvalidCountryCode.Code,
-                        ErrorMessage = GlobalErrorConsts.InvalidCountryCode.Message
+                        ErrorCode = GlobalErrorConsts.InvalidCountryCode.Code
                     });
 
                     return;
                 }
-
 
 
                 if (supportedCountries != null)
@@ -95,17 +93,19 @@ namespace Nexa.CustomerManagement.Application.Extensions
             {
                 if (file == null)
                 {
-                    context.AddFailure(new ValidationFailure
-                    { ErrorCode = GlobalErrorConsts.Required.Code, ErrorMessage = GlobalErrorConsts.Required.Message });
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, GlobalErrorConsts.Required.Message)
+                    {
+                        ErrorCode = GlobalErrorConsts.Required.Code
+                    });
+
                     return;
                 }
 
                 if (file.Length > maxFileSizeMB * 1024 * 1024)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(GlobalErrorConsts.FileSizeExceeded.Message, maxFileSizeMB))
                     {
-                        ErrorCode = GlobalErrorConsts.FileSizeExceeded.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.FileSizeExceeded.Message, maxFileSizeMB)
+                        ErrorCode = GlobalErrorConsts.FileSizeExceeded.Code
                     });
 
                     return;
@@ -117,10 +117,9 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                 if (!allowedExtensions.Contains(ext))
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, GlobalErrorConsts.InvalidFileExtension.Message)
                     {
-                        ErrorCode = GlobalErrorConsts.InvalidFileExtension.Code,
-                        ErrorMessage = GlobalErrorConsts.InvalidFileExtension.Message
+                        ErrorCode = GlobalErrorConsts.InvalidFileExtension.Code
                     });
 
                     return;
@@ -132,11 +131,12 @@ namespace Nexa.CustomerManagement.Application.Extensions
                     using var img = Image.Load(file.OpenReadStream());
                     if (img.Width > maxWidth || img.Height > maxHeight)
                     {
-                        context.AddFailure(new ValidationFailure
+                        context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(CustomerErrorConsts.InvalidImageDimensions.Message, maxWidth, maxHeight))
                         {
-                            ErrorCode = CustomerErrorConsts.InvalidImageDimensions.Code,
-                            ErrorMessage = string.Format(CustomerErrorConsts.InvalidImageDimensions.Message, maxWidth, maxHeight),
+                            ErrorCode = CustomerErrorConsts.InvalidImageDimensions.Code
                         });
+
+                        return;
                     }
                 }
                 catch
@@ -152,18 +152,17 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
 
         public static IRuleBuilderOptionsConditions<T, string?> IsValidPhoneNumber<T>(
-           this IRuleBuilder<T, string?> ruleBuilder,
-           List<string>? supportedCountries = null
-       )
+                 this IRuleBuilder<T, string?> ruleBuilder,
+                 List<string>? supportedCountries = null
+            )
         {
             return ruleBuilder.Custom((phoneNumber, context) =>
             {
                 if (phoneNumber == null)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath , GlobalErrorConsts.Required.Message)
                     {
-                        ErrorCode = GlobalErrorConsts.Required.Code,
-                        ErrorMessage = GlobalErrorConsts.Required.Message
+                        ErrorCode = GlobalErrorConsts.Required.Code
                     });
 
                     return;
@@ -171,10 +170,9 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                 if (phoneNumber.Length < 8)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(GlobalErrorConsts.MinLength.Message, 8))
                     {
-                        ErrorCode = GlobalErrorConsts.MaxLength.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.MinLength.Code, 8)
+                        ErrorCode = GlobalErrorConsts.MaxLength.Code
                     });
 
                     return;
@@ -182,10 +180,9 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                 if (phoneNumber.Length > 20)
                 {
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath, string.Format(GlobalErrorConsts.MaxLength.Message, 20))
                     {
-                        ErrorCode = GlobalErrorConsts.MaxLength.Code,
-                        ErrorMessage = string.Format(GlobalErrorConsts.MaxLength.Message, 20)
+                        ErrorCode = GlobalErrorConsts.MaxLength.Code
                     });
 
                     return;
@@ -203,29 +200,23 @@ namespace Nexa.CustomerManagement.Application.Extensions
 
                         bool validRegion = supportedCountries.Contains(region);
 
-
                         if (!validRegion)
                         {
-                            context.AddFailure(new ValidationFailure
+                            context.AddFailure(new ValidationFailure(context.PropertyPath , CustomerErrorConsts.PhoneRegionNotSupported.Message)
                             {
-                                ErrorCode = CustomerErrorConsts.PhoneRegionNotSupported.Code,
-                                ErrorMessage = CustomerErrorConsts.PhoneRegionNotSupported.Message
+                                ErrorCode = CustomerErrorConsts.PhoneRegionNotSupported.Code
                             });
                         }
                     }
                 }
                 catch (NumberParseException)
                 {
-
-                    context.AddFailure(new ValidationFailure
+                    context.AddFailure(new ValidationFailure(context.PropertyPath , GlobalErrorConsts.InvalidPhoneNumber.Message)
                     {
-                        ErrorCode = GlobalErrorConsts.InvalidPhoneNumber.Code,
-                        ErrorMessage = GlobalErrorConsts.InvalidPhoneNumber.Message
+                        ErrorCode = GlobalErrorConsts.InvalidPhoneNumber.Code
                     });
                 }
-
             });
-
         }
 
     }

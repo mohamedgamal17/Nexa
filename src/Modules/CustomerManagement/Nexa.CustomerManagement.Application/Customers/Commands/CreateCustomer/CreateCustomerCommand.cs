@@ -40,7 +40,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 .WithMessage(GlobalErrorConsts.InvalidEmailAddress.Message)
                 .MaximumLength(CustomerTableConstants.EmailAddressLength)
                 .WithErrorCode(GlobalErrorConsts.MaxLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MaxLength.Message, x));
+                .WithMessage(_ => string.Format(GlobalErrorConsts.MaxLength.Message, CustomerTableConstants.EmailAddressLength));
 
             RuleFor(x => x.FirstName)
                 .NotEmpty()
@@ -48,10 +48,10 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 .WithMessage(GlobalErrorConsts.Required.Message)
                 .MinimumLength(2)
                 .WithErrorCode(GlobalErrorConsts.MinLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message, x))
+                .WithMessage(_ => string.Format(GlobalErrorConsts.MinLength.Message, 2))
                 .MaximumLength(CustomerInfoTableConsts.FirstNameLength)
                 .WithErrorCode(GlobalErrorConsts.MaxLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message, x));
+                .WithMessage(_ => string.Format(GlobalErrorConsts.MinLength.Message, CustomerInfoTableConsts.FirstNameLength));
 
 
             RuleFor(x => x.LastName)
@@ -60,10 +60,10 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.CreateCustomer
                 .WithMessage(GlobalErrorConsts.Required.Message)
                 .MinimumLength(2)
                 .WithErrorCode(GlobalErrorConsts.MinLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message, x))
+                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message,2))
                 .MaximumLength(CustomerInfoTableConsts.LastNameLength)
                 .WithErrorCode(GlobalErrorConsts.MaxLength.Code)
-                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message, x));
+                .WithMessage(x => string.Format(GlobalErrorConsts.MinLength.Message, CustomerInfoTableConsts.LastNameLength));
 
             RuleFor(x => x.BirthDate)
                 .NotEmpty()

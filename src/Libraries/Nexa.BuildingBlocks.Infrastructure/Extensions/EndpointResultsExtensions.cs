@@ -13,7 +13,9 @@ namespace Nexa.BuildingBlocks.Infrastructure.Extensions
                 throw new InvalidOperationException("Validation result must be invalid to send bad reqeust");
             }
 
-            var validationErrors = new ValidationProblemDetails(result.ToDictionary());
+            var dep = result.Errors.GroupBy(x => x.PropertyName).ToList();
+            var dict = result.ToDictionary();
+            var validationErrors = new ValidationProblemDetails(dict);
             return Results.BadRequest(validationErrors);
         }
         public static IResult ToOk<T>(this Result<T> result)
