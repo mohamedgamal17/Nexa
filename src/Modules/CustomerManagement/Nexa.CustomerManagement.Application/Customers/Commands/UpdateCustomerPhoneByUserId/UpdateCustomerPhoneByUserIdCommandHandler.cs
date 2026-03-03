@@ -30,7 +30,7 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerP
                 return new Result<CustomerDto>(new EntityNotFoundException(CustomerErrorConsts.CustomerNotExist));
             }
 
-            customer.UpdatePhone(customer.PhoneNumber);
+            customer.UpdatePhone(request.PhoneNumber);
 
             await _customerRepository.UpdateAsync(customer);
 
