@@ -29,7 +29,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerEmailByUserIdCommand
             {
                 UserId = userId,
-                EmailAddress =Faker.Person.Email
+                EmailAddress =Faker.Internet.Email()
             };
 
             var result = await Mediator.Send(command);
@@ -51,7 +51,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerEmailByUserIdCommand
             {
                 UserId = userId,
-                EmailAddress = Faker.Person.Email
+                EmailAddress = Faker.Internet.Email()
             };
 
             var result = await Mediator.Send(command);

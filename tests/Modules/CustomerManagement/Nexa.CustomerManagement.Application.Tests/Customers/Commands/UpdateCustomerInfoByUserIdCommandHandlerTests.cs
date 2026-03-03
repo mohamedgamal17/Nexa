@@ -33,9 +33,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
                 UserId = userId,
                 Info = new CustomerInfoModel
                 {
-                    FirstName = Faker.Person.FirstName,
-                    LastName = Faker.Person.LastName,
-                    BirthDate = Faker.Person.DateOfBirth,
+                    FirstName = Faker.Name.FirstName(),
+                    LastName = Faker.Name.LastName(),
+                    BirthDate = DateTime.Now.AddYears(-25),
                     Gender = Faker.PickRandom<Gender>()
                 }
    
@@ -64,9 +64,9 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
                 UserId = userId,
                 Info = new CustomerInfoModel
                 {
-                    FirstName = Faker.Person.FirstName,
-                    LastName = Faker.Person.LastName,
-                    BirthDate = Faker.Person.DateOfBirth,
+                    FirstName = Faker.Name.FirstName(),
+                    LastName = Faker.Name.LastName(),
+                    BirthDate = DateTime.Now.AddYears(-25),
                     Gender = Faker.PickRandom<Gender>()
                 }
 

@@ -30,7 +30,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerPhoneByUserIdCommand
             {
                 UserId = userId,
-                PhoneNumber = Faker.Person.Phone
+                PhoneNumber = Faker.Phone.PhoneNumber()
             };
 
             var result = await Mediator.Send(command);
@@ -52,7 +52,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerPhoneByUserIdCommand
             {
                 UserId = userId,
-                PhoneNumber = Faker.Person.Phone
+                PhoneNumber = Faker.Phone.PhoneNumber()
             };
 
             var result = await Mediator.Send(command);
