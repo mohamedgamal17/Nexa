@@ -41,6 +41,11 @@ namespace Nexa.CustomerManagement.Domain.Customers
             EmailAddress = emailAddres;
         }
 
+        public void UpdateEmail(string email)
+        {
+            EmailAddress = email;
+        }
+
         public void UpdateDocument(Document document)
         {
             Document = document;
