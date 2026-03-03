@@ -5,6 +5,7 @@ using Nexa.CustomerManagement.Application.Customers.Models;
 using Nexa.CustomerManagement.Domain.Customers;
 using Nexa.CustomerManagement.Domain.OnboardCustomers;
 using Nexa.CustomerManagement.Shared.Dtos;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Nexa.CustomerManagement.Application.Tests.Assertions
 {
     public static class CustomerAssertionsExtensions
@@ -62,6 +63,14 @@ namespace Nexa.CustomerManagement.Application.Tests.Assertions
             address.StreetLine.Should().Be(model.StreetLine);
             address.PostalCode.Should().Be(model.PostalCode);
             address.ZipCode.Should().Be(model.ZipCode);
+        }
+
+        public static void AssertCustomerInfo(this CustomerInfo info ,  CustomerInfoModel model)
+        {
+            info.FirstName.Should().Be(model.FirstName);
+            info.LastName.Should().Be(model.LastName);
+            info.Gender.Should().Be(model.Gender);
+            info.BirthDate.Should().Be(model.BirthDate);
         }
         public static void AssertCustomerDto(this CustomerDto dto , Customer customer)
         {
