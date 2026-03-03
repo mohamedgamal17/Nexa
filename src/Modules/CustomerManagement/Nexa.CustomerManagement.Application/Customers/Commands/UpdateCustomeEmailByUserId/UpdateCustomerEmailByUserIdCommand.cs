@@ -6,6 +6,6 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomeEm
     public class UpdateCustomerEmailByUserIdCommand : ICommand<CustomerDto>
     {
         public string UserId { get; set; }
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
     }
 }

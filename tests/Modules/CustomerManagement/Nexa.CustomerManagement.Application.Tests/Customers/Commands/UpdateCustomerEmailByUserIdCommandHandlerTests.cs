@@ -28,7 +28,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerEmailByUserIdCommand
             {
                 UserId = userId,
-                Email =Faker.Person.Email
+                EmailAddress =Faker.Person.Email
             };
 
             var result = await Mediator.Send(command);
@@ -37,7 +37,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
-            customer.EmailAddress.Should().Be(command.Email);
+            customer.EmailAddress.Should().Be(command.EmailAddress);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var command = new UpdateCustomerEmailByUserIdCommand
             {
                 UserId = userId,
-                Email = Faker.Person.Email
+                EmailAddress = Faker.Person.Email
             };
 
             var result = await Mediator.Send(command);
