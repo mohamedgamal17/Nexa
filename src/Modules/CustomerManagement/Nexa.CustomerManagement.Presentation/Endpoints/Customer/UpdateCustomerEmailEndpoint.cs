@@ -46,7 +46,7 @@ namespace Nexa.CustomerManagement.Presentation.Endpoints.Customer
 
         public override void Configure()
         {
-            Get("email");
+            Post("email");
 
             Group<CustomerRoutingGroup>();
         }
