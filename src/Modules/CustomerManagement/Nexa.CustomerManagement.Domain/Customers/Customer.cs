@@ -45,6 +45,10 @@ namespace Nexa.CustomerManagement.Domain.Customers
         {
             EmailAddress = email;
         }
+        public void UpdatePhone(string phoneNumber)
+        {
+            PhoneNumber = phoneNumber;
+        }
 
         public void UpdateDocument(Document document)
         {
