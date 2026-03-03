@@ -50,6 +50,8 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             customer.Address.Should().NotBeNull();
 
             customer.Address!.AssertAddress(command.Addres);
+
+            result.Value!.AssertCustomerDto(customer);
         }
 
         [Test]

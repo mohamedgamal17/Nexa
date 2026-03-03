@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerPhoneByUserId;
 using Nexa.Application.Tests.Extensions;
 using FluentAssertions;
+using Nexa.CustomerManagement.Application.Tests.Assertions;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
@@ -39,10 +40,12 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
             customer.PhoneNumber.Should().Be(command.PhoneNumber);
+
+            result.Value!.AssertCustomerDto(customer);
         }
 
         [Test]
-        public async Task Should_failure_while_creating_customer_phone_when_customer_is_not_exist_for_current_user_id()
+        public async Task Should_failure_while_updating_customer_phone_when_customer_is_not_exist_for_current_user_id()
         {
             var userId = Guid.NewGuid().ToString();
 

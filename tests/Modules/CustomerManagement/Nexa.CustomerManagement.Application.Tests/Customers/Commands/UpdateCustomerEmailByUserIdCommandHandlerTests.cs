@@ -7,6 +7,7 @@ using FluentAssertions;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Nexa.BuildingBlocks.Domain.Exceptions;
 using Nexa.CustomerManagement.Shared.Consts;
+using Nexa.CustomerManagement.Application.Tests.Assertions;
 
 namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 {
@@ -38,10 +39,12 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
             var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
             customer.EmailAddress.Should().Be(command.EmailAddress);
+
+            result.Value!.AssertCustomerDto(customer);
         }
 
         [Test]
-        public async Task Should_failure_while_creating_customer_email_when_customer_is_not_exist_for_current_user_id()
+        public async Task Should_failure_while_updating_customer_email_when_customer_is_not_exist_for_current_user_id()
         {
             var userId = Guid.NewGuid().ToString();
 
