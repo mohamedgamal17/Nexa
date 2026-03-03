@@ -9,5 +9,4 @@ namespace Nexa.CustomerManagement.Application.Customers.Commands.UpdateCustomerA
         public string UserId { get; set; }
         public AddressModel  Addres { get; set; }
     }
-
 }
