@@ -38,7 +38,7 @@ namespace Nexa.CustomerManagement.Application.Tests.Customers.Commands
 
             var customer = await CustomerRepository.SingleAsync(x => x.Id == fakeCustomer.Id);
 
-            customer.EmailAddress.Should().Be(command.PhoneNumber);
+            customer.PhoneNumber.Should().Be(command.PhoneNumber);
         }
 
         [Test]
