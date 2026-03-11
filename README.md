@@ -13,9 +13,8 @@
 
 It provides a secure and scalable foundation for managing wallets, processing financial transactions, and integrating with external payment systems through webhooks and asynchronous events.
 
-
-
-## ✨ Features
+---
+## Features
 
 #### 👤 Customer Management
 
@@ -33,15 +32,60 @@ It provides a secure and scalable foundation for managing wallets, processing fi
 
 #### 🔐 Security
 
+---
+## Architecture
+This project follows a **modular architecture** where the application is divided into independent modules.  
+Each module encapsulates its own domain logic, data access, and API endpoints.
+/*image support */
+This approach improves:
+- Maintainability
+- Scalability
+- Separation of concerns
+- Independent feature development
 
-## 🔷 Architectural Principles
-- Modular monolith with clearly defined bounded contexts
-- Domain-Driven Design for business logic isolation
-- Event-driven communication between modules
-- Asynchronous transaction processing
-- Clean separation of concerns
+### 📦 Modules
+Each module represents a specific business capability and is isolated from other modules.
 
-## 🚀 Getting Started
+Application modules:
+
+- **Cusomer Management Module**: Handles customer management, profiles, and kyc verification logic.
+
+- **Accountant Module**: Manages customer wallets and their external bank accounts.
+  
+- **Transaction Module**: Manages all financial operations within the digital wallet system. It records every movement of funds to ensure transparency, traceability, and financial integrity.
+
+
+Each modules follows Clean Architecture, separating concerns into distinct layers:
+ - **Presentation** : Handles API requests
+ - **Infrastructure** : Data persistence, external services, and message broker service
+ - **Application** : Business logic and use cases with CQRS Pattern and Mediator Pattern
+ - **Domain** :  Core entities, aggregates, and domain services
+---
+## Project structure
+## 📂 Project Structure
+
+  ### Project Modularity structure:
+  ```bash
+  📁 src/
+  └── 📁 Modules/
+      ├── 📁 Accoounting/
+      ├── 📁 CustomerManagement/
+      └── 📁 Transactions/
+```
+### Module structure
+```bash
+📁 Acccounting/
+├── 📁 Nexa.Accounting.Domain/
+├── 📁 Nexa.Accounting.Application/
+├── 📁 Nexa.Accounting.Infrastructure/
+└── 📁 Nexa.Accounting.Presentation/
+
+```
+
+
+
+---
+## Getting Started
 
 ### Prerequisites
 
@@ -57,16 +101,19 @@ Ensure you have the following installed:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/mohamedgamal17/Nexa.git
-   cd Nexa ```
+   cd Nexa
+   ```
 
 2. **Install .NET 8 SDK** 
      Verify installation:
      ```bash
-      dotnet --version ```
+      dotnet --version
+     ```
 
 3. **Restore Dependencies**
    ```bash
-     dotnet restore```
+     dotnet restore
+   ```
 4. **Configure Application Settings**
 ```json
   "ConnectionStrings": {
@@ -102,7 +149,7 @@ Ensure you have the following installed:
   To receive webhook events from Stripe or ComplyCube on your local machine: 
     1. Start a tunnel using ngrok:
       ```bash
-        ngrok http [APPLICATION_PORT]
+        ngrok http [APPLICATION_URL]
       ```
     2. Copy the generated public URL (e.g., https://abc123.ngrok.io) and set it in your provider's webhook settings for Stripe or ComplyCube.
      
@@ -118,11 +165,11 @@ Ensure you have the following installed:
        ```
 7. **Build the Project**
   ```bash
-    dotnet build
+dotnet build
   ```
 8. **Run the Application**
 ```bash
-     dotnet run
+dotnet run
 ```
 
 The API will be available at:
@@ -131,3 +178,36 @@ The API will be available at:
      https://localhost:7226
    ```
 
+## Configuration
+
+1. **Stripe Configuration**
+  ```json
+  "Baas": {
+    "ApiKey": "YOUR_STRIPE_API_KEY",
+    "WebhookSecret": "YOUR_STRIPE_WEBHOOK_SECRET",
+    "FinancialAccounts": {
+      "Main": "YOUR_STRIPE_MAIN_FINANCIAL_CONNECTION_ACCOUNT" 
+    }
+  }
+  ```
+2. **ComplyCube Configuration**
+```json
+"ComplyCube": {
+    "ApiKey": "YOUR_COMPLYCUBE_API_KEY",
+    "WebhookSecret": "YOUR_WEBHOOK_SECRET"
+  }
+```
+3. **RabbitMQ Configuration**
+```json
+  "RabbitMq": {
+    "Host": "RABBITMQ_HOST",
+    "UserName": "RABBITMQ_USERNAME",
+    "Password": "RABBITMQ_PASSWORD"
+  }
+```
+4. **SQL Server Configuraiton**
+```json
+ "ConnectionStrings": {
+    "Default": "YOUR_SQL_SERVER_DB_CONNECTION_STRING"
+  }
+```
