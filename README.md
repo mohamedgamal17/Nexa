@@ -225,5 +225,17 @@ The API will be available at:
    ```bash
      https://localhost:7226
    ```
+---
+## 🧪 Testing
+The project uses integration tests to verify the behavior of the application as a whole. Tests focus on the Application Layer, ensuring that use cases, module interactions, and infrastructure integrations work correctly.
 
+All tests run inside Testcontainers, which spin up the required dependencies (such as databases) in isolated Docker containers. This approach provides a realistic testing environment that closely matches production behavior.
 
+### Requirements
+  - Docker must be installed and running.
+### Running Tests
+Execute the following command from the root of the project:
+```base
+dotnet test
+```
+During test execution, the required containers will automatically start and be disposed after the tests complete.
