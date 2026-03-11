@@ -72,18 +72,66 @@ Each modules follows Clean Architecture, separating concerns into distinct layer
       ├── 📁 CustomerManagement/
       └── 📁 Transactions/
 ```
-### Module structure
-```bash
-📁 Acccounting/
-├── 📁 Nexa.Accounting.Domain/
-├── 📁 Nexa.Accounting.Application/
-├── 📁 Nexa.Accounting.Infrastructure/
-└── 📁 Nexa.Accounting.Presentation/
+  ### Module structure
+  ```bash
+  📁 Acccounting/
+  ├── 📁 Nexa.Accounting.Domain/
+  ├── 📁 Nexa.Accounting.Application/
+  ├── 📁 Nexa.Accounting.Infrastructure/
+  └── 📁 Nexa.Accounting.Presentation/
+  
+  ```
+  ### Test structure
+  ```bash
+   📁 tests/
+    ├── 📁 Modules/
+    │   ├── 📁 Accounting/
+    │   │   └── 📁 Nexa.Accounting.Application.Tests/
+    │   ├── 📁 CustomerManagement/
+    │   │   └── 📁 Nexa.CustomerManagement.Application.Tests/
+    │   └── 📁 Transactions/
+    │       └── 📁 Nexa.Transactions.Application.Tests/
+    └── 📁 Nexa.Application.Tests/
+  ```
+ 
 
+
+
+---
+
+## Configuration
+
+1. **Stripe Configuration**
+  ```json
+  "Baas": {
+    "ApiKey": "YOUR_STRIPE_API_KEY",
+    "WebhookSecret": "YOUR_STRIPE_WEBHOOK_SECRET",
+    "FinancialAccounts": {
+      "Main": "YOUR_STRIPE_MAIN_FINANCIAL_CONNECTION_ACCOUNT" 
+    }
+  }
+  ```
+2. **ComplyCube Configuration**
+```json
+"ComplyCube": {
+    "ApiKey": "YOUR_COMPLYCUBE_API_KEY",
+    "WebhookSecret": "YOUR_WEBHOOK_SECRET"
+  }
 ```
-
-
-
+3. **RabbitMQ Configuration**
+```json
+  "RabbitMq": {
+    "Host": "RABBITMQ_HOST",
+    "UserName": "RABBITMQ_USERNAME",
+    "Password": "RABBITMQ_PASSWORD"
+  }
+```
+4. **SQL Server Configuraiton**
+```json
+ "ConnectionStrings": {
+    "Default": "YOUR_SQL_SERVER_DB_CONNECTION_STRING"
+  }
+```
 ---
 ## Getting Started
 
@@ -178,36 +226,4 @@ The API will be available at:
      https://localhost:7226
    ```
 
-## Configuration
 
-1. **Stripe Configuration**
-  ```json
-  "Baas": {
-    "ApiKey": "YOUR_STRIPE_API_KEY",
-    "WebhookSecret": "YOUR_STRIPE_WEBHOOK_SECRET",
-    "FinancialAccounts": {
-      "Main": "YOUR_STRIPE_MAIN_FINANCIAL_CONNECTION_ACCOUNT" 
-    }
-  }
-  ```
-2. **ComplyCube Configuration**
-```json
-"ComplyCube": {
-    "ApiKey": "YOUR_COMPLYCUBE_API_KEY",
-    "WebhookSecret": "YOUR_WEBHOOK_SECRET"
-  }
-```
-3. **RabbitMQ Configuration**
-```json
-  "RabbitMq": {
-    "Host": "RABBITMQ_HOST",
-    "UserName": "RABBITMQ_USERNAME",
-    "Password": "RABBITMQ_PASSWORD"
-  }
-```
-4. **SQL Server Configuraiton**
-```json
- "ConnectionStrings": {
-    "Default": "YOUR_SQL_SERVER_DB_CONNECTION_STRING"
-  }
-```
