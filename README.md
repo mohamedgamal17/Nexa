@@ -36,7 +36,7 @@ It provides a secure and scalable foundation for managing wallets, processing fi
 ## Architecture
 This project follows a **modular architecture** where the application is divided into independent modules.  
 Each module encapsulates its own domain logic, data access, and API endpoints.
-/*image support */
+
 This approach improves:
 - Maintainability
 - Scalability
